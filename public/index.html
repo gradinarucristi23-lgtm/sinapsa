@@ -17,6 +17,7 @@
   --bg:#F3F4F9; --surface:#FFFFFF; --surface-2:#ECEDF5; --line:#D8DAE7; --line-2:#C5C8DA;
   --ink:#1D1A38; --ink-2:#4F4D69; --ink-3:#66647F;
   --hema:#3D379A; --hema-hover:#2F2A80; --hema-soft:#E7E6F7; --on-hema:#FFFFFF; --cta:#3D379A; --cta-hover:#2A2577; --on-cta:#FFFFFF;
+  --c1:#5B4FD6; --c1-soft:#EEEBFC; --c2:#2563C9; --c2-soft:#E4EDFB; --c3:#0E8A7E; --c3-soft:#DFF3F0; --c4:#B26B00; --c4-soft:#FBF0DC; --c5:#2F8A3E; --c5-soft:#E3F3E6;
   --eosin:#B82B66; --eosin-soft:#FCE4EE;
   --ok:#1C7550; --ok-soft:#E1F3EA; --bad:#B0261E; --bad-soft:#FBE6E4; --warn:#7E5600; --warn-soft:#FBF0D9;
   --slide-bg:#FFFFFF; --slide-ink:#1D1A38; --slide-mute:#5B5975; --slide-hema:#3D379A; --slide-eosin:#B82B66; --slide-soft:#EEEEF7; --slide-line:#D8DAE7;
@@ -31,7 +32,7 @@
   :root:not([data-theme="light"]){
     --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#34334D; --line-2:#4C4A6A;
     --ink:#F1F0FA; --ink-2:#C9C7E0; --ink-3:#A9A7C5;
-    --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24;
+    --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24; --c1:#ADA5FF; --c1-soft:#2B2756; --c2:#86AEF7; --c2-soft:#1B2B4B; --c3:#5ED3C2; --c3-soft:#123733; --c4:#F2BC5E; --c4-soft:#38290F; --c5:#7DD68C; --c5-soft:#16351C;
     --eosin:#FF86B6; --eosin-soft:#3F1F31;
     --ok:#66D6A2; --ok-soft:#17352A; --bad:#FF8F86; --bad-soft:#3F1F1D; --warn:#F1C66E; --warn-soft:#3A2E14;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 28px -14px rgba(0,0,0,.6);
@@ -41,7 +42,7 @@
 :root[data-theme="dark"]{
   --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#34334D; --line-2:#4C4A6A;
   --ink:#F1F0FA; --ink-2:#C9C7E0; --ink-3:#A9A7C5;
-  --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24;
+  --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24; --c1:#ADA5FF; --c1-soft:#2B2756; --c2:#86AEF7; --c2-soft:#1B2B4B; --c3:#5ED3C2; --c3-soft:#123733; --c4:#F2BC5E; --c4-soft:#38290F; --c5:#7DD68C; --c5-soft:#16351C;
   --eosin:#FF86B6; --eosin-soft:#3F1F31;
   --ok:#66D6A2; --ok-soft:#17352A; --bad:#FF8F86; --bad-soft:#3F1F1D; --warn:#F1C66E; --warn-soft:#3A2E14;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 28px -14px rgba(0,0,0,.6);
@@ -428,6 +429,45 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 .theme-btn:hover{border-color:var(--hema);color:var(--hema)}
 .theme-btn svg{width:17px;height:17px;flex:none}
 @media (max-width:600px){.theme-btn span{display:none}.theme-btn{padding:8px}}
+
+/* secțiuni colorate: fiecare secțiune are culoarea ei de accent */
+.sec{border-top:0;padding:16px 0 16px 18px;margin:16px 0;border-left:3px solid var(--acc,var(--hema))}
+.sec h3{display:flex;gap:10px;align-items:center}
+.sec-n{display:inline-grid;place-items:center;min-width:27px;height:27px;padding:0 6px;border-radius:7px;background:var(--acc,var(--hema));color:var(--surface);font-family:var(--f-mono);font-size:13px;font-weight:600;flex:none}
+.sec .lv-s{background:var(--acc-soft,var(--surface-2))}
+[data-level="simplu"] .sec .lv-s{background:none}
+
+/* întrebare fulger */
+.fq{margin-top:14px;border:1.5px dashed var(--acc,var(--hema));border-radius:12px;padding:12px 14px;background:var(--acc-soft,var(--surface-2))}
+.fq-tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc,var(--hema));font-weight:600}
+.fq-tag svg{width:14px;height:14px}
+.fq-q{margin:6px 0 10px;font-weight:600;font-size:15.5px}
+.fq-opts{display:flex;flex-wrap:wrap;gap:8px}
+.fq-o{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer;text-align:left}
+.fq-o:hover:not(:disabled){border-color:var(--acc,var(--hema))}
+.fq-o:disabled{cursor:default;opacity:.75}
+.fq-o.right{border-color:var(--ok);background:var(--ok-soft);opacity:1;font-weight:600}
+.fq-o.wrong{border-color:var(--bad);background:var(--bad-soft);opacity:1}
+.fq-x{margin:10px 0 0;font-size:14px;color:var(--ink-2)}
+.fq-x b{color:var(--ok)}
+.fq-x b.no{color:var(--bad)}
+
+/* imagini în secțiuni */
+.sec-img{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.img-box{background:#FFFFFF;display:flex;justify-content:center}
+.img-box img{max-height:420px;width:auto;max-width:100%;object-fit:contain;display:block}
+.sec-img figcaption{padding:8px 12px 6px;font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
+.sec-img figcaption b{color:var(--ink);font-size:13.5px}
+.sec-img figcaption a{color:var(--hema)}
+.img-act{display:flex;gap:8px;flex-wrap:wrap;padding:4px 12px 12px}
+.img-exp{padding:0 14px 14px;font-size:15px}
+.img-wait{padding:14px;color:var(--ink-3);font-size:13.5px}
+
+/* explică o imagine (instrumente) */
+.ask-row input#ixQ{flex:1 1 220px;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:9px 12px;background:var(--surface);font-size:15px}
+.ix-row{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:640px){.ix-row{grid-template-columns:minmax(0,1fr)}}
+.ix-prev{width:100%;border-radius:10px;border:1px solid var(--line)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1054,8 +1094,8 @@ const FORMAT_EXPLAIN = `FORMAT: răspunde cu UN SINGUR obiect JSON valid, fără
  "disciplina": "disciplina principală, de ex. Fiziologie",
  "rezumat": "2–3 propoziții cu esența temei",
  "sectiuni": [
-   {"tip": "teorie", "titlu": "…", "simplu": "markdown", "avansat": "markdown"},
-   {"tip": "practica", "titlu": "…", "simplu": "markdown", "avansat": "markdown"}
+   {"tip": "teorie", "titlu": "…", "simplu": "markdown", "avansat": "markdown", "fulger": {"intrebare": "…", "variante": ["…", "…", "…"], "corect": 0, "explicatie": "…"}, "imagine": ""},
+   {"tip": "practica", "titlu": "…", "simplu": "markdown", "avansat": "markdown", "fulger": {"intrebare": "…", "variante": ["…", "…", "…"], "corect": 2, "explicatie": "…"}, "imagine": "…"}
  ],
  "schema": {"titlu": "…", "mermaid": "flowchart TD\\n …", "cum_se_citeste": "1–2 propoziții"},
  "tabel": {"tip": "sinteza", "titlu": "…", "coloane": ["…"], "randuri": [["…"]]},
@@ -1076,6 +1116,8 @@ REGULI DE CONȚINUT:
 - DIAGNOSTIC DIFERENȚIAL: dacă tema compară două sau mai multe entități (de ex. „X vs Y”, „diferența dintre”, „diagnostic diferențial”), "tabel" este OBLIGATORIU, cu "tip": "ddx": prima coloană se numește "Criteriu", apoi câte o coloană pentru fiecare entitate; rândurile sunt, în această ordine: Definiție și etiologie, Fiziopatologie, Tablou clinic, Laborator, Investigații paraclinice, Tratament, Complicații și prognostic.
 - "caz_clinic": un caz scurt și realist cu 2–3 întrebări și răspunsuri; null doar dacă tema nu are deloc aplicare clinică (sau, în modul EXCLUSIV, dacă sursa nu îl susține).
 - 1–3 mnemotehnici (sau listă goală), 3–5 capcane frecvente la examen, 6–12 termeni în glosar explicați simplu; fiecare "termen" se scrie exact în forma în care apare în textul explicației.
+- "fulger": la FIECARE secțiune, o întrebare-fulger de verificare la care se răspunde din secțiunea respectivă: 3 variante scurte (cel mult 10 cuvinte), "corect" = indexul variantei corecte (0, 1 sau 2), cu poziția variantei corecte schimbată de la o secțiune la alta, și "explicatie" = o propoziție.
+- "imagine": doar la secțiunile unde o imagine reală ajută (anatomie, histologie, structură, mecanism, semn clinic, investigație): 2–5 cuvinte-cheie în ENGLEZĂ pentru căutare pe Wikimedia Commons, specifice (de ex. "juxtaglomerular apparatus", "renal corpuscle histology", "ECG atrial fibrillation"). La celelalte secțiuni: "". Cel mult 3 secțiuni cu imagine. În modul EXCLUSIV DIN SURSĂ, "imagine" este mereu "".
 - "adaugiri": doar în modul COMBINAT (adăugirile importante și motivul fiecăreia), altfel []. "neacoperit": doar în modul EXCLUSIV DIN SURSĂ, altfel [].
 - "bibliografie": doar în modul MOTOR DE CĂUTARE, altfel []: 2–4 tratate sau ghiduri consacrate, potrivite temei (de ex. Harrison pentru medicină internă, Robbins pentru morfopatologie, Guyton și Hall pentru fiziologie, Netter sau Sobotta pentru anatomie, Katzung sau Goodman și Gilman pentru farmacologie, ghidurile ESC, KDIGO, GOLD sau GINA), cu "pentru" = partea temei pentru care e util. Numai titluri reale și foarte cunoscute; nu inventa ediții, pagini sau numere de capitol.
 - Dacă cererea nu ține de medicină, răspunde doar cu {"in_afara_domeniului": true, "mesaj": "o propoziție"}.`;
@@ -1124,7 +1166,7 @@ function resultToMd(r, keepMarks){
   for (const grp of ["teorie", "practica"]){
     const secs = arr(r.sectiuni).filter(s => s.tip === grp); if (!secs.length) continue;
     L.push(`## ${grp === "teorie" ? "Teorie" : "Practică"}`, "");
-    for (const s of secs){ L.push(`### ${s.titlu}`, "", `**Simplificat.** ${k(s.simplu)}`, "", `**Avansat.**`, "", k(s.avansat), ""); }
+    for (const s of secs){ L.push(`### ${s.titlu}`, "", `**Simplificat.** ${k(s.simplu)}`, "", `**Avansat.**`, "", k(s.avansat), ""); if (s.fulger && s.fulger.intrebare) L.push(`> Întrebare fulger: ${k(s.fulger.intrebare)} Răspuns: ${k(arr(s.fulger.variante)[Number(s.fulger.corect) || 0] || "")}`, ""); }
   }
   if (r.tabel && arr(r.tabel.coloane).length){
     L.push(`## ${r.tabel.titlu || "Tabel"}`, "", "| " + r.tabel.coloane.map(k).join(" | ") + " |", "|" + r.tabel.coloane.map(() => "---").join("|") + "|");
@@ -1365,9 +1407,17 @@ function renderExplain(opts){
   const mmInner = cachedSvg || `<div class="mm-wait">${live && !opts.schemaDone ? "Schema apare imediat ce e scrisă…" : "Se desenează schema…"}</div>`;
   shownCode = code; shownLive = live;
   const secs = arr(r.sectiuni);
-  const secHtml = s => `<article class="sec"><h3>${mdi(s.titlu)}</h3><div class="lv">
+  const TC = ["c1", "c2", "c3"], PC = ["c4", "c5"], fqAns = fqStore(r);
+  const secHtml = (s, n, col) => {
+    const gi = secs.indexOf(s), f = s.fulger;
+    const okF = !live && f && f.intrebare && arr(f.variante).length >= 2;
+    const okImg = !live && s.imagine && String(s.imagine).trim() && m.mode !== "sursa";
+    return `<article class="sec" style="--acc:var(--${col});--acc-soft:var(--${col}-soft)"><h3><span class="sec-n">${n}</span><span>${mdi(s.titlu)}</span></h3><div class="lv">
       <div class="lv-s"><span class="lv-tag">Simplificat</span><div class="prose">${md(s.simplu)}</div></div>
-      <div class="lv-a"><span class="lv-tag">Avansat</span><div class="prose">${md(s.avansat)}</div></div></div></article>`;
+      <div class="lv-a"><span class="lv-tag">Avansat</span><div class="prose">${md(s.avansat)}</div></div></div>
+      ${okImg ? `<figure class="sec-img" data-q="${esc(String(s.imagine).trim())}" data-gi="${gi}"><div class="img-wait">Se caută o imagine pe Wikimedia Commons…</div></figure>` : ""}
+      ${okF ? fqHtml(f, gi, fqAns[gi]) : ""}</article>`;
+  };
   const teorie = secs.filter(s => s.tip !== "practica"), practica = secs.filter(s => s.tip === "practica");
   const t = r.tabel && arr(r.tabel.coloane).length ? r.tabel : null;
   const cz = r.caz_clinic && r.caz_clinic.prezentare ? r.caz_clinic : null;
@@ -1405,8 +1455,8 @@ function renderExplain(opts){
   ${isDdx ? tblHtml : ""}
 
   <div id="exBody" data-level="${state.level}">
-    ${teorie.length ? `<section class="grp teorie"><h2 class="grp-h"><span class="dot"></span>Teorie <small>${teorie.length} secțiuni</small></h2>${teorie.map(secHtml).join("")}</section>` : ""}
-    ${practica.length ? `<section class="grp practica"><h2 class="grp-h"><span class="dot"></span>Practică <small>aplicare clinică</small></h2>${practica.map(secHtml).join("")}</section>` : ""}
+    ${teorie.length ? `<section class="grp teorie"><h2 class="grp-h"><span class="dot"></span>Teorie <small>${teorie.length} secțiuni</small></h2>${teorie.map((s, i) => secHtml(s, i + 1, TC[i % 3])).join("")}</section>` : ""}
+    ${practica.length ? `<section class="grp practica"><h2 class="grp-h"><span class="dot"></span>Practică <small>aplicare clinică</small></h2>${practica.map((s, i) => secHtml(s, teorie.length + i + 1, PC[i % 2])).join("")}</section>` : ""}
   </div>
 
   ${t && !isDdx ? tblHtml : ""}
@@ -1457,6 +1507,7 @@ function renderExplain(opts){
   $("#askIn").addEventListener("keydown", ev => { if (ev.key === "Enter") askFollowup(); });
   if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
   try { linkTerms(p, r.glosar); } catch (e){ console.error(e); }
+  loadSectionImages(p);
   drawSchema();
 }
 
@@ -2057,7 +2108,11 @@ function renderTools(){
     <div class="tool-h"><div><h3>Generator de mnemonice</h3><p class="hint">Scrie lista de memorat sau doar numele ei. Primești acronime și propoziții ușor de reținut.</p></div></div>
     <div class="ask-row"><textarea id="mnIn" rows="2" placeholder="De exemplu: cauzele pancreatitei acute; ramurile arterei carotide externe; efectele adverse ale amiodaronei">${esc(T.mnQ || "")}</textarea><button class="btn primary" type="button" id="mnGo" data-busy>Creează mnemonice</button></div>
     ${T.mn ? mnHtml(T.mn) : ""}
-  </section>`;
+  </section>
+  ${ixSectionHtml()}`;
+  $("#ixFile").onchange = ev => pickIx(ev.target.files && ev.target.files[0]);
+  $("#ixQ").oninput = ev => { T.ixQ = ev.target.value; };
+  $("#ixGo").onclick = genIx;
   $("#hyGo").onclick = genHy;
   $("#mnGo").onclick = genMn;
   $("#mnIn").oninput = ev => { T.mnQ = ev.target.value; };
@@ -2152,6 +2207,153 @@ defBtn.onclick = async () => {
   } catch (e){ showTipAt(rect, term, errCopy(e)); }
 };
 
+
+/* ---------------- întrebări fulger după fiecare secțiune ---------------- */
+const ICON_BOLT = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 14h7l-1.5 8L19 10h-7z"/></svg>';
+const fqMap = new WeakMap();
+function fqStore(r){ if (!fqMap.has(r)) fqMap.set(r, {}); return fqMap.get(r); }
+function fqHtml(f, gi, ans){
+  const c = Math.max(0, Math.min(arr(f.variante).length - 1, Number(f.corect) || 0)), done = ans !== undefined;
+  return `<div class="fq" data-gi="${gi}"><span class="fq-tag">${ICON_BOLT}Întrebare fulger</span><p class="fq-q">${mdi(f.intrebare)}</p>
+    <div class="fq-opts">${arr(f.variante).map((v, k) => `<button type="button" class="fq-o${done && k === c ? " right" : ""}${done && k === ans && k !== c ? " wrong" : ""}" data-k="${k}" ${done ? "disabled" : ""}>${mdi(v)}</button>`).join("")}</div>
+    ${done ? `<p class="fq-x"><b class="${ans === c ? "" : "no"}">${ans === c ? "Corect." : "Nu chiar."}</b> ${mdi(f.explicatie)}</p>` : ""}</div>`;
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest && ev.target.closest(".fq-o");
+  if (!b || b.disabled) return;
+  const card = b.closest(".fq"), gi = +card.dataset.gi, r = state.result;
+  const s = r && arr(r.sectiuni)[gi]; if (!s || !s.fulger) return;
+  fqStore(r)[gi] = +b.dataset.k;
+  card.outerHTML = fqHtml(s.fulger, gi, +b.dataset.k);
+});
+
+/* exemplul are și el întrebări fulger și imagini */
+[
+  { intrebare: "Care este rolul principal al SRAA?", variante: ["Reglarea glicemiei", "Apărarea volemiei și a tensiunii arteriale", "Reglarea temperaturii corporale"], corect: 1, explicatie: "SRAA intervine când perfuzia renală scade și readuce volemia și tensiunea la normal." },
+  { intrebare: "Care dintre acestea NU stimulează eliberarea de renină?", variante: ["Scăderea presiunii în arteriola aferentă", "Stimularea β1-adrenergică", "Creșterea peptidului natriuretic atrial"], corect: 2, explicatie: "Peptidul natriuretic atrial inhibă secreția de renină; ceilalți doi factori o stimulează." },
+  { intrebare: "Ce enzimă transformă angiotensina I în angiotensina II?", variante: ["ECA", "Renina", "ECA2"], corect: 0, explicatie: "ECA (kininaza II), mai ales din endoteliul pulmonar. ECA2 produce angiotensina 1–7." },
+  { intrebare: "Pe ce arteriolă acționează predominant angiotensina II la rinichi?", variante: ["Aferentă", "Eferentă", "Arcuată"], corect: 1, explicatie: "Contracția arteriolei eferente menține presiunea de filtrare și RFG când perfuzia scade." },
+  { intrebare: "Ce face aldosteronul cu potasiul?", variante: ["Crește secreția lui", "Crește reabsorbția lui", "Nu îl influențează"], corect: 0, explicatie: "În tubul colector Na⁺ este reabsorbit, iar K⁺ este secretat, prin ENaC și Na⁺/K⁺-ATPază." },
+  { intrebare: "De ce sartanii nu dau tuse?", variante: ["Blochează direct bradikinina", "Nu inhibă ECA, deci bradikinina nu se acumulează", "Scad mai puțin aldosteronul"], corect: 1, explicatie: "Tusea la IECA vine din bradikinina nedegradată; sartanii acționează pe receptorul AT1." },
+  { intrebare: "Ce profil hormonal are sindromul Conn?", variante: ["Aldosteron crescut, renină scăzută", "Aldosteron crescut, renină crescută", "Aldosteron scăzut, renină crescută"], corect: 0, explicatie: "Aldosteronul în exces expandează volemia și supresează renina." }
+].forEach((f, i) => { if (SAMPLE.result.sectiuni[i]) SAMPLE.result.sectiuni[i].fulger = f; });
+SAMPLE.result.sectiuni[1].imagine = "juxtaglomerular apparatus";
+SAMPLE.result.sectiuni[2].imagine = "renin angiotensin aldosterone system";
+
+/* ---------------- imagini din Wikimedia Commons, cu explicație AI ---------------- */
+const imgCache = new Map(), imgExpCache = new Map();
+function htmlText(h){ try { return new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent.replace(/\s+/g, " ").trim(); } catch { return ""; } }
+function commonsSearch(q){
+  if (imgCache.has(q)) return imgCache.get(q);
+  const pr = (async () => {
+    const url = "https://commons.wikimedia.org/w/api.php?" + new URLSearchParams({
+      action: "query", generator: "search", gsrsearch: q + " filetype:bitmap|drawing", gsrnamespace: "6", gsrlimit: "10",
+      prop: "imageinfo", iiprop: "url|extmetadata|mime", iiurlwidth: "960", iiextmetadatafilter: "Artist|LicenseShortName", format: "json", origin: "*"
+    });
+    const d = await (await fetch(url)).json();
+    const pages = Object.values((d.query && d.query.pages) || {}).sort((a, b) => a.index - b.index);
+    return pages.map(p => {
+      const ii = (p.imageinfo || [])[0] || {}, mt = ii.extmetadata || {};
+      return { title: String(p.title || "").replace(/^File:/, "").replace(/\.[a-z0-9]+$/i, "").replace(/_/g, " "), thumb: ii.thumburl, page: ii.descriptionurl,
+        author: htmlText(mt.Artist && mt.Artist.value).slice(0, 80), license: htmlText(mt.LicenseShortName && mt.LicenseShortName.value), mime: ii.mime || "" };
+    }).filter(x => x.thumb && /^image\/(jpeg|png|svg\+xml|gif|webp)$/.test(x.mime)
+      && !/[-_ (](zh|ja|ko|ru|uk|ar|fa|he|el|bg|sr|th|hi|ka|hy|vi)\)?$/i.test(x.title) && !/[^\u0000-ɏ\s]/.test(x.title)).slice(0, 6);
+  })();
+  imgCache.set(q, pr);
+  pr.catch(() => imgCache.delete(q));
+  return pr;
+}
+function showImgCandidate(fig, k){
+  const list = fig._list, c = list[k];
+  fig.dataset.k = k;
+  fig.innerHTML = `<div class="img-box"><img src="${esc(c.thumb)}" alt="${esc(c.title)}" loading="lazy"></div>
+    <figcaption><b>${esc(c.title)}</b><span>${c.author ? esc(c.author) + " · " : ""}${c.license ? esc(c.license) + " · " : ""}<a href="${esc(c.page)}" target="_blank" rel="noopener">Wikimedia Commons</a>${state.meta && state.meta.mode === "combinat" ? " · imagine din afara sursei" : ""}</span></figcaption>
+    <div class="img-act"><button class="btn sm" type="button" data-img="explain">Explică imaginea</button>${list.length > 1 ? `<button class="btn sm" type="button" data-img="next">Altă imagine (${k + 1}/${list.length})</button>` : ""}</div>
+    <div class="img-exp prose"${imgExpCache.has(c.thumb) ? "" : " hidden"}>${imgExpCache.has(c.thumb) ? md(imgExpCache.get(c.thumb)) : ""}</div>`;
+}
+function loadSectionImages(root){
+  $$(".sec-img", root).forEach(fig => {
+    commonsSearch(fig.dataset.q).then(list => {
+      if (!fig.isConnected) return;
+      if (!list.length){ fig.remove(); return; }
+      fig._list = list; showImgCandidate(fig, 0);
+    }).catch(() => fig.remove());
+  });
+}
+async function explainImg(fig, btn){
+  const c = fig._list[+fig.dataset.k], out = $(".img-exp", fig);
+  out.hidden = false;
+  if (imgExpCache.has(c.thumb)){ out.innerHTML = md(imgExpCache.get(c.thumb)); return; }
+  const r = state.result, sec = r && arr(r.sectiuni)[+fig.closest(".sec-img").dataset.gi];
+  btn.disabled = true;
+  out.innerHTML = `<p class="hint">Se analizează imaginea…</p>`;
+  try {
+    const blob = await (await fetch(c.thumb)).blob();
+    const s = await sampleP;
+    const { text } = await s(`Ești tutore de medicină pentru studenți. Imaginea atașată („${c.title}”, de pe Wikimedia Commons) ilustrează secțiunea „${stripMarks(sec ? sec.titlu : "")}” din tema „${stripMarks(r ? r.titlu : "")}”.
+Explică în limba română ce se vede: structurile și etichetele, ce arată imaginea în legătură cu tema și ce trebuie reținut. 80–160 de cuvinte, markdown simplu (un paragraf scurt și o listă). Dacă etichetele sunt în altă limbă, tradu-le în română. Dacă imaginea nu are legătură cu tema, spune asta într-o propoziție.`, { modelTier: "default", images: [blob], onText: ({ text }) => { out.innerHTML = md(text); } });
+    imgExpCache.set(c.thumb, text);
+    out.innerHTML = md(text);
+  } catch (e){
+    out.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Imaginea nu a putut fi pregătită pentru analiză. Încearcă altă imagine.")}</p>`;
+  } finally { btn.disabled = false; }
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest && ev.target.closest("[data-img]");
+  if (!b) return;
+  const fig = b.closest(".sec-img"); if (!fig || !fig._list) return;
+  if (b.dataset.img === "next") showImgCandidate(fig, (+fig.dataset.k + 1) % fig._list.length);
+  else explainImg(fig, b);
+});
+
+/* ---------------- instrument: explică o imagine încărcată ---------------- */
+async function pickIx(file){
+  if (!file) return;
+  try {
+    const bmp = await createImageBitmap(file);
+    const sc = Math.min(1, Math.sqrt(1600000 / (bmp.width * bmp.height)));
+    const c = document.createElement("canvas"); c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+    const cx = c.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, c.width, c.height); cx.drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.88));
+    const T = state.tools;
+    if (T.ixUrl) URL.revokeObjectURL(T.ixUrl);
+    T.ixBlob = blob; T.ixUrl = URL.createObjectURL(blob); T.ixOut = "";
+    renderTools();
+  } catch { toast("Imaginea nu poate fi citită. Folosește JPG sau PNG."); }
+}
+async function genIx(){
+  const T = state.tools;
+  if (!T.ixBlob){ toast("Alege întâi o imagine"); return; }
+  if (state.busy) return;
+  const q = ($("#ixQ").value || "").trim(); T.ixQ = q;
+  const out = $("#ixOut");
+  setBusy(true, "Analizează imaginea…");
+  try {
+    const { text } = await callClaude(`${ROLE}
+
+Analizează imaginea medicală atașată, în scop educativ, pentru un student la medicină.${q ? ` Întrebarea studentului: ${q}` : ""}${state.result ? ` Tema la care lucrează: „${stripMarks(state.result.titlu)}”.` : ""}
+Răspunde în markdown, 150–300 de cuvinte, cu această structură:
+**Ce tip de imagine este** (de ex. secțiune histologică și colorația probabilă, ECG, radiografie, CT, piesă anatomică, schemă de curs).
+**Ce se vede**: descriere sistematică, în ordinea în care s-ar prezenta la examen.
+**Interpretare**: elementele-cheie și ce sugerează; dacă e un caz clinic, diagnosticul cel mai probabil și 1–2 diferențiale, formulate prudent.
+**De reținut**: 2–4 puncte.
+Dacă imaginea nu e medicală sau nu se poate interpreta, spune asta pe scurt.`, { json: false, tier: "default", images: [T.ixBlob], noCache: true, progress: ({ text }) => { if (out) out.innerHTML = md(text); } });
+    T.ixOut = text; if (out) out.innerHTML = md(text);
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function ixSectionHtml(){
+  const T = state.tools;
+  return `<section class="tool">
+    <div class="tool-h"><div><h3>Explică o imagine</h3><p class="hint">Încarcă o lamă de histologie, un ECG, o radiografie sau o schemă din curs. Primești o descriere sistematică și ce trebuie reținut. Nu încărca imagini cu date care identifică pacienți.</p></div></div>
+    <div class="ask-row">
+      <label class="btn" for="ixFile">${T.ixBlob ? "Schimbă imaginea" : "Alege imaginea"}</label><input type="file" id="ixFile" accept="image/*" hidden>
+      <input id="ixQ" placeholder="Opțional: ce vrei să afli? (de ex. ce țesut este?)" value="${esc(T.ixQ || "")}">
+      <button class="btn primary" type="button" id="ixGo" data-busy ${T.ixBlob ? "" : "disabled"}>Explică imaginea</button>
+    </div>
+    ${T.ixUrl ? `<div class="ix-row"><img class="ix-prev" src="${T.ixUrl}" alt="Imaginea încărcată"><div class="prose ix-out" id="ixOut">${T.ixOut ? md(T.ixOut) : `<p class="hint">Apasă „Explică imaginea”.</p>`}</div></div>` : ""}
+  </section>`;
+}
 
 /* ---------------- tabs & counts ---------------- */
 function selectTab(t){
