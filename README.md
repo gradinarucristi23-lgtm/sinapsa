@@ -1,4 +1,6 @@
-# Sinapsa: tutore medical pentru studenți
+# Ghidul studentului USMF
+
+Tutore medical pentru studenți. Proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”.
 
 Site care explică teme medicale la nivel simplificat și avansat, cu teorie, practică, schemă vizuală, grilă CS/CM și prezentare .pptx. Funcționează din cursul tău (PDF, DOCX, PPTX, TXT, poze) sau ca motor de căutare.
 
