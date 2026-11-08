@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Ghidul studentului USMF, tutore medical neoficial pentru studenți: explicații simplificate și avansate, teorie și practică, schemă, grilă CS/CM și prezentări, din cursul tău sau ca motor de căutare.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23F3F4F9'/%3E%3Cpath d='M3 13c6 0 9 2 12 5 1.6 1.6 1.6 2.4 0 4-3 3-6 5-12 5' fill='none' stroke='%233D379A' stroke-width='3.2' stroke-linecap='round'/%3E%3Cpath d='M37 9c-5 3-8 6.5-8 11s3 8 8 11' fill='none' stroke='%231D1A38' stroke-width='3.2' stroke-linecap='round'/%3E%3Ccircle cx='21' cy='15.5' r='1.9' fill='%23B82B66'/%3E%3Ccircle cx='23.5' cy='20' r='1.9' fill='%23B82B66'/%3E%3Ccircle cx='21' cy='24.5' r='1.9' fill='%23B82B66'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="/favicon.png">
 <title>Ghidul studentului USMF</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,8 +56,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .topbar{border-bottom:1px solid var(--line);background:var(--surface)}
 .topbar-in{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:12px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
-.brand svg{width:34px;height:34px;flex:none}
-.brand b{font-family:var(--f-display);font-weight:800;font-size:23px;letter-spacing:-.02em}
+.brand img{height:48px;width:auto;flex:none}
+.brand-t{display:flex;flex-direction:column;line-height:1.15}
+.brand-t small{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.02em}
 .tagline{color:var(--ink-2);font-size:13.5px;flex:1 1 260px;min-width:0}
 .top-meta{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
 
@@ -355,15 +357,10 @@ footer .wrap{padding-block:16px 26px}
 <header class="topbar">
   <div class="wrap topbar-in">
     <span class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M3 13c6 0 9 2 12 5 1.6 1.6 1.6 2.4 0 4-3 3-6 5-12 5" fill="none" stroke="var(--hema)" stroke-width="3.2" stroke-linecap="round"/>
-        <path d="M37 9c-5 3-8 6.5-8 11s3 8 8 11" fill="none" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round"/>
-        <circle cx="21" cy="15.5" r="1.9" fill="var(--eosin)"/><circle cx="23.5" cy="20" r="1.9" fill="var(--eosin)"/><circle cx="21" cy="24.5" r="1.9" fill="var(--eosin)"/>
-      </svg>
-      <b>Ghidul studentului USMF</b>
+      <img src="/usmf-emblema.png" alt="Emblema USMF" width="161" height="234">
+      <span class="brand-t"><b>Ghidul studentului USMF</b><small>Proiect studențesc neoficial</small></span>
     </span>
     <span class="tagline">Tutorele tău de medicină: explică teme din cursul tău sau ca un motor de căutare, cu schemă, grilă și prezentare.</span>
-    <span class="top-meta">Proiect studențesc neoficial</span>
   </div>
 </header>
 
