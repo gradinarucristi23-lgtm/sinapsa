@@ -177,6 +177,8 @@ select{border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;backgro
 .badge.m-sursa{border-color:var(--hema);color:var(--hema)}
 .badge.m-combinat{border-color:var(--eosin);color:var(--eosin)}
 .badge.sample{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.badge.live{background:var(--hema-soft);border-color:transparent;color:var(--hema);gap:6px}
+.badge.live .pulse{width:7px;height:7px}
 .ex-head h1{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,3.4vw,38px);line-height:1.08;letter-spacing:-.025em;margin:0;text-wrap:balance}
 .lede{font-family:var(--f-read);font-size:18px;line-height:1.55;margin:0;max-width:68ch;color:var(--ink)}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2);align-items:center}
@@ -433,8 +435,7 @@ footer .wrap{padding-block:16px 26px}
         <div class="field"><span class="label">Disciplina</span><select id="disc"></select></div>
         <div class="field"><span class="label">Profunzime</span>
           <select id="depth">
-            <option value="quick">Rapid</option>
-            <option value="default" selected>Standard</option>
+            <option value="default" selected>Standard (rapid)</option>
             <option value="complex">Aprofundat (mai lent)</option>
           </select></div>
         <span class="grow"></span>
@@ -1097,8 +1098,22 @@ async function generate({ regen = false } = {}){
   }
   showNotice("");
   setBusy(true, "Se gândește…");
+  selectTab("explicatie");
+  const liveMeta = { mode: req.mode, query: req.query, sample: false, sources: req.ctx.ids || [] };
+  let lastDraw = 0, shownPartial = false;
+  const onText = u => {
+    explainProgress(u);
+    const now = Date.now();
+    if (now - lastDraw < 300) return;
+    lastDraw = now;
+    const part = partialJSON(u.text);
+    if (!part || part.in_afara_domeniului || !(part.titlu || part.rezumat)) return;
+    const ks = Object.keys(part), si = ks.indexOf("schema");
+    renderExplain({ partial: part, meta: liveMeta, schemaDone: si >= 0 && si < ks.length - 1 });
+    shownPartial = true;
+  };
   try {
-    const r = await callClaude(explainPrompt(req.ctx, req.query, req.disc), { tier: req.tier, images: req.ctx.images, noCache: regen, progress: explainProgress });
+    const r = await callClaude(explainPrompt(req.ctx, req.query, req.disc), { tier: req.tier, images: req.ctx.images, noCache: regen, progress: onText });
     if (!r || typeof r !== "object") throw { code: "invalid_json" };
     if (r.in_afara_domeniului){ renderOutOfScope(r.mesaj); return; }
     if (!Array.isArray(r.sectiuni) || !r.sectiuni.length) throw { code: "invalid_json" };
@@ -1114,11 +1129,42 @@ async function generate({ regen = false } = {}){
     if (req.intent === "examen") await genQuiz();
     else if (req.intent === "prezentare") await genSlides();
   } catch (e){
+    if (shownPartial) renderExplain();
     if (e && e.code === "cancelled") showNotice("");
     else showNotice(errCopy(e), "err");
   } finally { setBusy(false); }
 }
 $("#go").onclick = () => generate();
+
+/* Citește un JSON încă incomplet (pe măsură ce se scrie) și îl închide ca să poată fi afișat. */
+function partialJSON(text){
+  const start = text.indexOf("{"); if (start < 0) return null;
+  const s = text.slice(start);
+  const stack = [], snaps = [];
+  let inStr = false, esc = false;
+  for (let i = 0; i < s.length; i++){
+    const c = s[i];
+    if (inStr){
+      if (esc) esc = false;
+      else if (c === "\\") esc = true;
+      else if (c === '"'){ inStr = false; snaps.push([i + 1, stack.join("")]); }
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === "{" || c === "[") stack.push(c);
+    else if (c === "}" || c === "]"){ stack.pop(); snaps.push([i + 1, stack.join("")]); if (!stack.length) break; }
+  }
+  const close = st => st.split("").reverse().map(ch => ch === "{" ? "}" : "]").join("");
+  if (inStr){
+    let t = esc ? s.slice(0, -1) : s;
+    t = t.replace(/\\u[0-9a-fA-F]{0,3}$/, "");
+    try { return JSON.parse(t + '"' + close(stack.join(""))); } catch {}
+  }
+  for (let k = snaps.length - 1, n = 0; k >= 0 && n < 40; k--, n++){
+    try { return JSON.parse(s.slice(0, snaps[k][0]) + close(snaps[k][1])); } catch {}
+  }
+  return null;
+}
 $("#q").addEventListener("keydown", ev => { if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) generate(); });
 
 function renderOutOfScope(msg){
@@ -1156,20 +1202,32 @@ function renderMermaid(code, vars, htmlLabels){
   mmQueue = job.catch(() => {});
   return job;
 }
-async function drawSchema(){
-  const box = $("#mm"); if (!box) return;
-  const r = state.result; const code = r && r.schema && r.schema.mermaid;
+const mmCache = { key: "", svg: "" };
+let mmDrawing = "", shownCode = "", shownLive = false;
+function mmKey(code){ return code + "|" + cssVar("--ink"); }
+async function drawSchema(live){
+  const r = live || state.result; const code = r && r.schema && r.schema.mermaid;
   const fix = $("#fixMm");
-  if (!code){ box.innerHTML = `<div class="mm-wait">Schema lipsește din răspuns.</div>`; if (fix) fix.hidden = false; return; }
+  if (!code){
+    if (!live){ const box = $("#mm"); if (box) box.innerHTML = `<div class="mm-wait">Schema lipsește din răspuns.</div>`; if (fix) fix.hidden = false; }
+    return;
+  }
+  const key = mmKey(code);
+  if (mmCache.key === key){ const box = $("#mm"); if (box && shownCode === code) box.innerHTML = mmCache.svg; if (fix) fix.hidden = true; return; }
+  if (mmDrawing === key) return;
+  mmDrawing = key;
   try {
     const svg = await renderMermaid(code, screenVars(), true);
-    if (state.result !== r) return;
-    box.innerHTML = svg; if (fix) fix.hidden = true;
+    mmCache.key = key; mmCache.svg = svg;
+    const box = $("#mm");
+    if (box && shownCode === code){ box.innerHTML = svg; const f = $("#fixMm"); if (f) f.hidden = true; }
   } catch (e){
-    if (state.result !== r) return;
-    box.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px;max-width:100%"><span class="mm-wait">Schema nu a putut fi desenată. Apasă „Redesenează schema”.</span><pre>${esc(code)}</pre></div>`;
-    if (fix){ fix.hidden = false; fix.dataset.err = String((e && e.message) || e).slice(0, 400); }
-  }
+    const box = $("#mm");
+    if (!shownLive && box && shownCode === code){
+      box.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px;max-width:100%"><span class="mm-wait">Schema nu a putut fi desenată. Apasă „Redesenează schema”.</span><pre>${esc(code)}</pre></div>`;
+      const f = $("#fixMm"); if (f){ f.hidden = false; f.dataset.err = String((e && e.message) || e).slice(0, 400); }
+    }
+  } finally { if (mmDrawing === key) mmDrawing = ""; }
 }
 async function getExportSvg(){
   const r = state.result; const code = r && r.schema && r.schema.mermaid;
@@ -1190,7 +1248,7 @@ Răspunde doar cu codul diagramei, fără explicații și fără blocuri de cod.
     const { text } = await callClaude(prompt, { json: false, tier: "default", noCache: true });
     r.schema = Object.assign({}, r.schema || { titlu: "Schemă", cum_se_citeste: "" }, { mermaid: cleanMermaid(text) });
     state.exportSvg = null; state.exportFor = null;
-    saveHistory(); await drawSchema();
+    saveHistory(); renderExplain();
   } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
   finally { setBusy(false); }
 }
@@ -1200,10 +1258,15 @@ try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onTh
 new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
 /* ---------------- render: explanation ---------------- */
-function renderExplain(){
-  const r = state.result, m = state.meta || {};
+function renderExplain(opts){
+  const live = !!(opts && opts.partial);
+  const r = live ? opts.partial : state.result, m = (live ? opts.meta : state.meta) || {};
   const p = $("#p-explicatie");
   if (!r){ p.innerHTML = `<div class="placeholder"><h3>Nicio explicație încă</h3><p>Scrie o temă sau adaugă un curs, apoi apasă Explică.</p></div>`; return; }
+  const code = (live && !opts.schemaDone) ? "" : ((r.schema && r.schema.mermaid) || "");
+  const cachedSvg = code && mmCache.key === mmKey(code) ? mmCache.svg : "";
+  const mmInner = cachedSvg || `<div class="mm-wait">${live && !opts.schemaDone ? "Schema apare imediat ce e scrisă…" : "Se desenează schema…"}</div>`;
+  shownCode = code; shownLive = live;
   const secs = arr(r.sectiuni);
   const secHtml = s => `<article class="sec"><h3>${mdi(s.titlu)}</h3><div class="lv">
       <div class="lv-s"><span class="lv-tag">Simplificat</span><div class="prose">${md(s.simplu)}</div></div>
@@ -1215,7 +1278,8 @@ function renderExplain(){
   <div class="ex-head">
     <div class="eyebrow"><span>${esc(r.disciplina || "Medicină")}</span>
       <span class="badge m-${m.mode}">${MODE_LABEL[m.mode] || ""}</span>
-      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}</div>
+      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}
+      ${live ? `<span class="badge live"><span class="pulse"></span>Se scrie…</span>` : ""}</div>
     <h1>${mdi(r.titlu)}</h1>
     <p class="lede">${mdi(r.rezumat)}</p>
     ${m.mode !== "general" ? `<div class="legend"><span><span class="ref">S1 p.4</span> trimitere la sursă</span>${m.mode === "combinat" ? `<span><mark class="add">text marcat</mark> adăugat din afara sursei, ca să simplifice</span>` : ""}${arr(m.sources).length ? `<span>Surse: ${esc(m.sources.join(", "))}</span>` : ""}</div>` : ""}
@@ -1226,16 +1290,16 @@ function renderExplain(){
         <button type="button" data-lv="ambele" aria-pressed="${state.level === "ambele"}">Ambele</button>
       </div>
       <span class="grow"></span>
-      ${!m.sample && state.lastReq && state.ctxHist === state.histId ? `<button class="btn sm" type="button" id="regen" data-busy>Regenerează</button>` : ""}
+      ${live ? "" : `${!m.sample && state.lastReq && state.ctxHist === state.histId ? `<button class="btn sm" type="button" id="regen" data-busy>Regenerează</button>` : ""}
       <button class="btn sm" type="button" id="copyMd">Copiază</button>
-      <button class="btn sm dl" type="button" id="dlMd">Descarcă .md</button>
+      <button class="btn sm dl" type="button" id="dlMd">Descarcă .md</button>`}
     </div>
   </div>
 
   <figure class="schema">
     <div class="fig-h"><div><span class="label">Explicație vizuală</span><h2>${mdi((r.schema && r.schema.titlu) || "Schemă")}</h2></div>
       <div class="fig-act"><button class="btn sm" type="button" id="zoomMm">Mărește</button><button class="btn sm" type="button" id="fixMm" data-busy hidden>Redesenează schema</button></div></div>
-    <div class="mm" id="mm"><div class="mm-wait">Se desenează schema…</div></div>
+    <div class="mm" id="mm">${mmInner}</div>
     ${r.schema && r.schema.cum_se_citeste ? `<p class="fig-read">${mdi(r.schema.cum_se_citeste)}</p>` : ""}
   </figure>
 
@@ -1259,7 +1323,7 @@ function renderExplain(){
   ${m.mode === "combinat" && arr(r.adaugiri).length ? `<section class="block"><div class="card adds"><h4>Ce am adăugat din afara sursei și de ce</h4><ul>${r.adaugiri.map(a => `<li>${mdi(a.continut)}<span>${mdi(a.motiv)}</span></li>`).join("")}</ul></div></section>` : ""}
   ${m.mode === "sursa" && arr(r.neacoperit).length ? `<section class="block"><div class="card gaps"><h4>Ce nu acoperă sursa</h4><ul>${r.neacoperit.map(a => `<li>${mdi(a)}</li>`).join("")}</ul><p class="hint" style="margin-top:8px">Trece pe modul Combinat dacă vrei ca aceste goluri să fie explicate, marcat separat.</p></div></section>` : ""}
 
-  <div class="next">
+  ${live ? `<p class="hint" style="margin-top:24px">Explicația se scrie în continuare…</p>` : `<div class="next">
     <button class="btn" type="button" id="toQuiz">Fă un quiz din tema asta</button>
     <button class="btn" type="button" id="toSlides">Fă o prezentare</button>
   </div>
@@ -1268,12 +1332,13 @@ function renderExplain(){
     <span class="label">Nu e clar ceva?</span>
     <div class="ask-row"><input id="askIn" placeholder="Întreabă despre această temă: de ce…, care e diferența dintre…" aria-label="Întrebare suplimentară"><button class="btn" type="button" id="askGo" data-busy>Întreabă</button></div>
     <div class="ask-out prose" id="askOut" hidden></div>
-  </section>`;
+  </section>`}`;
 
   $$(".seg button", p).forEach(b => b.onclick = () => {
     state.level = b.dataset.lv; $("#exBody").dataset.level = state.level;
     $$(".seg button", p).forEach(x => x.setAttribute("aria-pressed", String(x === b)));
   });
+  if (live){ if (code && !cachedSvg) drawSchema(r); return; }
   $("#regen") && ($("#regen").onclick = () => generate({ regen: true }));
   $("#copyMd").onclick = () => copyText(resultToMd(state.result));
   $("#dlMd").onclick = () => saveFile(slug(r.titlu) + ".md", resultToMd(state.result));

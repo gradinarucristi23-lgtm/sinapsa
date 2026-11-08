@@ -28,8 +28,9 @@ def _models(env, default):
 # Daca un model nu exista sau si-a atins limita gratuita, se incearca urmatorul din lista.
 MODELS = {
     "quick": _models("MODELS_QUICK", "gemini-flash-lite-latest,gemini-2.5-flash-lite,gemini-flash-latest,gemini-2.5-flash"),
-    "default": _models("MODELS_DEFAULT", "gemini-flash-latest,gemini-2.5-flash,gemini-flash-lite-latest,gemini-2.5-flash-lite"),
-    "complex": _models("MODELS_COMPLEX", "gemini-2.5-pro,gemini-flash-latest,gemini-2.5-flash,gemini-flash-lite-latest"),
+    # Standard = modelul rapid (Flash Lite); Aprofundat = modelul mare (Flash), mai lent.
+    "default": _models("MODELS_DEFAULT", "gemini-flash-lite-latest,gemini-2.5-flash-lite,gemini-flash-latest,gemini-2.5-flash"),
+    "complex": _models("MODELS_COMPLEX", "gemini-flash-latest,gemini-2.5-pro,gemini-2.5-flash,gemini-flash-lite-latest"),
 }
 
 SAFETY = [
