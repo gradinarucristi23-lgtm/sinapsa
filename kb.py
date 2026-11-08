@@ -61,7 +61,8 @@ class KB:
     def _connect(self):
         if self.kind == "postgres":
             import psycopg
-            return psycopg.connect(DB_URL, autocommit=True, connect_timeout=15)
+            # prepare_threshold=None: compatibil cu conexiunea „pooled” (PgBouncer) de la Neon
+            return psycopg.connect(DB_URL, autocommit=True, connect_timeout=15, prepare_threshold=None)
         c = sqlite3.connect(SQLITE_PATH, check_same_thread=False)
         c.isolation_level = None
         return c
