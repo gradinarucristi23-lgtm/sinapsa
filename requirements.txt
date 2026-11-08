@@ -1,0 +1,1 @@
+# Serverul foloseste doar biblioteca standard Python; nu sunt pachete de instalat.
