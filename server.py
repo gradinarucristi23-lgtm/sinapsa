@@ -121,7 +121,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.startswith("/api/health"):
-            self.send_json(200, {"ok": True, "key": bool(KEY), "kb": KBASE.status()})
+            self.send_json(200, {"ok": True, "key": bool(KEY), "kb": KBASE.status(), "commit": os.environ.get("RENDER_GIT_COMMIT", "")[:7], "db_var": bool(os.environ.get("DATABASE_URL", "").strip())})
             return
         if self.path.startswith("/api/kb/"):
             self.handle_kb_get()
