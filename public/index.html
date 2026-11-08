@@ -555,6 +555,26 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 /* biblioteca comună */
 #kbPanel .vis-in{min-width:0}
 .notice.kb-hit{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--hema-soft);border-color:color-mix(in srgb,var(--hema) 35%,transparent)}
+
+/* conturi */
+.acct-btn{margin-left:0}
+.acct-btn.on{border-color:var(--hema);color:var(--hema)}
+.acct-ov{position:fixed;inset:0;z-index:70;background:rgba(10,9,20,.55);display:grid;place-items:center;padding:16px}
+.acct-box{position:relative;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);width:min(440px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:22px 22px 18px;display:flex;flex-direction:column;gap:10px}
+.acct-box h2{margin:0;font-family:var(--f-display);font-size:22px;letter-spacing:-.01em}
+.acct-box p{margin:0;font-size:14.5px;line-height:1.5}
+.ac-x{position:absolute;top:10px;right:10px}
+.ac-form{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.ac-form label{font-size:13px;font-weight:600;margin-top:6px}
+.ac-form input{border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;background:var(--surface);font-size:15px}
+.ac-form input:focus{border-color:var(--hema);outline:none;box-shadow:0 0 0 3px var(--hema-soft)}
+.ac-form .btn{margin-top:10px;justify-content:center}
+.ac-err{color:var(--bad);font-size:13.5px;background:var(--bad-soft);border-radius:8px;padding:8px 10px}
+.ac-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.rec-code{font-family:var(--f-mono);font-size:22px;letter-spacing:.08em;text-align:center;padding:14px;border:1.5px dashed var(--hema);border-radius:12px;background:var(--hema-soft);user-select:all;overflow-wrap:anywhere}
+.ac-more summary{cursor:pointer;font-size:13.5px;color:var(--ink-2);margin-top:4px}
+.ac-more .row{margin:8px 0 6px}
+.btn.danger{border-color:color-mix(in srgb,var(--bad) 50%,var(--line-2));color:var(--bad)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -568,6 +588,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
     </span>
     <span class="tagline">Tutorele tău de medicină: explică teme din cursul tău sau ca un motor de căutare, cu schemă, grilă și prezentare.</span>
     <button class="theme-btn" id="themeBtn" type="button"></button>
+    <button class="theme-btn acct-btn" id="acctBtn" type="button"></button>
   </div>
 </header>
 
@@ -2751,12 +2772,13 @@ const LEVELS = {
   dificil: { nume: "Dificil", desc: "Aplicare: mini-cazuri clinice, excepții, valori și detalii fine, raționament în mai mulți pași. Distractori foarte apropiați de varianta corectă." }
 };
 let BANKS = loadBanks();
+BANKS.del = BANKS.del || { banks: {}, questions: {} };
 function loadBanks(){
   try { const d = JSON.parse(localStorage.getItem(BKEY) || "null"); if (d && Array.isArray(d.banks)) return d; } catch {}
   return { banks: [], current: null };
 }
 function saveBanks(){
-  try { localStorage.setItem(BKEY, JSON.stringify(BANKS)); try { updateCounts(); } catch {} return true; }
+  try { localStorage.setItem(BKEY, JSON.stringify(BANKS)); try { updateCounts(); } catch {} try { schedulePush("banks"); } catch {} return true; }
   catch { toast("Nu mai e spațiu în browser pentru bancă. Exportă banca în .json și șterge una mai veche."); return false; }
 }
 function curBank(){
@@ -3139,7 +3161,7 @@ function renderBank(){
   $("#bkNew").onclick = () => { const nm = $("#bkName").value.trim(); newBank(nm); state.bk.msg = `Am creat banca „${curBank().name}”. Adaugă întrebările mai jos.`; state.bk.runner = null; renderBank(); };
   $("#bkDel") && ($("#bkDel").onclick = () => {
     if (!confirm(`Ștergi banca „${b.name}” cu ${b.questions.length} întrebări? Nu se poate anula.`)) return;
-    BANKS.banks = BANKS.banks.filter(x => x.id !== b.id); BANKS.current = BANKS.banks[0] ? BANKS.banks[0].id : null; saveBanks(); state.bk.runner = null; state.bk.msg = "Banca a fost ștearsă."; renderBank();
+    BANKS.del.banks[b.id] = Date.now(); BANKS.banks = BANKS.banks.filter(x => x.id !== b.id); BANKS.current = BANKS.banks[0] ? BANKS.banks[0].id : null; saveBanks(); state.bk.runner = null; state.bk.msg = "Banca a fost ștearsă."; renderBank();
   });
   $("#bkExport") && ($("#bkExport").onclick = () => saveFile(slug("banca " + b.name) + ".json", JSON.stringify({ app: "Ghidul studentului USMF", name: b.name, questions: b.questions }, null, 1)));
   $("#bkFile").onchange = ev => { const f = Array.from(ev.target.files || []); $("#bkFileName").textContent = f.map(x => x.name).join(", "); };
@@ -3148,7 +3170,7 @@ function renderBank(){
   $("#bkRate") && ($("#bkRate").onclick = rateLevels);
   $("#bkList") && ($("#bkList").onclick = () => { state.bk.showList = !state.bk.showList; renderBank(); });
   $("#bkSearch") && ($("#bkSearch").oninput = ev => { state.bk.search = ev.target.value; clearTimeout(renderBank._t); renderBank._t = setTimeout(() => { renderBank(); const s = $("#bkSearch"); if (s){ s.focus(); s.setSelectionRange(s.value.length, s.value.length); } }, 250); });
-  $$("[data-delq]", p).forEach(x => x.onclick = () => { b.questions = b.questions.filter(q => q.id !== x.dataset.delq); saveBanks(); renderBank(); });
+  $$("[data-delq]", p).forEach(x => x.onclick = () => { BANKS.del.questions[x.dataset.delq] = Date.now(); b.questions = b.questions.filter(q => q.id !== x.dataset.delq); saveBanks(); renderBank(); });
   if ($("#bkTip")){
     $("#bkTip").value = P.tip; $("#bkNivel").value = P.nivel; $("#bkGenTip").value = P.genTip;
     $("#bkN").onchange = ev => { P.n = ev.target.value; };
@@ -3287,7 +3309,7 @@ function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); renderFlash
 /* ---------------- history (this browser only) ---------------- */
 const HKEY = "sinapsa.hist.v1";
 function readHist(){ try { return JSON.parse(localStorage.getItem(HKEY) || "[]") || []; } catch { return []; } }
-function writeHist(h){ try { localStorage.setItem(HKEY, JSON.stringify(h)); } catch { try { localStorage.setItem(HKEY, JSON.stringify(h.slice(0, 5))); } catch {} } }
+function writeHist(h){ try { localStorage.setItem(HKEY, JSON.stringify(h)); } catch { try { localStorage.setItem(HKEY, JSON.stringify(h.slice(0, 5))); } catch {} } try { schedulePush("hist"); } catch {} }
 function saveHistory(){
   if (!state.result || (state.meta && state.meta.sample)) return;
   const h = readHist();
@@ -3304,7 +3326,7 @@ function renderHist(){
 }
 $("#hist").addEventListener("click", ev => {
   const del = ev.target.closest("[data-del]");
-  if (del){ writeHist(readHist().filter(x => x.id !== del.dataset.del)); renderHist(); return; }
+  if (del){ tombHist(del.dataset.del); writeHist(readHist().filter(x => x.id !== del.dataset.del)); renderHist(); return; }
   const b = ev.target.closest(".h-open"); if (!b || state.busy) return;
   const x = readHist().find(e => e.id === b.dataset.id); if (!x) return;
   state.result = x.result; state.meta = x.meta; state.histId = x.id;
@@ -3340,6 +3362,189 @@ $("#themeBtn").onclick = () => {
 };
 try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintThemeBtn); } catch {}
 paintThemeBtn();
+
+/* ---------------- CONTURI ȘI SINCRONIZARE ---------------- */
+const SYNC = { enabled: false, reason: "", user: null, last: 0, lastPull: 0, timers: {}, msg: "", pulling: false, view: "login", recovery: "", error: "" };
+const HDEL = "ghid.hist.del";
+function trimTomb(d){ return Object.fromEntries(Object.entries(d || {}).sort((a, b) => b[1] - a[1]).slice(0, 500)); }
+function readHistDel(){ try { return JSON.parse(localStorage.getItem(HDEL) || "{}") || {}; } catch { return {}; } }
+function writeHistDel(d){ try { localStorage.setItem(HDEL, JSON.stringify(trimTomb(d))); } catch {} }
+function tombHist(id){ const d = readHistDel(); d[id] = Date.now(); writeHistDel(d); }
+const entryWeight = x => arr(x.quiz).length + arr(x.slides).length + arr(x.flash).length + (x.caz ? 1 : 0);
+function mergeHist(localItems, localDel, remote){
+  const del = Object.assign({}, (remote && remote.del) || {}, localDel || {});
+  const map = new Map();
+  for (const x of [...arr(remote && remote.items), ...arr(localItems)]){
+    if (!x || !x.id || del[x.id]) continue;
+    const prev = map.get(x.id);
+    if (!prev || entryWeight(x) >= entryWeight(prev)) map.set(x.id, x);
+  }
+  const items = [...map.values()].sort((a, b) => ((b.meta && b.meta.date) || 0) - ((a.meta && a.meta.date) || 0)).slice(0, 15);
+  return { items, del: trimTomb(del) };
+}
+function mergeBanks(local, remote){
+  const ld = (local && local.del) || {}, rd = (remote && remote.del) || {};
+  const del = { banks: Object.assign({}, rd.banks, ld.banks), questions: Object.assign({}, rd.questions, ld.questions) };
+  const byId = new Map();
+  for (const b of [...arr(remote && remote.banks), ...arr(local && local.banks)]){
+    if (!b || !b.id || del.banks[b.id]) continue;
+    const cur = byId.get(b.id);
+    const qs = arr(b.questions).filter(q => q && q.id && !del.questions[q.id]);
+    if (!cur){ byId.set(b.id, Object.assign({}, b, { questions: qs })); continue; }
+    const qmap = new Map(cur.questions.map(q => [q.id, q]));
+    for (const q of qs){
+      const p = qmap.get(q.id);
+      if (!p || ((q.stats && q.stats.seen) || 0) >= ((p.stats && p.stats.seen) || 0)) qmap.set(q.id, q);
+    }
+    cur.questions = [...qmap.values()];
+    if (b.name) cur.name = b.name;
+  }
+  const banks = [...byId.values()].sort((a, b) => (a.created || 0) - (b.created || 0));
+  const current = local && local.current && byId.has(local.current) ? local.current : (banks[0] ? banks[0].id : null);
+  return { banks, current, del: { banks: trimTomb(del.banks), questions: trimTomb(del.questions) } };
+}
+async function api(path, opts){
+  const r = await fetch(path, Object.assign({ credentials: "same-origin" }, opts || {}));
+  let d = {}; try { d = await r.json(); } catch {}
+  if (!r.ok) throw Object.assign(new Error(d.message || ("HTTP " + r.status)), { status: r.status, data: d });
+  return d;
+}
+const postJSON = (path, body) => api(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+
+async function acctInit(){
+  try { const d = await api("/api/auth/me"); SYNC.enabled = !!d.enabled; SYNC.reason = d.reason || ""; SYNC.user = d.user || null; } catch {}
+  paintAcct();
+  if (SYNC.user) syncPull();
+}
+async function syncPull(){
+  if (!SYNC.user || SYNC.pulling) return;
+  SYNC.pulling = true; SYNC.msg = "Se sincronizează…"; paintAcct();
+  try {
+    const d = await api("/api/sync");
+    const docs = d.docs || {};
+    const rh = docs.hist ? JSON.parse(docs.hist.data) : null;
+    const mh = mergeHist(readHist(), readHistDel(), rh);
+    writeHist(mh.items); writeHistDel(mh.del);
+    const rb = docs.banks ? JSON.parse(docs.banks.data) : null;
+    BANKS = mergeBanks(BANKS, rb); saveBanks();
+    renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
+    SYNC.pulling = false; SYNC.lastPull = Date.now();
+    await syncPush("hist"); await syncPush("banks");
+  } catch (e){
+    if (e.status === 401){ SYNC.user = null; }
+    SYNC.msg = e.status === 401 ? "Sesiunea a expirat. Intră din nou în cont." : "Sincronizarea a eșuat. Încearcă din nou.";
+  } finally { SYNC.pulling = false; paintAcct(); }
+}
+function schedulePush(key){
+  if (!SYNC.user || SYNC.pulling) return;
+  clearTimeout(SYNC.timers[key]);
+  SYNC.timers[key] = setTimeout(() => syncPush(key), 2500);
+}
+async function syncPush(key){
+  if (!SYNC.user) return;
+  const data = key === "hist" ? JSON.stringify({ items: readHist(), del: readHistDel() }) : JSON.stringify(BANKS);
+  try {
+    await api("/api/sync/" + key, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ data }) });
+    SYNC.last = Date.now(); SYNC.msg = "";
+  } catch (e){
+    if (e.status === 401) SYNC.user = null;
+    SYNC.msg = e.status === 401 ? "Sesiunea a expirat. Intră din nou în cont." : (e.data && e.data.message) || "Fără conexiune: datele se trimit la următoarea modificare.";
+  }
+  paintAcct();
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && SYNC.user && Date.now() - SYNC.lastPull > 60000) syncPull(); });
+
+/* ---- interfață ---- */
+const ICON_USER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.1-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg>';
+const acctOv = document.createElement("div"); acctOv.className = "acct-ov"; acctOv.hidden = true; document.body.appendChild(acctOv);
+function ago(t){ const s = Math.round((Date.now() - t) / 1000); return s < 60 ? "acum câteva secunde" : s < 3600 ? `acum ${Math.round(s / 60)} min` : `acum ${Math.round(s / 3600)} h`; }
+function paintAcct(){
+  const b = $("#acctBtn");
+  b.innerHTML = ICON_USER + `<span>${SYNC.user ? esc(SYNC.user.username) : "Intră în cont"}</span>`;
+  b.classList.toggle("on", !!SYNC.user);
+  b.setAttribute("aria-label", SYNC.user ? `Contul ${SYNC.user.username}` : "Intră în cont");
+  if (!acctOv.hidden) renderAcct();
+}
+function openAcct(){ SYNC.error = ""; acctOv.hidden = false; renderAcct(); setTimeout(() => { const f = acctOv.querySelector("input"); if (f) f.focus(); }, 30); }
+function closeAcct(){ acctOv.hidden = true; SYNC.recovery = ""; }
+function renderAcct(){
+  let body;
+  if (!SYNC.enabled){
+    body = `<h2>Conturi</h2><p>Conturile nu sunt pornite încă: ${esc(SYNC.reason || "serverul nu le are configurate")}.</p><p class="hint">Până atunci, istoricul și băncile de grile rămân salvate în acest browser.</p>`;
+  } else if (SYNC.recovery){
+    body = `<h2>Păstrează codul de recuperare</h2>
+      <p>E singura cale de a-ți schimba parola dacă o uiți (contul nu folosește email). Notează-l sau fă-i o captură de ecran.</p>
+      <div class="rec-code">${esc(SYNC.recovery)}</div>
+      <div class="row"><button class="btn sm" type="button" id="recCopy">Copiază codul</button><span class="grow"></span><button class="btn primary" type="button" id="recDone">L-am salvat</button></div>`;
+  } else if (SYNC.user){
+    body = `<h2>Contul tău</h2>
+      <p>Ești conectat ca <b>${esc(SYNC.user.username)}</b>. Istoricul, băncile de grile și greșelile tale se sincronizează pe toate dispozitivele unde intri în cont.</p>
+      <p class="hint">${SYNC.msg ? esc(SYNC.msg) : SYNC.last ? "Sincronizat " + ago(SYNC.last) + "." : "Încă nesincronizat."}</p>
+      <div class="row"><button class="btn sm" type="button" id="acSync">Sincronizează acum</button><button class="btn sm" type="button" id="acOut">Ieși din cont</button></div>
+      <details class="ac-more"><summary>Mai multe opțiuni</summary>
+        <div class="row"><button class="btn sm" type="button" id="acOutClear">Ieși și șterge datele de pe acest dispozitiv</button><button class="btn sm danger" type="button" id="acDel">Șterge contul</button></div>
+        <p class="hint">„Șterge contul” elimină definitiv contul și datele sincronizate de pe server. Datele din acest browser rămân.</p>
+      </details>`;
+  } else {
+    const v = SYNC.view;
+    body = `<h2>${v === "register" ? "Cont nou" : v === "recover" ? "Am uitat parola" : "Intră în cont"}</h2>
+      <p class="hint">${v === "register" ? "Fără email: alegi un nume de utilizator și o parolă. Datele pe care le ai deja în acest browser se adaugă în cont." : v === "recover" ? "Folosește codul de recuperare primit la crearea contului." : "Istoricul, băncile de grile și greșelile tale, pe orice dispozitiv."}</p>
+      <form id="acForm" class="ac-form" novalidate>
+        <label for="acUser">Nume de utilizator</label>
+        <input id="acUser" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="de ex. ion.popescu">
+        ${v === "recover" ? `<label for="acCode">Cod de recuperare</label><input id="acCode" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" required>` : ""}
+        <label for="acPass">${v === "recover" ? "Parola nouă" : "Parola"}</label>
+        <input id="acPass" type="password" autocomplete="${v === "login" ? "current-password" : "new-password"}" required minlength="8" placeholder="${v === "login" ? "" : "cel puțin 8 caractere"}">
+        ${SYNC.error ? `<p class="ac-err" role="alert">${esc(SYNC.error)}</p>` : ""}
+        <button class="btn primary" type="submit" id="acSubmit">${v === "register" ? "Creează contul" : v === "recover" ? "Schimbă parola" : "Intră"}</button>
+      </form>
+      <div class="ac-links">
+        ${v !== "login" ? `<button class="linkbtn" type="button" data-view="login">Am deja cont</button>` : `<button class="linkbtn" type="button" data-view="register">Nu ai cont? Creează unul</button>`}
+        ${v !== "recover" ? `<button class="linkbtn" type="button" data-view="recover">Am uitat parola</button>` : ""}
+      </div>`;
+  }
+  acctOv.innerHTML = `<div class="acct-box" role="dialog" aria-modal="true" aria-label="Cont"><button class="icon-btn ac-x" type="button" id="acClose" aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>${body}</div>`;
+  $("#acClose").onclick = closeAcct;
+  $$("[data-view]", acctOv).forEach(x => x.onclick = () => { SYNC.view = x.dataset.view; SYNC.error = ""; renderAcct(); });
+  const form = $("#acForm");
+  if (form) form.onsubmit = async ev => {
+    ev.preventDefault();
+    const btn = $("#acSubmit"); btn.disabled = true;
+    const v = SYNC.view, username = $("#acUser").value.trim(), password = $("#acPass").value;
+    try {
+      const d = await postJSON(v === "register" ? "/api/auth/register" : v === "recover" ? "/api/auth/recover" : "/api/auth/login",
+        v === "recover" ? { username, password, code: $("#acCode").value } : { username, password });
+      SYNC.user = d.user; SYNC.error = ""; SYNC.recovery = d.recovery || "";
+      if (!SYNC.recovery) closeAcct();
+      paintAcct(); toast(v === "register" ? "Cont creat" : "Ai intrat în cont");
+      syncPull();
+    } catch (e){ SYNC.error = e.message || "Nu a mers. Încearcă din nou."; renderAcct(); }
+  };
+  $("#recCopy") && ($("#recCopy").onclick = () => copyText(SYNC.recovery));
+  $("#recDone") && ($("#recDone").onclick = () => { SYNC.recovery = ""; closeAcct(); });
+  $("#acSync") && ($("#acSync").onclick = () => syncPull());
+  const logout = async clear => {
+    try { await postJSON("/api/auth/logout"); } catch {}
+    SYNC.user = null; SYNC.last = 0; SYNC.msg = "";
+    if (clear){
+      try { [HKEY, HDEL, BKEY].forEach(k => localStorage.removeItem(k)); } catch {}
+      BANKS = { banks: [], current: null, del: { banks: {}, questions: {} } };
+      renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
+    }
+    closeAcct(); paintAcct(); toast(clear ? "Ai ieșit din cont și datele locale au fost șterse" : "Ai ieșit din cont");
+  };
+  $("#acOut") && ($("#acOut").onclick = () => logout(false));
+  $("#acOutClear") && ($("#acOutClear").onclick = () => logout(true));
+  $("#acDel") && ($("#acDel").onclick = async () => {
+    if (!confirm(`Ștergi definitiv contul „${SYNC.user.username}” și datele lui de pe server?`)) return;
+    try { await postJSON("/api/auth/delete"); SYNC.user = null; closeAcct(); paintAcct(); toast("Contul a fost șters"); }
+    catch (e){ toast(e.message || "Contul nu a putut fi șters"); }
+  });
+}
+acctOv.addEventListener("click", ev => { if (ev.target === acctOv) closeAcct(); });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !acctOv.hidden) closeAcct(); });
+$("#acctBtn").onclick = openAcct;
+acctInit();
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");

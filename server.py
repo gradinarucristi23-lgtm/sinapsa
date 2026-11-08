@@ -13,6 +13,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
+from accounts import Accounts
 from kb import KB
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
@@ -47,6 +48,7 @@ SAFETY = [
 ]
 
 KBASE = KB()  # biblioteca comună (Postgres cu DATABASE_URL, altfel SQLite temporar)
+ACC = Accounts(KBASE)  # conturi și sincronizare (doar pe bază permanentă)
 
 _hits = {}
 _hits_lock = threading.Lock()
@@ -78,10 +80,12 @@ class Handler(BaseHTTPRequestHandler):
         fwd = self.headers.get("X-Forwarded-For", "")
         return fwd.split(",")[0].strip() if fwd else self.client_address[0]
 
-    def send_json(self, status, obj):
+    def send_json(self, status, obj, cookie=None):
         data = json.dumps(obj).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
+        if cookie is not None:
+            self.send_header("Set-Cookie", cookie)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
@@ -122,7 +126,102 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.startswith("/api/kb/"):
             self.handle_kb_get()
             return
+        if self.path.startswith("/api/auth/me"):
+            user = ACC.session_user(self.cookie("sid")) if ACC.enabled else None
+            self.send_json(200, {**ACC.status(), "user": user})
+            return
+        if self.path.startswith("/api/sync"):
+            user = self.require_user()
+            if user:
+                self.send_json(200, {"docs": ACC.get_docs(user["id"])})
+            return
         self.serve_static()
+
+    # ---------- conturi și sincronizare ----------
+    def cookie(self, name):
+        for part in self.headers.get("Cookie", "").split(";"):
+            k, _, v = part.strip().partition("=")
+            if k == name:
+                return v
+        return ""
+
+    def session_cookie(self, token):
+        secure = "; Secure" if self.headers.get("X-Forwarded-Proto", "") == "https" else ""
+        if token:
+            return f"sid={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age={180 * 86400}{secure}"
+        return f"sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0{secure}"
+
+    def require_user(self):
+        if not ACC.enabled:
+            self.send_json(503, {"code": "accounts_off", "message": ACC.reason})
+            return None
+        user = ACC.session_user(self.cookie("sid"))
+        if not user:
+            self.send_json(401, {"code": "login_required"})
+        return user
+
+    def read_json(self, limit):
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            length = 0
+        if length <= 0 or length > limit:
+            raise ValueError("Cerere prea mare sau goală.")
+        return json.loads(self.rfile.read(length).decode("utf-8"))
+
+    def handle_auth(self):
+        if not ACC.enabled:
+            self.send_json(503, {"code": "accounts_off", "message": ACC.reason})
+            return
+        route = urlparse(self.path).path
+        if route in ("/api/auth/register", "/api/auth/login", "/api/auth/recover") and not rate_ok("auth:" + self.client_ip()):
+            self.send_json(429, {"code": "ip_limited", "message": "Prea multe încercări. Așteaptă puțin."})
+            return
+        try:
+            if route == "/api/auth/logout":
+                ACC.end_session(self.cookie("sid"))
+                self.send_json(200, {"ok": True}, cookie=self.session_cookie(""))
+                return
+            if route == "/api/auth/delete":
+                user = self.require_user()
+                if user:
+                    ACC.delete_user(user["id"])
+                    self.send_json(200, {"ok": True}, cookie=self.session_cookie(""))
+                return
+            body = self.read_json(20_000)
+            if route == "/api/auth/register":
+                uid, name, code = ACC.register(body.get("username"), body.get("password"))
+                self.send_json(200, {"user": {"id": uid, "username": name}, "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
+            elif route == "/api/auth/login":
+                uid, name = ACC.login(body.get("username"), body.get("password"))
+                self.send_json(200, {"user": {"id": uid, "username": name}}, cookie=self.session_cookie(ACC.new_session(uid)))
+            elif route == "/api/auth/recover":
+                uid, name, code = ACC.recover(body.get("username"), body.get("code"), body.get("password"))
+                self.send_json(200, {"user": {"id": uid, "username": name}, "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
+            else:
+                self.send_json(404, {"error": "not_found"})
+        except ValueError as e:
+            self.send_json(400, {"code": "invalid", "message": str(e)})
+        except Exception as e:
+            print("Auth:", str(e).encode("ascii", "replace").decode(), flush=True)
+            self.send_json(500, {"code": "auth_error", "message": "Eroare de server. Încearcă din nou."})
+
+    def do_PUT(self):
+        if not self.path.startswith("/api/sync/"):
+            self.send_json(404, {"error": "not_found"})
+            return
+        user = self.require_user()
+        if not user:
+            return
+        try:
+            body = self.read_json(7_000_000)
+            updated = ACC.put_doc(user["id"], urlparse(self.path).path.rsplit("/", 1)[-1], body.get("data"))
+            self.send_json(200, {"ok": True, "updated": updated})
+        except ValueError as e:
+            self.send_json(400, {"code": "invalid", "message": str(e)})
+        except Exception as e:
+            print("Sync:", str(e).encode("ascii", "replace").decode(), flush=True)
+            self.send_json(500, {"code": "sync_error"})
 
     # ---------- biblioteca comună ----------
     def handle_kb_get(self):
@@ -183,6 +282,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path.startswith("/api/kb/"):
             self.handle_kb_post()
+            return
+        if self.path.startswith("/api/auth/"):
+            self.handle_auth()
             return
         if not self.path.startswith("/api/generate"):
             self.send_json(404, {"error": "not_found"})

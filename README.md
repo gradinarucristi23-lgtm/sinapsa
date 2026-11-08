@@ -75,6 +75,17 @@ Când schimbi un fișier pe GitHub (de exemplu `public/index.html`), Render publ
 | `MODELS_QUICK` | `gemini-flash-lite-latest,…` | Modelele pentru sarcini scurte |
 | `MODELS_COMPLEX` | `gemini-flash-latest,gemini-2.5-pro,…` | Modelele pentru *Aprofundat* |
 | `MAX_OUTPUT_TOKENS` | `32768` | Lungimea maximă a unui răspuns |
+| `DATABASE_URL` | (lipsă) | Baza de date Postgres permanentă (de ex. Neon). Pornește biblioteca comună permanentă și conturile |
+
+## Baza de date permanentă (biblioteca comună și conturi)
+
+Fără `DATABASE_URL`, biblioteca comună e temporară (se golește la fiecare repornire) și conturile sunt oprite.
+
+1. Pe **https://neon.tech** îți faci cont (merge cu GitHub) și creezi un proiect în regiunea **AWS Europe Central (Frankfurt)**.
+2. Apeși **Connect** și copiezi *connection string*-ul (`postgresql://…neon.tech/neondb?sslmode=require`).
+3. În Render, la **Environment Groups → sinapsa-env**, adaugi `DATABASE_URL` cu acel șir și apeși **Save**.
+
+Tabelele se creează singure la pornire. Conturile folosesc nume de utilizator și parolă (fără email); parolele se păstrează doar ca hash PBKDF2. La crearea contului se afișează un cod de recuperare, singura cale de a reseta parola.
 
 ## Rulare pe calculator (opțional)
 
