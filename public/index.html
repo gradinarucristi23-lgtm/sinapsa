@@ -551,6 +551,10 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 .bk-list li .icon-btn{float:right}
 .bk-run{margin-top:18px}
 .bk-run-h{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+
+/* biblioteca comună */
+#kbPanel .vis-in{min-width:0}
+.notice.kb-hit{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--hema-soft);border-color:color-mix(in srgb,var(--hema) 35%,transparent)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -594,6 +598,13 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
         <label class="mode"><input type="radio" name="mode" id="m-combinat" value="combinat"><span><b>Combinat</b><small>Sursa e baza. Explicațiile adăugate ca să simplifice apar <mark class="add">marcate cu roz</mark>.</small></span></label>
       </div>
       <p class="hint" id="modeHint">Adaugă o sursă ca să poți alege modurile Exclusiv și Combinat.</p>
+    </section>
+
+    <section class="panel" id="kbPanel" hidden>
+      <div class="panel-h"><h2>Biblioteca comună</h2><span class="count" id="kbCount"></span></div>
+      <input id="kbQ" class="vis-in" placeholder="Caută o temă deja explicată…" aria-label="Caută în biblioteca comună">
+      <ul class="hist" id="kbList"></ul>
+      <p class="hint" id="kbNote"></p>
     </section>
 
     <section class="panel" id="histPanel">
@@ -1233,7 +1244,7 @@ function buildCtx(mode){
   return { mode, srcText, images, imgMap: labels.map((l, i) => `${i + 1} = ${l}`).join("; "), truncated: bi.ratio < 1, ids: act.map(s => s.id + " " + s.name) };
 }
 
-function explainPrompt(ctx, query, disc){
+function explainPrompt(ctx, query, disc, kb){
   const topic = query ? `TEMA: ${query}` : (ctx.mode === "general" ? "" : "TEMA: explică întregul material din surse; identifică singur tema principală și structura ei.");
   return `${ROLE}
 
@@ -1244,7 +1255,7 @@ ${disc ? `Disciplina preferată: ${disc}.` : ""}
 
 ${FORMAT_EXPLAIN}
 
-${topic}${srcSection(ctx)}`;
+${topic}${srcSection(ctx)}${kb ? "\n\n" + kb : ""}`;
 }
 
 function resultToMd(r, keepMarks){
@@ -1319,8 +1330,15 @@ async function generate({ regen = false } = {}){
     if (mode === "general" && !query){ showNotice("Scrie tema pe care vrei să o explic.", "warn"); $("#q").focus(); return; }
     req = { mode, query, disc: $("#disc").value, tier: $("#depth").value, intent: state.intent, ctx: buildCtx(mode) };
   }
+  if (!regen && req.mode === "general" && KB.on){
+    const hits = await kbSearch(req.query, 4);
+    if (hits[0] && hits[0].same && !state.kbSkip){ showKbHit(hits[0]); return; }
+    state.kbSkip = false;
+    req.kbHits = hits.filter(h => h.score >= 0.34);
+  }
   showNotice("");
   setBusy(true, "Se gândește…");
+  if (req.kbHits && req.kbHits.length && req.kb === undefined){ $("#stText").textContent = "Consultă biblioteca comună…"; req.kb = await kbContext(req.kbHits); }
   selectTab("explicatie");
   const liveMeta = { mode: req.mode, query: req.query, sample: false, sources: req.ctx.ids || [] };
   let lastDraw = 0, shownPartial = false;
@@ -1336,7 +1354,7 @@ async function generate({ regen = false } = {}){
     shownPartial = true;
   };
   try {
-    const r = await callClaude(explainPrompt(req.ctx, req.query, req.disc), { tier: req.tier, images: req.ctx.images, noCache: regen, progress: onText });
+    const r = await callClaude(explainPrompt(req.ctx, req.query, req.disc, req.kb), { tier: req.tier, images: req.ctx.images, noCache: regen, progress: onText });
     if (!r || typeof r !== "object") throw { code: "invalid_json" };
     if (r.in_afara_domeniului){ renderOutOfScope(r.mesaj); return; }
     if (!Array.isArray(r.sectiuni) || !r.sectiuni.length) throw { code: "invalid_json" };
@@ -1350,6 +1368,7 @@ async function generate({ regen = false } = {}){
     saveHistory();
     renderAll(); selectTab("explicatie");
     setBusy(false);
+    if (req.mode === "general") kbSave(r, req.query);
     if (req.intent === "examen") await genQuiz();
     else if (req.intent === "prezentare") await genSlides();
   } catch (e){
@@ -1517,7 +1536,7 @@ function renderExplain(opts){
   <div class="ex-head">
     <div class="eyebrow"><span>${esc(r.disciplina || "Medicină")}</span>
       <span class="badge m-${m.mode}">${MODE_LABEL[m.mode] || ""}</span>
-      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}
+      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}${m.fromKb ? `<span class="badge m-sursa">Din biblioteca comună</span>` : ""}
       ${live ? `<span class="badge live"><span class="pulse"></span>Se scrie…</span>` : ""}</div>
     <h1>${mdi(r.titlu)}</h1>
     <p class="lede">${mdi(r.rezumat)}</p>
@@ -1787,11 +1806,14 @@ async function genSlides(){
   selectTab("prezentare");
   setBusy(true, "Construiește prezentarea…");
   try {
-    const list = await callClaude(slidesPrompt(n, aud), { tier: "default", noCache: true, progress: ({ text }) => { $("#stSub").textContent = `${(text.match(/"tip"/g) || []).length} slide-uri scrise`; } });
+    let kbText = "";
+    if (KB.on && state.meta && state.meta.mode === "general"){ $("#stText").textContent = "Consultă biblioteca comună…"; kbText = await kbContext(await kbSearch(state.result.titlu, 4).then(h => h.filter(x => x.score >= 0.34)), state.result.titlu); }
+    const list = await callClaude(slidesPrompt(n, aud) + (kbText ? "\n\n" + kbText + "\nPoți face legături cu temele din baza de cunoștințe pe un slide de concluzii sau de corelații, dacă ajută." : ""), { tier: "default", noCache: true, progress: ({ text }) => { $("#stSub").textContent = `${(text.match(/"tip"/g) || []).length} slide-uri scrise`; } });
     const sl = arr(Array.isArray(list) ? list : list && list.slides).filter(s => s && s.titlu);
     if (!sl.length) throw { code: "invalid_json" };
     state.slides = { list: sl, idx: 0 };
     saveHistory(); renderSlides(); updateCounts();
+    kbSaveSlides();
   } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
   finally { setBusy(false); }
 }
@@ -3158,6 +3180,95 @@ function renderBank(){
   });
   if (state.busy) $$("[data-busy]", p).forEach(x => x.disabled = true);
 }
+
+/* ---------------- BIBLIOTECA COMUNĂ (bază de date pe server) ---------------- */
+const KB = { on: false, kind: "", count: 0, items: [], q: "" };
+async function kbFetch(path, opts){
+  const r = await fetch("/api/kb/" + path, opts);
+  if (!r.ok) throw new Error("kb " + r.status);
+  return r.json();
+}
+async function kbInit(){
+  try {
+    const s = await kbFetch("status");
+    KB.on = !!s.enabled; KB.kind = s.kind; KB.count = s.count;
+  } catch { KB.on = false; }
+  $("#kbPanel").hidden = !KB.on;
+  if (KB.on) kbList();
+}
+async function kbList(){
+  const q = KB.q.trim();
+  try {
+    const d = q ? await kbFetch("search?n=10&q=" + encodeURIComponent(q)) : await kbFetch("recent?n=12");
+    KB.items = d.items || [];
+  } catch { KB.items = []; }
+  kbRender();
+}
+function kbRender(){
+  $("#kbCount").textContent = KB.count ? `${KB.count} ${KB.count === 1 ? "temă" : "teme"}` : "goală";
+  $("#kbNote").textContent = KB.kind === "temporar"
+    ? "Biblioteca e temporară până se configurează baza de date: se golește când serverul repornește."
+    : (KB.count ? "" : "Temele explicate în modul Motor de căutare apar aici, pentru toți.");
+  $("#kbList").innerHTML = KB.items.map(e => `<li><button class="h-open" type="button" data-kb="${esc(e.id)}"><span class="h-t">${esc(e.titlu)}</span><span class="h-m">${esc(e.disciplina || "")}${e.slides ? " · cu prezentare" : ""}${e.uses === 1 ? " · deschisă o dată" : e.uses > 1 ? ` · deschisă de ${e.uses} ori` : ""}</span></button></li>`).join("")
+    || (KB.q ? `<li class="hint" style="padding:6px 2px">Nimic găsit pentru „${esc(KB.q)}”.</li>` : "");
+}
+async function kbSearch(q, n){
+  if (!KB.on || !q) return [];
+  try { return (await kbFetch("search?n=" + (n || 4) + "&q=" + encodeURIComponent(q))).items || []; } catch { return []; }
+}
+async function kbContext(hits, excludeTitle){
+  const parts = [];
+  for (const h of hits){
+    if (excludeTitle && normQ(h.titlu) === normQ(excludeTitle)) continue;
+    try {
+      const d = await kbFetch("get?ctx=1&id=" + encodeURIComponent(h.id));
+      const r = d.result;
+      const secs = arr(r.sectiuni).map(s => `- ${s.titlu}: ${String(s.avansat || s.simplu || "").replace(/\s+/g, " ").slice(0, 600)}`).join("\n");
+      parts.push(`### ${r.titlu} (${r.disciplina || ""})\n${r.rezumat || ""}\n${secs}`.slice(0, 4000));
+    } catch {}
+    if (parts.length >= 2) break;
+  }
+  if (!parts.length) return "";
+  return `BAZA DE CUNOȘTINȚE A SITE-ULUI (explicații salvate anterior pe teme apropiate). Folosește-le pentru consecvență (aceeași terminologie, aceleași valori și clasificări) și ca să faci legături între teme; nu le copia. Dacă observi în ele o informație greșită, nu o prelua.\n\n${parts.join("\n\n")}`;
+}
+async function kbSave(result, query){
+  if (!KB.on) return;
+  try {
+    const d = await kbFetch("save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ result, query }) });
+    if (d && d.ok){ KB.count = d.count; toast("Salvată în biblioteca comună"); if (!KB.q) kbList(); else kbRender(); }
+  } catch {}
+}
+async function kbSaveSlides(){
+  if (!KB.on || !state.result || !state.meta || state.meta.mode !== "general") return;
+  try { await kbFetch("slides", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ titlu: state.result.titlu, slides: state.slides.list }) }); if (!KB.q) kbList(); } catch {}
+}
+async function kbOpen(id){
+  if (state.busy) return;
+  try {
+    const d = await kbFetch("get?id=" + encodeURIComponent(id));
+    state.result = d.result;
+    state.meta = { mode: "general", query: d.query || "", sample: false, date: d.updated || Date.now(), sources: [], fromKb: true };
+    state.ctx = null; state.lastReq = null; state.histId = null;
+    state.exportSvg = null; state.exportFor = null;
+    state.quiz = { list: [], answers: {}, checked: false };
+    state.slides = { list: arr(d.slides), idx: 0 };
+    state.flash = emptyFlash(); state.caz = emptyCaz(); state.tools.hy = null; state.vis = emptyVis();
+    saveHistory(); showNotice("");
+    renderAll(); selectTab("explicatie");
+    $(".work").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch { toast("Tema nu a putut fi deschisă din bibliotecă"); }
+}
+function showKbHit(top){
+  const n = $("#notice");
+  n.className = "notice kb-hit"; n.hidden = false;
+  n.innerHTML = `<span>Tema există deja în biblioteca comună: <b>${esc(top.titlu)}</b>${top.slides ? " (cu prezentare)" : ""}. O poți deschide instant, fără să aștepți AI-ul.</span>
+    <span class="row"><button class="btn sm primary" type="button" id="kbHitOpen">Deschide din bibliotecă</button><button class="btn sm" type="button" id="kbHitNew">Generează una nouă</button></span>`;
+  $("#kbHitOpen").onclick = () => { showNotice(""); kbOpen(top.id); };
+  $("#kbHitNew").onclick = () => { showNotice(""); state.kbSkip = true; generate(); };
+}
+$("#kbList").addEventListener("click", ev => { const b = ev.target.closest("[data-kb]"); if (b) kbOpen(b.dataset.kb); });
+$("#kbQ").addEventListener("input", ev => { KB.q = ev.target.value; clearTimeout(kbList._t); kbList._t = setTimeout(kbList, 250); });
+kbInit();
 
 /* ---------------- tabs & counts ---------------- */
 function selectTab(t){

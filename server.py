@@ -11,6 +11,9 @@ import time
 import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlparse
+
+from kb import KB
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 KEY = os.environ.get("GEMINI_API_KEY", "").strip()
@@ -42,6 +45,8 @@ SAFETY = [
         "HARM_CATEGORY_DANGEROUS_CONTENT",
     )
 ]
+
+KBASE = KB()  # biblioteca comună (Postgres cu DATABASE_URL, altfel SQLite temporar)
 
 _hits = {}
 _hits_lock = threading.Lock()
@@ -112,12 +117,73 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.startswith("/api/health"):
-            self.send_json(200, {"ok": True, "key": bool(KEY)})
+            self.send_json(200, {"ok": True, "key": bool(KEY), "kb": KBASE.status()})
+            return
+        if self.path.startswith("/api/kb/"):
+            self.handle_kb_get()
             return
         self.serve_static()
 
+    # ---------- biblioteca comună ----------
+    def handle_kb_get(self):
+        u = urlparse(self.path)
+        qs = parse_qs(u.query)
+        arg = lambda k, d="": (qs.get(k) or [d])[0]
+        if u.path == "/api/kb/status":
+            self.send_json(200, KBASE.status())
+            return
+        if not KBASE.enabled:
+            self.send_json(503, {"code": "kb_off"})
+            return
+        try:
+            if u.path == "/api/kb/search":
+                self.send_json(200, {"items": KBASE.search(arg("q"), max(1, min(10, int(arg("n", "5") or 5))))})
+            elif u.path == "/api/kb/recent":
+                self.send_json(200, {"items": KBASE.recent(max(1, min(60, int(arg("n", "20") or 20))))})
+            elif u.path == "/api/kb/get":
+                d = KBASE.get(arg("id"), count=arg("ctx") != "1")
+                self.send_json(200 if d else 404, d or {"code": "not_found"})
+            else:
+                self.send_json(404, {"error": "not_found"})
+        except Exception as e:
+            print("KB get:", e, flush=True)
+            self.send_json(500, {"code": "kb_error"})
+
+    def handle_kb_post(self):
+        if not KBASE.enabled:
+            self.send_json(503, {"code": "kb_off"})
+            return
+        if not rate_ok("kb:" + self.client_ip()):
+            self.send_json(429, {"code": "ip_limited"})
+            return
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            length = 0
+        if length <= 0 or length > 1_000_000:
+            self.send_json(413, {"code": "too_large"})
+            return
+        try:
+            body = json.loads(self.rfile.read(length).decode("utf-8"))
+            if self.path.startswith("/api/kb/save"):
+                id = KBASE.save(body.get("result"), str(body.get("query") or "")[:500])
+            elif self.path.startswith("/api/kb/slides"):
+                id = KBASE.save_slides(str(body.get("titlu") or ""), body.get("slides"))
+            else:
+                self.send_json(404, {"error": "not_found"})
+                return
+            self.send_json(200, {"ok": bool(id), "id": id, "count": len(KBASE.index)})
+        except ValueError as e:
+            self.send_json(400, {"code": "invalid", "message": str(e)})
+        except Exception as e:
+            print("KB post:", e, flush=True)
+            self.send_json(500, {"code": "kb_error"})
+
     # ---------- AI ----------
     def do_POST(self):
+        if self.path.startswith("/api/kb/"):
+            self.handle_kb_post()
+            return
         if not self.path.startswith("/api/generate"):
             self.send_json(404, {"error": "not_found"})
             return

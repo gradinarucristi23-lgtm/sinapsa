@@ -1,0 +1,12 @@
+# Accesează site-ul la fiecare 10 minute, ca Render (planul gratuit) să nu-l oprească după 15 minute de inactivitate.
+name: Ține site-ul treaz
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: curl -fsS --max-time 90 https://sinapsa.onrender.com/api/health || true

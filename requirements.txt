@@ -1,1 +1,2 @@
-# Serverul foloseste doar biblioteca standard Python; nu sunt pachete de instalat.
+# Postgres pentru biblioteca comună (folosit doar dacă DATABASE_URL e setat)
+psycopg[binary]>=3.2,<4
