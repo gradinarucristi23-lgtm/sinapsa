@@ -2,6 +2,7 @@
 <html lang="ro">
 <head>
 <meta charset="utf-8">
+<script>try{var t=localStorage.getItem("ghid.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Ghidul studentului USMF, tutore medical neoficial pentru studenți: explicații simplificate și avansate, teorie și practică, schemă, grilă CS/CM și prezentări, din cursul tău sau ca motor de căutare.">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -421,6 +422,12 @@ td.flag-H,td.flag-L{color:var(--bad);font-weight:600}
 /* explicație: bibliografie și diagnostic diferențial */
 .biblio ul{gap:6px}
 table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
+
+/* buton mod luminos / întunecat */
+.theme-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:7px 14px 7px 11px;font-size:13.5px;font-weight:500;cursor:pointer;margin-left:auto;white-space:nowrap}
+.theme-btn:hover{border-color:var(--hema);color:var(--hema)}
+.theme-btn svg{width:17px;height:17px;flex:none}
+@media (max-width:600px){.theme-btn span{display:none}.theme-btn{padding:8px}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -433,6 +440,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
       <span class="brand-t"><b>Ghidul studentului USMF</b><small>Proiect studențesc neoficial</small></span>
     </span>
     <span class="tagline">Tutorele tău de medicină: explică teme din cursul tău sau ca un motor de căutare, cu schemă, grilă și prezentare.</span>
+    <button class="theme-btn" id="themeBtn" type="button"></button>
   </div>
 </header>
 
@@ -2190,6 +2198,29 @@ $("#hist").addEventListener("click", ev => {
   renderAll(); selectTab("explicatie");
   $(".work").scrollIntoView({ behavior: "smooth", block: "start" });
 });
+
+/* ---------------- mod luminos / întunecat ---------------- */
+const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>';
+const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+function effectiveTheme(){
+  const t = document.documentElement.getAttribute("data-theme");
+  if (t === "light" || t === "dark") return t;
+  try { return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch { return "light"; }
+}
+function paintThemeBtn(){
+  const dark = effectiveTheme() === "dark", b = $("#themeBtn");
+  b.innerHTML = dark ? ICON_SUN + "<span>Mod luminos</span>" : ICON_MOON + "<span>Mod întunecat</span>";
+  b.setAttribute("aria-label", dark ? "Treci pe modul luminos" : "Treci pe modul întunecat");
+  b.title = b.getAttribute("aria-label");
+}
+$("#themeBtn").onclick = () => {
+  const next = effectiveTheme() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("ghid.theme", next); } catch {}
+  paintThemeBtn();
+};
+try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintThemeBtn); } catch {}
+paintThemeBtn();
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");
