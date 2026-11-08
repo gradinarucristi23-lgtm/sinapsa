@@ -14,8 +14,8 @@
    Palette: colorația H&E — hematoxilină (violet-albastru) pentru conținut din sursă și acțiuni, eozină (roz) doar pentru adăugirile externe. */
 :root{
   --bg:#F3F4F9; --surface:#FFFFFF; --surface-2:#ECEDF5; --line:#D8DAE7; --line-2:#C5C8DA;
-  --ink:#1D1A38; --ink-2:#55536F; --ink-3:#7A7895;
-  --hema:#3D379A; --hema-hover:#2F2A80; --hema-soft:#E7E6F7; --on-hema:#FFFFFF;
+  --ink:#1D1A38; --ink-2:#4F4D69; --ink-3:#66647F;
+  --hema:#3D379A; --hema-hover:#2F2A80; --hema-soft:#E7E6F7; --on-hema:#FFFFFF; --cta:#3D379A; --cta-hover:#2A2577; --on-cta:#FFFFFF;
   --eosin:#B82B66; --eosin-soft:#FCE4EE;
   --ok:#1C7550; --ok-soft:#E1F3EA; --bad:#B0261E; --bad-soft:#FBE6E4; --warn:#7E5600; --warn-soft:#FBF0D9;
   --slide-bg:#FFFFFF; --slide-ink:#1D1A38; --slide-mute:#5B5975; --slide-hema:#3D379A; --slide-eosin:#B82B66; --slide-soft:#EEEEF7; --slide-line:#D8DAE7;
@@ -28,9 +28,9 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#302F47; --line-2:#3E3D58;
-    --ink:#ECEBF8; --ink-2:#AEACC9; --ink-3:#8987A6;
-    --hema:#A9A4FF; --hema-hover:#C3BFFF; --hema-soft:#29274F; --on-hema:#15132B;
+    --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#34334D; --line-2:#4C4A6A;
+    --ink:#F1F0FA; --ink-2:#C9C7E0; --ink-3:#A9A7C5;
+    --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24;
     --eosin:#FF86B6; --eosin-soft:#3F1F31;
     --ok:#66D6A2; --ok-soft:#17352A; --bad:#FF8F86; --bad-soft:#3F1F1D; --warn:#F1C66E; --warn-soft:#3A2E14;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 28px -14px rgba(0,0,0,.6);
@@ -38,9 +38,9 @@
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#302F47; --line-2:#3E3D58;
-  --ink:#ECEBF8; --ink-2:#AEACC9; --ink-3:#8987A6;
-  --hema:#A9A4FF; --hema-hover:#C3BFFF; --hema-soft:#29274F; --on-hema:#15132B;
+  --bg:#121120; --surface:#1A1929; --surface-2:#232236; --line:#34334D; --line-2:#4C4A6A;
+  --ink:#F1F0FA; --ink-2:#C9C7E0; --ink-3:#A9A7C5;
+  --hema:#ADA8FF; --hema-hover:#C3BFFF; --hema-soft:#34306E; --on-hema:#15132B; --cta:#8F87FF; --cta-hover:#A7A1FF; --on-cta:#0E0C24;
   --eosin:#FF86B6; --eosin-soft:#3F1F31;
   --ok:#66D6A2; --ok-soft:#17352A; --bad:#FF8F86; --bad-soft:#3F1F1D; --warn:#F1C66E; --warn-soft:#3A2E14;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 28px -14px rgba(0,0,0,.6);
@@ -71,7 +71,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .main{display:flex;flex-direction:column;gap:18px;min-width:0}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
 .panel-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.panel h2,.label{font-family:var(--f-mono);font-size:11.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);margin:0}
+.panel h2,.label:not(svg *){font-family:var(--f-mono);font-size:11.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);margin:0}
 .count{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
 
 /* sources */
@@ -110,7 +110,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .modes{display:flex;flex-direction:column;gap:6px}
 .mode{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;align-items:start}
 .mode:has(input:checked){border-color:var(--hema);background:var(--hema-soft)}
-.mode:has(input:disabled){cursor:not-allowed;opacity:.5}
+.mode:has(input:disabled){cursor:not-allowed;opacity:.78}
+.mode:has(input:disabled) small{color:var(--ink-2)}
 .mode input{margin:3px 0 0;accent-color:var(--hema)}
 .mode b{font-weight:600;font-size:14px;display:block}
 .mode small{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.4}
@@ -134,7 +135,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .intent span{font-size:13.5px;font-weight:500;line-height:1.3}
 .intent small{display:block;font-weight:400;color:var(--ink-3);font-size:12px;margin-top:2px}
 .intent:hover{border-color:var(--line-2)}
-.intent[aria-pressed="true"]{border-color:var(--hema);background:var(--hema-soft)}
+.intent[aria-pressed="true"]{border-color:var(--hema);background:var(--hema-soft);box-shadow:inset 0 0 0 1.5px var(--hema)}
+.intent[aria-pressed="true"] span{color:var(--hema)}
+.intent[aria-pressed="true"] small{color:var(--ink-2)}
 .intent[aria-pressed="true"] svg{color:var(--hema)}
 .q-wrap{display:flex;flex-direction:column;gap:6px}
 .q-label{font-family:var(--f-display);font-weight:600;font-size:21px;letter-spacing:-.01em;text-wrap:balance}
@@ -150,8 +153,8 @@ select{border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;backgro
 .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--surface);border-radius:8px;padding:8px 13px;font-weight:500;font-size:14px;cursor:pointer;white-space:nowrap}
 .btn:hover{border-color:var(--hema);color:var(--hema)}
 .btn svg{width:16px;height:16px}
-.btn.primary{background:var(--hema);border-color:var(--hema);color:var(--on-hema);padding:10px 20px;font-weight:600}
-.btn.primary:hover{background:var(--hema-hover);border-color:var(--hema-hover);color:var(--on-hema)}
+.btn.primary{background:var(--cta);border-color:var(--cta);color:var(--on-cta);padding:10px 20px;font-weight:600}
+.btn.primary:hover{background:var(--cta-hover);border-color:var(--cta-hover);color:var(--on-cta)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.sm{padding:5px 10px;font-size:13px}
 .grow{flex:1}
@@ -167,8 +170,9 @@ select{border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;backgro
 /* workspace */
 .work{background:var(--surface);border:1px solid var(--line);border-radius:14px;min-width:0}
 .tabs{display:flex;gap:2px;padding:6px 8px 0;border-bottom:1px solid var(--line);overflow-x:auto}
-.tab{border:0;background:none;padding:11px 14px 10px;font-weight:500;color:var(--ink-2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:7px;align-items:center}
-.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--hema)}
+.tab{border:0;background:none;padding:11px 14px 10px;font-weight:500;color:var(--ink-2);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;border-radius:8px 8px 0 0;white-space:nowrap;display:flex;gap:7px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--hema);border-bottom-color:var(--hema);background:var(--hema-soft);font-weight:600}
 .tab .n{font-family:var(--f-mono);font-size:11px;background:var(--surface-2);border-radius:999px;padding:1px 7px;color:var(--ink-2)}
 .tabpanel{padding:22px clamp(16px,3vw,34px) 30px;min-width:0}
 
@@ -349,6 +353,74 @@ footer .wrap{padding-block:16px 26px}
 .sheet{position:fixed;inset:0;background:rgba(10,9,20,.5);display:grid;place-items:center;z-index:40;padding:16px}
 .sheet-in{background:var(--surface);border-radius:12px;padding:16px;width:min(680px,100%);display:flex;flex-direction:column;gap:10px}
 .sheet-in textarea{width:100%;height:46vh;font-family:var(--f-mono);font-size:12.5px;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--surface-2)}
+
+/* butonul principal */
+#go{padding:13px 30px;font-size:16.5px;border-radius:10px;box-shadow:0 10px 26px -12px var(--cta)}
+#go svg{width:18px;height:18px}
+
+/* dicționar integrat */
+.term{border-bottom:1.5px dotted var(--hema);cursor:help;border-radius:2px}
+.term:hover,.term:focus-visible{background:var(--hema-soft)}
+.tip{position:absolute;z-index:60;background:var(--ink);color:var(--bg);padding:9px 12px;border-radius:9px;font-size:13.5px;line-height:1.45;box-shadow:var(--shadow)}
+.tip b{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;margin-bottom:3px;opacity:.85}
+.def-btn{position:absolute;z-index:61;border:0;border-radius:8px;background:var(--cta);color:var(--on-cta);font-size:13px;font-weight:600;padding:6px 11px;cursor:pointer;box-shadow:var(--shadow);max-width:calc(100vw - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* grile: explicație pentru fiecare variantă */
+.opt .why{display:block;font-size:13.5px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+
+/* flashcards */
+.fc-wrap{display:flex;flex-direction:column;gap:12px;margin-top:18px;max-width:720px}
+.fc-meta{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.fc{min-height:240px;border:1.5px solid var(--line-2);border-radius:16px;background:var(--surface);padding:22px 24px;display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;width:100%;transition:background .15s,border-color .15s}
+.fc:hover{border-color:var(--hema)}
+.fc.back{border-color:var(--hema);background:var(--hema-soft)}
+.fc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.fc-side{font-size:12.5px;font-weight:600;color:var(--hema)}
+.fc-text{font-family:var(--f-read);font-size:21px;line-height:1.45;flex:1;display:flex;align-items:center}
+.fc.back .fc-text{font-size:18.5px}
+.fc-hint{font-size:12.5px;color:var(--ink-3)}
+.fc-actions{display:flex;gap:10px}
+.fc-actions .btn{flex:1;justify-content:center;padding-block:11px}
+.fc-only{font-size:13.5px;color:var(--ink-2);display:flex;gap:8px;align-items:center}
+
+/* caz clinic */
+.case-body{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.case-body .label{display:block;margin-bottom:4px}
+.vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.vital{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.vital span{display:block;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+.vital b{font-size:16px;font-variant-numeric:tabular-nums}
+td.flag-H,td.flag-L{color:var(--bad);font-weight:600}
+.flagmark{font-family:var(--f-mono);font-size:12px;margin-left:4px}
+.cz-q{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.cz-q textarea{width:100%;min-height:72px;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;background:var(--surface);font-size:15px;resize:vertical}
+.verdict-box{border-radius:12px;padding:12px 14px;margin-top:14px;font-size:15px;line-height:1.5}
+.verdict-box.ok{background:var(--ok-soft)}
+.verdict-box.partial{background:var(--warn-soft)}
+.verdict-box.bad{background:var(--bad-soft)}
+.verdict-box b{display:block;font-size:16px;margin-bottom:4px}
+.sol{margin-top:18px;display:flex;flex-direction:column;gap:16px}
+.sol-dx{margin:0;font-size:17px;font-weight:600}
+
+/* instrumente */
+.tool{border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.tool + .tool{margin-top:16px}
+.tool-h{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.tool-h h3{margin:0 0 4px;font-family:var(--f-display);font-size:19px}
+.tool-h p{margin:0;max-width:62ch}
+.tool-out{display:flex;flex-direction:column;gap:12px}
+.ask-row textarea{flex:1 1 260px;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:9px 12px;background:var(--surface);font-size:15px;resize:vertical}
+.bz{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px 10px;font-size:14.5px;align-items:baseline}
+.bz i{font-style:normal;color:var(--ink-3)}
+.mn-list{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:3px;font-size:14.5px}
+.mn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.mn{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.mn .big{font-family:var(--f-display);font-size:21px;font-weight:800;letter-spacing:.01em;color:var(--hema);margin:4px 0;overflow-wrap:anywhere}
+.mn ul{margin:6px 0 0;padding-left:1.1em;font-size:14px;display:flex;flex-direction:column;gap:3px}
+
+/* explicație: bibliografie și diagnostic diferențial */
+.biblio ul{gap:6px}
+table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -436,7 +508,7 @@ footer .wrap{padding-block:16px 26px}
             <option value="complex">Aprofundat (mai lent)</option>
           </select></div>
         <span class="grow"></span>
-        <button class="btn primary" id="go" type="button">Explică</button>
+        <button class="btn primary" id="go" type="button">Explică <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
       </div>
 
       <div class="status" id="status" hidden>
@@ -451,11 +523,17 @@ footer .wrap{padding-block:16px 26px}
       <nav class="tabs" role="tablist">
         <button class="tab" role="tab" id="t-explicatie" data-tab="explicatie" aria-selected="true">Explicație</button>
         <button class="tab" role="tab" id="t-quiz" data-tab="quiz" aria-selected="false">Quiz <span class="n" id="nQuiz">0</span></button>
+        <button class="tab" role="tab" id="t-flash" data-tab="flash" aria-selected="false">Flashcards <span class="n" id="nFlash">0</span></button>
+        <button class="tab" role="tab" id="t-caz" data-tab="caz" aria-selected="false">Caz clinic</button>
         <button class="tab" role="tab" id="t-prezentare" data-tab="prezentare" aria-selected="false">Prezentare <span class="n" id="nSlides">0</span></button>
+        <button class="tab" role="tab" id="t-tools" data-tab="tools" aria-selected="false">Instrumente</button>
       </nav>
       <div class="tabpanel" id="p-explicatie" role="tabpanel"></div>
       <div class="tabpanel" id="p-quiz" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-prezentare" role="tabpanel" hidden></div>
+      <div class="tabpanel" id="p-flash" role="tabpanel" hidden></div>
+      <div class="tabpanel" id="p-caz" role="tabpanel" hidden></div>
+      <div class="tabpanel" id="p-tools" role="tabpanel" hidden></div>
     </section>
   </main>
 </div>
@@ -675,6 +753,9 @@ const state = {
   tab: "explicatie",
   quiz: { list: [], answers: {}, checked: false },
   slides: { list: [], idx: 0 },
+  flash: { list: [], idx: 0, flipped: false, known: {}, only: false },
+  caz: { data: null, answer: "", eval: null, revealed: false },
+  tools: { hy: null, mn: null, mnQ: "" },
   exportSvg: null, exportFor: null,
   busy: false, ctl: null
 };
@@ -856,6 +937,7 @@ function onSourcesChanged(){
   if (has && state.mode === "general") setMode("sursa");
   if (!has && state.mode !== "general") setMode("general");
   updateModeUI();
+  if (state.tab === "tools") renderTools();
 }
 function budgetInfo(){
   const enc = new TextEncoder();
@@ -968,11 +1050,12 @@ const FORMAT_EXPLAIN = `FORMAT: răspunde cu UN SINGUR obiect JSON valid, fără
    {"tip": "practica", "titlu": "…", "simplu": "markdown", "avansat": "markdown"}
  ],
  "schema": {"titlu": "…", "mermaid": "flowchart TD\\n …", "cum_se_citeste": "1–2 propoziții"},
- "tabel": {"titlu": "…", "coloane": ["…"], "randuri": [["…"]]},
+ "tabel": {"tip": "sinteza", "titlu": "…", "coloane": ["…"], "randuri": [["…"]]},
  "caz_clinic": {"prezentare": "…", "intrebari": [{"intrebare": "…", "raspuns": "…"}]},
  "mnemotehnici": ["…"],
  "capcane": ["…"],
  "glosar": [{"termen": "…", "definitie": "…"}],
+ "bibliografie": [{"titlu": "…", "pentru": "…"}],
  "adaugiri": [{"continut": "…", "motiv": "…"}],
  "neacoperit": ["…"]
 }
@@ -981,10 +1064,12 @@ REGULI DE CONȚINUT:
 - 3–5 secțiuni "teorie" (de ex. definiție și context; bază anatomică, histologică sau biochimică; mecanism sau fiziopatologie; clasificare) și 2–3 secțiuni "practica" (aplicare practică: tablou clinic și examen obiectiv; investigații și interpretarea lor; diagnostic diferențial; tratament și monitorizare; sau tehnica de lucrări practice, după temă). Alege titluri potrivite temei.
 - În markdown folosește doar paragrafe, liste, **bold** și *italic*; fără titluri (#), fără tabele, fără linkuri.
 - "schema.mermaid" este OBLIGATORIE: o diagramă Mermaid validă care arată mecanismul sau structura temei (flux cauzal, cascadă, clasificare sau algoritm de diagnostic). Reguli stricte: începe cu flowchart TD sau flowchart LR; 7–14 noduri; ID-uri simple (A, B, C1); fiecare etichetă de nod între ghilimele duble, de ex. A["Scăderea perfuziei renale"]; cel mult 6 cuvinte pe rând, iar pentru rând nou folosește <br/>; în etichete nu folosi ghilimele duble, paranteze drepte sau acolade; etichetele de pe săgeți sunt scurte și fără ghilimele, de ex. A -->|stimulează| B; săgeată punctată: A -.-> B; poți folosi subgraph cu titlu între ghilimele. Fără style, classDef, click sau comentarii. În JSON, rândurile diagramei se separă cu \\n.
-- "tabel": un tabel de sinteză sau comparativ util (2–5 coloane, 3–8 rânduri) sau null dacă nu ajută.
+- "tabel": un tabel de sinteză sau comparativ util (2–5 coloane, 3–8 rânduri) sau null dacă nu ajută, cu "tip": "sinteza".
+- DIAGNOSTIC DIFERENȚIAL: dacă tema compară două sau mai multe entități (de ex. „X vs Y”, „diferența dintre”, „diagnostic diferențial”), "tabel" este OBLIGATORIU, cu "tip": "ddx": prima coloană se numește "Criteriu", apoi câte o coloană pentru fiecare entitate; rândurile sunt, în această ordine: Definiție și etiologie, Fiziopatologie, Tablou clinic, Laborator, Investigații paraclinice, Tratament, Complicații și prognostic.
 - "caz_clinic": un caz scurt și realist cu 2–3 întrebări și răspunsuri; null doar dacă tema nu are deloc aplicare clinică (sau, în modul EXCLUSIV, dacă sursa nu îl susține).
-- 1–3 mnemotehnici (sau listă goală), 3–5 capcane frecvente la examen, 4–8 termeni în glosar explicați simplu.
+- 1–3 mnemotehnici (sau listă goală), 3–5 capcane frecvente la examen, 6–12 termeni în glosar explicați simplu; fiecare "termen" se scrie exact în forma în care apare în textul explicației.
 - "adaugiri": doar în modul COMBINAT (adăugirile importante și motivul fiecăreia), altfel []. "neacoperit": doar în modul EXCLUSIV DIN SURSĂ, altfel [].
+- "bibliografie": doar în modul MOTOR DE CĂUTARE, altfel []: 2–4 tratate sau ghiduri consacrate, potrivite temei (de ex. Harrison pentru medicină internă, Robbins pentru morfopatologie, Guyton și Hall pentru fiziologie, Netter sau Sobotta pentru anatomie, Katzung sau Goodman și Gilman pentru farmacologie, ghidurile ESC, KDIGO, GOLD sau GINA), cu "pentru" = partea temei pentru care e util. Numai titluri reale și foarte cunoscute; nu inventa ediții, pagini sau numere de capitol.
 - Dacă cererea nu ține de medicină, răspunde doar cu {"in_afara_domeniului": true, "mesaj": "o propoziție"}.`;
 
 function srcSection(ctx){
@@ -1042,6 +1127,7 @@ function resultToMd(r, keepMarks){
   if (arr(r.mnemotehnici).length){ L.push("## Mnemotehnici", ""); r.mnemotehnici.forEach(m => L.push("- " + k(m))); L.push(""); }
   if (arr(r.capcane).length){ L.push("## Capcane la examen", ""); r.capcane.forEach(m => L.push("- " + k(m))); L.push(""); }
   if (arr(r.glosar).length){ L.push("## Glosar", ""); r.glosar.forEach(g => L.push(`- **${g.termen}**: ${k(g.definitie)}`)); L.push(""); }
+  if (arr(r.bibliografie).length){ L.push("## Tratate de referință", ""); r.bibliografie.forEach(b => L.push(`- ${b.titlu}${b.pentru ? ": " + b.pentru : ""}`)); L.push(""); }
   if (arr(r.adaugiri).length){ L.push("## Adăugiri din afara sursei", ""); r.adaugiri.forEach(a => L.push(`- ${a.continut} (${a.motiv})`)); L.push(""); }
   if (arr(r.neacoperit).length){ L.push("## Ce nu acoperă sursa", ""); r.neacoperit.forEach(a => L.push("- " + a)); L.push(""); }
   return L.join("\n");
@@ -1119,6 +1205,7 @@ async function generate({ regen = false } = {}){
     state.exportSvg = null; state.exportFor = null;
     state.quiz = { list: [], answers: {}, checked: false };
     state.slides = { list: [], idx: 0 };
+    state.flash = emptyFlash(); state.caz = emptyCaz(); state.tools.hy = null;
     state.histId = null;
     saveHistory();
     renderAll(); selectTab("explicatie");
@@ -1276,6 +1363,8 @@ function renderExplain(opts){
   const teorie = secs.filter(s => s.tip !== "practica"), practica = secs.filter(s => s.tip === "practica");
   const t = r.tabel && arr(r.tabel.coloane).length ? r.tabel : null;
   const cz = r.caz_clinic && r.caz_clinic.prezentare ? r.caz_clinic : null;
+  const isDdx = !!(t && String(t.tip || "").toLowerCase() === "ddx");
+  const tblHtml = t ? `<section class="block"><h3 class="block-h">${isDdx ? "Diagnostic diferențial: " : ""}${mdi(t.titlu || "Sinteză")}</h3><div class="tbl-wrap"><table class="${isDdx ? "ddx" : ""}"><thead><tr>${t.coloane.map(c => `<th>${mdi(c)}</th>`).join("")}</tr></thead><tbody>${arr(t.randuri).map(row => `<tr>${arr(row).map(c => `<td>${mdi(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section>` : "";
   p.innerHTML = `
   <div class="ex-head">
     <div class="eyebrow"><span>${esc(r.disciplina || "Medicină")}</span>
@@ -1305,12 +1394,14 @@ function renderExplain(opts){
     ${r.schema && r.schema.cum_se_citeste ? `<p class="fig-read">${mdi(r.schema.cum_se_citeste)}</p>` : ""}
   </figure>
 
+  ${isDdx ? tblHtml : ""}
+
   <div id="exBody" data-level="${state.level}">
     ${teorie.length ? `<section class="grp teorie"><h2 class="grp-h"><span class="dot"></span>Teorie <small>${teorie.length} secțiuni</small></h2>${teorie.map(secHtml).join("")}</section>` : ""}
     ${practica.length ? `<section class="grp practica"><h2 class="grp-h"><span class="dot"></span>Practică <small>aplicare clinică</small></h2>${practica.map(secHtml).join("")}</section>` : ""}
   </div>
 
-  ${t ? `<section class="block"><h3 class="block-h">${mdi(t.titlu || "Sinteză")}</h3><div class="tbl-wrap"><table><thead><tr>${t.coloane.map(c => `<th>${mdi(c)}</th>`).join("")}</tr></thead><tbody>${arr(t.randuri).map(row => `<tr>${arr(row).map(c => `<td>${mdi(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section>` : ""}
+  ${t && !isDdx ? tblHtml : ""}
 
   ${cz ? `<section class="block"><h3 class="block-h">Caz clinic</h3><div class="case"><div class="case-p"><span class="label">Prezentare</span>${mdi(cz.prezentare)}</div>
     ${arr(cz.intrebari).map(q => `<details class="qa"><summary>${mdi(q.intrebare)}</summary><div class="ans">${md(q.raspuns)}</div></details>`).join("")}</div></section>` : ""}
@@ -1322,11 +1413,14 @@ function renderExplain(opts){
 
   ${arr(r.glosar).length ? `<section class="block"><h3 class="block-h">Glosar</h3><dl class="gloss">${r.glosar.map(g => `<dt>${mdi(g.termen)}</dt><dd>${mdi(g.definitie)}</dd>`).join("")}</dl></section>` : ""}
 
+  ${m.mode === "general" && arr(r.bibliografie).length ? `<section class="block"><div class="card biblio"><h4>Tratate și ghiduri de referință pentru aprofundare</h4><ul>${r.bibliografie.map(b => `<li><b>${mdi(b.titlu)}</b>${b.pentru ? `: ${mdi(b.pentru)}` : ""}</li>`).join("")}</ul><p class="hint" style="margin-top:8px">Listă propusă de AI pentru tema explicată. Verifică ediția recomandată de catedră.</p></div></section>` : ""}
   ${m.mode === "combinat" && arr(r.adaugiri).length ? `<section class="block"><div class="card adds"><h4>Ce am adăugat din afara sursei și de ce</h4><ul>${r.adaugiri.map(a => `<li>${mdi(a.continut)}<span>${mdi(a.motiv)}</span></li>`).join("")}</ul></div></section>` : ""}
   ${m.mode === "sursa" && arr(r.neacoperit).length ? `<section class="block"><div class="card gaps"><h4>Ce nu acoperă sursa</h4><ul>${r.neacoperit.map(a => `<li>${mdi(a)}</li>`).join("")}</ul><p class="hint" style="margin-top:8px">Trece pe modul Combinat dacă vrei ca aceste goluri să fie explicate, marcat separat.</p></div></section>` : ""}
 
   ${live ? `<p class="hint" style="margin-top:24px">Explicația se scrie în continuare…</p>` : `<div class="next">
     <button class="btn" type="button" id="toQuiz">Fă un quiz din tema asta</button>
+    <button class="btn" type="button" id="toFlash">Fă flashcards</button>
+    <button class="btn" type="button" id="toCaz">Rezolvă un caz clinic</button>
     <button class="btn" type="button" id="toSlides">Fă o prezentare</button>
   </div>
 
@@ -1349,9 +1443,12 @@ function renderExplain(opts){
   $("#fixMm").onclick = fixSchema;
   $("#toQuiz").onclick = () => { selectTab("quiz"); if (!state.quiz.list.length || state.quiz.sample) genQuiz(); };
   $("#toSlides").onclick = () => { selectTab("prezentare"); if (!state.slides.list.length || state.slides.sample) genSlides(); };
+  $("#toFlash").onclick = () => { selectTab("flash"); if (!state.flash.list.length) genFlash(); };
+  $("#toCaz").onclick = () => { selectTab("caz"); if (!state.caz.data) genCaz(); };
   $("#askGo").onclick = askFollowup;
   $("#askIn").addEventListener("keydown", ev => { if (ev.key === "Enter") askFollowup(); });
   if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
+  try { linkTerms(p, r.glosar); } catch (e){ console.error(e); }
   drawSchema();
 }
 
@@ -1362,6 +1459,7 @@ function toggleSample(on){
   state.histId = null;
   state.quiz = on ? { list: SAMPLE.quiz, answers: {}, checked: false, sample: true } : { list: [], answers: {}, checked: false };
   state.slides = on ? { list: SAMPLE.slides, idx: 0, sample: true } : { list: [], idx: 0 };
+  state.flash = emptyFlash(); state.caz = emptyCaz(); state.tools.hy = null;
   state.exportSvg = null; state.exportFor = null;
   renderAll(); selectTab("explicatie");
 }
@@ -1409,10 +1507,10 @@ Ești examinator. Creează ${n} întrebări-grilă în stilul testelor de la USM
 - CM (complement multiplu): 5 variante A–E, între 2 și 4 răspunsuri corecte.
 ${kindLine} Dificultate: ${diff}.
 ${basis}
-Acoperă proporțional teoria și practica. Distractori plauzibili, fără „toate variantele” sau „niciuna dintre variante”, fără formulări ambigue sau duble negații.
+Acoperă proporțional teoria și practica. Pentru FIECARE variantă scrie în "de_ce" de ce este corectă sau greșită, cu mecanismul sau criteriul care o decide, nu doar „este fals”. Distractori plauzibili, fără „toate variantele” sau „niciuna dintre variante”, fără formulări ambigue sau duble negații.
 
 FORMAT: răspunde doar cu un array JSON:
-[{"tip":"CS","enunt":"…","variante":{"A":"…","B":"…","C":"…","D":"…","E":"…"},"corecte":["B"],"explicatie":"de ce sunt corecte sau greșite variantele-cheie, 1–3 propoziții","ref":"","adaugire":false}]
+[{"tip":"CS","enunt":"…","variante":{"A":"…","B":"…","C":"…","D":"…","E":"…"},"corecte":["B"],"de_ce":{"A":"de ce A este corectă sau greșită, o propoziție","B":"…","C":"…","D":"…","E":"…"},"explicatie":"raționamentul pe scurt, 1–2 propoziții","ref":"","adaugire":false}]
 
 EXPLICAȚIA:
 ${resultToMd(state.result, true)}${srcSection(ctx)}`;
@@ -1456,7 +1554,7 @@ function renderQuiz(){
         const sel = chosen.includes(L), cor = correct.includes(L);
         let cls = sel ? "sel" : "";
         if (Q.checked) cls = cor && sel ? "right" : (!cor && sel ? "wrong" : (cor ? "missed" : ""));
-        return `<label class="opt ${cls}"><input type="${q.tip === "CM" ? "checkbox" : "radio"}" name="q${i}" value="${L}" ${sel ? "checked" : ""} ${Q.checked ? "disabled" : ""}><span class="L">${L}</span><span>${mdi(q.variante[L])}</span></label>`;
+        return `<label class="opt ${cls}"><input type="${q.tip === "CM" ? "checkbox" : "radio"}" name="q${i}" value="${L}" ${sel ? "checked" : ""} ${Q.checked ? "disabled" : ""}><span class="L">${L}</span><span>${mdi(q.variante[L])}${Q.checked && q.de_ce && q.de_ce[L] ? `<span class="why">${mdi(q.de_ce[L])}</span>` : ""}</span></label>`;
       }).join("");
       return `<li class="qq" data-i="${i}">
         <div class="qq-h"><span class="qq-n">${i + 1}/${Q.list.length}</span><span class="qtype ${q.tip === "CM" ? "cm" : ""}">${q.tip}</span>${q.adaugire ? `<span class="badge m-combinat">din adăugiri</span>` : ""}
@@ -1496,6 +1594,7 @@ function quizMd(withAnswers){
     L.push(`**${i + 1}. (${q.tip})** ${stripMarks(q.enunt)}`, "");
     ["A", "B", "C", "D", "E"].forEach(k => q.variante[k] != null && L.push(`- ${k}. ${stripMarks(q.variante[k])}`));
     if (withAnswers) L.push("", `> Răspuns: ${q.corecte.join(", ")}. ${stripMarks(q.explicatie)} ${q.ref || ""}`.trim());
+    if (withAnswers && q.de_ce) ["A", "B", "C", "D", "E"].forEach(k => q.de_ce[k] && L.push(`> ${k}: ${stripMarks(q.de_ce[k])}`));
     L.push("");
   });
   return L.join("\n");
@@ -1504,7 +1603,7 @@ function quizCsv(){
   const c = s => '"' + String(s ?? "").replace(/"/g, '""') + '"';
   const rows = state.quiz.list.map(q => {
     const front = `(${q.tip}) ${stripMarks(q.enunt)}<br>` + ["A", "B", "C", "D", "E"].filter(k => q.variante[k] != null).map(k => `${k}. ${stripMarks(q.variante[k])}`).join("<br>");
-    const back = `<b>${q.corecte.join(", ")}</b><br>${stripMarks(q.explicatie)} ${q.ref || ""}`;
+    const back = `<b>${q.corecte.join(", ")}</b><br>${stripMarks(q.explicatie)} ${q.ref || ""}` + (q.de_ce ? "<br>" + ["A", "B", "C", "D", "E"].filter(k => q.de_ce[k]).map(k => `${k}: ${stripMarks(q.de_ce[k])}`).join("<br>") : "");
     return c(front) + "," + c(back);
   });
   return "﻿" + rows.join("\r\n");
@@ -1678,15 +1777,385 @@ async function buildPptx(){
   finally { setBusy(false); }
 }
 
+/* ---------------- flashcards ---------------- */
+function emptyFlash(){ return { list: [], idx: 0, flipped: false, known: {}, only: false }; }
+function emptyCaz(){ return { data: null, answer: "", eval: null, revealed: false }; }
+function needResult(){ if (!state.result){ toast("Generează întâi o explicație sau deschide exemplul"); return true; } return false; }
+
+function flashPrompt(n){
+  const ctx = ctxForCurrent();
+  const basis = ctx.mode === "sursa" ? `Folosește EXCLUSIV ${ctx.srcText ? "SURSELE" : "explicația de mai jos (extrasă din sursă)"}; pune în "ref" trimiterea [S1 p.4].`
+    : ctx.mode === "combinat" ? `Baza sunt sursele (cu "ref"); poți folosi și conceptele explicative marcate {+ +}.`
+    : `Bazează-te pe explicația de mai jos și pe cunoștințele medicale consacrate; "ref" rămâne "".`;
+  return `${ROLE}
+
+Creează ${n} flashcards (cartonașe) pentru repetiție distanțată (Anki), în limba română, pe tema de mai jos. ${basis}
+Reguli: o singură idee pe cartonaș; "fata" = o întrebare scurtă și precisă, care nu conține răspunsul; "spate" = răspunsul esențial, cel mult 35 de cuvinte. Acoperă definiții, mecanisme, criterii, valori de laborator, semne clinice, tratament și capcane, cu accent pe ce se cere la examen (high-yield). "tag" = un singur cuvânt dintre: definitie, mecanism, clinic, laborator, tratament, farmacologie, anatomie, capcana.
+FORMAT: răspunde doar cu un array JSON: [{"fata":"…","spate":"…","tag":"…","ref":""}]
+
+EXPLICAȚIA:
+${resultToMd(state.result, true)}${srcSection(ctx)}`;
+}
+async function genFlash(){
+  if (state.busy || needResult()) return;
+  const n = +($("#flN")?.value || 20); state.flOpts = String(n);
+  selectTab("flash");
+  setBusy(true, "Pregătește flashcards…");
+  try {
+    const ctx = ctxForCurrent();
+    const list = await callClaude(flashPrompt(n), { tier: "default", images: ctx.images, noCache: true, progress: ({ text }) => { $("#stSub").textContent = `${(text.match(/"fata"/g) || []).length} cartonașe scrise`; } });
+    const cards = arr(Array.isArray(list) ? list : list && list.cards).filter(c => c && c.fata && c.spate);
+    if (!cards.length) throw { code: "invalid_json" };
+    state.flash = Object.assign(emptyFlash(), { list: cards });
+    saveHistory(); renderFlash(); updateCounts();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function flashOrder(){ const F = state.flash; return F.list.map((c, i) => i).filter(i => !F.only || !F.known[i]); }
+function flashExportRow(){
+  return `<div class="q-foot"><button class="btn sm dl" type="button" id="flCsv">Exportă CSV pentru Anki</button><button class="btn sm" type="button" id="flCopy">Copiază lista</button>
+    <span class="hint" style="align-self:center">În Anki: File → Import → alegi fișierul. Coloanele sunt Față, Spate, Etichete.</span></div>`;
+}
+function flashCsv(){
+  const c = s => '"' + String(s ?? "").replace(/"/g, '""') + '"';
+  const topic = slug(state.result && state.result.titlu);
+  return "﻿" + state.flash.list.map(k => [c(stripMarks(k.fata)), c(stripMarks(k.spate) + (k.ref ? " " + k.ref : "")), c(`usmf ${topic} ${slug(k.tag || "")}`.trim())].join(",")).join("\r\n");
+}
+function renderFlash(){
+  const p = $("#p-flash"), F = state.flash;
+  const settings = `<div class="q-settings">
+    <div class="field"><span class="label">Cartonașe</span><select id="flN"><option>10</option><option selected>20</option><option>30</option><option>40</option></select></div>
+    <p class="hint grow" style="min-width:200px;margin:0;align-self:center">Întrebarea pe față, răspunsul pe spate. Le repeți aici sau le exporți în Anki.</p>
+    <button class="btn primary" type="button" id="flGo" data-busy>${F.list.length ? "Generează altele" : "Generează flashcards"}</button></div>`;
+  if (!F.list.length){
+    p.innerHTML = settings + `<div class="placeholder"><h3>Flashcards pentru memorare</h3><p>Cartonașe high-yield din tema curentă${state.meta && state.meta.mode !== "general" ? " și din cursul tău" : ""}, gata de repetat aici sau de importat în Anki, pentru repetiție distanțată.</p></div>`;
+  } else {
+    const order = flashOrder();
+    const knownN = Object.values(F.known).filter(Boolean).length;
+    if (!order.length){
+      p.innerHTML = settings + `<div class="placeholder"><h3>Le știi pe toate (${F.list.length}/${F.list.length})</h3><p>Poți relua setul întreg sau îl poți exporta în Anki.</p><div class="row"><button class="btn" type="button" id="flAll">Reia toate cartonașele</button></div></div>` + flashExportRow();
+    } else {
+      if (F.idx >= order.length) F.idx = 0;
+      const i = order[F.idx], c = F.list[i];
+      p.innerHTML = settings + `
+      <div class="fc-wrap">
+        <div class="fc-meta"><span>${F.idx + 1} / ${order.length}${F.only ? " neștiute" : ""}</span><span>${knownN} știute din ${F.list.length}</span></div>
+        <button class="fc${F.flipped ? " back" : ""}" type="button" id="fcCard" aria-label="Întoarce cartonașul">
+          <span class="fc-tag">${esc(c.tag || "")}${c.ref ? " · " + esc(c.ref) : ""}</span>
+          <span class="fc-side">${F.flipped ? "Răspuns" : "Întrebare"}</span>
+          <span class="fc-text"><span>${mdi(F.flipped ? c.spate : c.fata)}</span></span>
+          <span class="fc-hint">${F.flipped ? "Te-ai descurcat?" : "Apasă pe cartonaș sau Space ca să vezi răspunsul"}</span>
+        </button>
+        <div class="fc-actions">
+          <button class="btn" type="button" id="fcNo" ${F.flipped ? "" : "disabled"}>Nu știu încă</button>
+          <button class="btn primary" type="button" id="fcYes" ${F.flipped ? "" : "disabled"}>Știu</button>
+        </div>
+        <label class="fc-only"><input type="checkbox" id="fcOnly" ${F.only ? "checked" : ""}> Arată doar cartonașele neștiute</label>
+      </div>` + flashExportRow();
+      const next = known => { F.known[i] = known; F.flipped = false; if (!(F.only && known)) F.idx++; renderFlash(); $("#fcCard")?.focus(); };
+      $("#fcCard").onclick = () => { F.flipped = !F.flipped; renderFlash(); $("#fcCard").focus(); };
+      $("#fcNo").onclick = () => next(false);
+      $("#fcYes").onclick = () => next(true);
+      $("#fcOnly").onchange = ev => { F.only = ev.target.checked; F.idx = 0; F.flipped = false; renderFlash(); };
+    }
+    $("#flAll") && ($("#flAll").onclick = () => { F.known = {}; F.only = false; F.idx = 0; renderFlash(); });
+    $("#flCsv").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-flashcards.csv", flashCsv());
+    $("#flCopy").onclick = () => copyText(F.list.map((c, k) => `${k + 1}. ${stripMarks(c.fata)}\n   → ${stripMarks(c.spate)}`).join("\n"));
+  }
+  if (state.flOpts) $("#flN").value = state.flOpts;
+  $("#flGo").onclick = genFlash;
+  if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
+}
+
+/* ---------------- caz clinic interactiv (vignete) ---------------- */
+function cazPrompt(diff){
+  const ctx = ctxForCurrent();
+  const basis = ctx.mode === "sursa" ? "Construiește cazul din informațiile din surse (tabloul clinic, investigațiile și tratamentul descrise acolo)."
+    : ctx.mode === "combinat" ? "Pornește de la surse; poți completa cu date clinice realiste ca să fie un caz complet." : "";
+  return `${ROLE}
+
+Creează o vignetă clinică fictivă și realistă, pentru antrenarea raționamentului clinic, pe tema de mai jos. Dificultate: ${diff}. ${basis}
+Cazul NU numește diagnosticul și nu dă indicii evidente de tipul „tipic pentru X”, dar datele trebuie să permită ajungerea la diagnostic. Valorile de laborator au unități și intervale de referință uzuale.
+FORMAT: răspunde doar cu un obiect JSON:
+{"pacient":"sex, vârstă, ocupație dacă e relevantă","motiv":"motivul prezentării","istoric":"istoricul bolii, antecedente, medicație, fumat sau alcool (markdown scurt)","semne_vitale":{"TA":"","AV":"","FR":"","T":"","SpO2":""},"examen":"examenul obiectiv relevant","laborator":[{"analiza":"","valoare":"","referinta":"","flag":"H, L sau N"}],"paraclinic":"ECG, imagistică etc. sau șir gol","intrebare":"Care este diagnosticul cel mai probabil?","diagnostic":"diagnosticul corect, precis","diferentiale":[{"diagnostic":"","de_ce_nu":"o propoziție"}],"rationament":"pașii raționamentului, listă markdown","investigatii":"ce investigații urmează și de ce","tratament":"conduita terapeutică pe scurt"}
+
+TEMA:
+${resultToMd(state.result, true)}${srcSection(ctx)}`;
+}
+async function genCaz(){
+  if (state.busy || needResult()) return;
+  const diff = $("#czD")?.value || "medie, nivel de examen"; state.czOpts = diff;
+  selectTab("caz");
+  setBusy(true, "Construiește cazul clinic…");
+  try {
+    const ctx = ctxForCurrent();
+    const d = await callClaude(cazPrompt(diff), { tier: "default", images: ctx.images, noCache: true });
+    if (!d || !d.diagnostic || !d.pacient) throw { code: "invalid_json" };
+    state.caz = Object.assign(emptyCaz(), { data: d });
+    saveHistory(); renderCaz();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+async function checkCaz(){
+  const C = state.caz; const ans = $("#czAns").value.trim();
+  if (!ans){ toast("Scrie întâi diagnosticul tău"); $("#czAns").focus(); return; }
+  if (state.busy) return;
+  C.answer = ans;
+  setBusy(true, "Evaluează răspunsul…");
+  try {
+    const ev = await callClaude(`Ești profesor de medicină. Evaluează răspunsul unui student la o vignetă clinică.
+Diagnosticul corect: ${C.data.diagnostic}
+Diagnostice diferențiale relevante: ${arr(C.data.diferentiale).map(d => d.diagnostic).join("; ")}
+Răspunsul studentului: ${ans}
+Acceptă sinonimele și formulările echivalente. "partial" înseamnă că direcția e bună, dar lipsește precizia (tipul, cauza sau stadiul).
+Răspunde doar cu JSON: {"verdict":"corect, partial sau gresit","feedback":"2–3 propoziții în română, adresate studentului: ce a fost bine și ce lipsește"}`, { tier: "default", noCache: true });
+    const v = String((ev && ev.verdict) || "").toLowerCase();
+    C.eval = { verdict: v.startsWith("corect") ? "corect" : v.startsWith("partial") || v.startsWith("parțial") ? "partial" : "gresit", feedback: (ev && ev.feedback) || "" };
+    C.revealed = true;
+    renderCaz();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function renderCaz(){
+  const p = $("#p-caz"), C = state.caz, d = C.data;
+  const settings = `<div class="q-settings">
+    <div class="field"><span class="label">Dificultate</span><select id="czD"><option value="ușoară, prezentare tipică">Ușor</option><option value="medie, nivel de examen" selected>Examen</option><option value="ridicată, nivel rezidențiat, cu prezentare atipică">Rezidențiat</option></select></div>
+    <p class="hint grow" style="min-width:200px;margin:0;align-self:center">Primești un pacient fictiv. Pui diagnosticul, apoi vezi raționamentul complet.</p>
+    <button class="btn primary" type="button" id="czGo" data-busy>${d ? "Alt caz" : "Generează un caz"}</button></div>`;
+  if (!d){
+    p.innerHTML = settings + `<div class="placeholder"><h3>Antrenează raționamentul clinic</h3><p>Un caz fictiv construit din tema curentă${state.meta && state.meta.mode !== "general" ? " și din cursul tău" : ""}: vârstă, simptome, semne vitale, analize. Tu pui diagnosticul, AI-ul îți evaluează răspunsul și îți arată raționamentul și diagnosticul diferențial.</p></div>`;
+  } else {
+    const vit = Object.entries(d.semne_vitale || {}).filter(([, v]) => v);
+    const labs = arr(d.laborator).filter(l => l && l.analiza);
+    const V = C.eval && C.eval.verdict;
+    p.innerHTML = settings + `
+    <article class="case" style="margin-top:18px">
+      <div class="case-p"><span class="label">Pacient</span><b>${mdi(d.pacient)}</b><br>${mdi(d.motiv)}</div>
+      <div class="case-body">
+        ${d.istoric ? `<div><span class="label">Istoric</span><div class="prose">${md(d.istoric)}</div></div>` : ""}
+        ${vit.length ? `<div><span class="label">Semne vitale</span><div class="vitals">${vit.map(([k, v]) => `<div class="vital"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div></div>` : ""}
+        ${d.examen ? `<div><span class="label">Examen obiectiv</span><div class="prose">${md(d.examen)}</div></div>` : ""}
+        ${labs.length ? `<div><span class="label">Laborator</span><div class="tbl-wrap"><table><thead><tr><th>Analiză</th><th>Valoare</th><th>Referință</th></tr></thead><tbody>${labs.map(l => { const f = String(l.flag || "N").trim().toUpperCase().charAt(0); return `<tr><td>${esc(l.analiza)}</td><td class="flag-${f}">${esc(l.valoare)}${f === "H" ? '<span class="flagmark">↑</span>' : f === "L" ? '<span class="flagmark">↓</span>' : ""}</td><td>${esc(l.referinta)}</td></tr>`; }).join("")}</tbody></table></div></div>` : ""}
+        ${d.paraclinic ? `<div><span class="label">Investigații paraclinice</span><div class="prose">${md(d.paraclinic)}</div></div>` : ""}
+      </div>
+    </article>
+    <div class="cz-q">
+      <label for="czAns" class="block-h" style="margin:0">${mdi(d.intrebare || "Care este diagnosticul cel mai probabil?")}</label>
+      <textarea id="czAns" placeholder="Scrie diagnosticul tău și, opțional, pe ce te bazezi…" ${C.revealed ? "readonly" : ""}>${esc(C.answer)}</textarea>
+      ${C.revealed ? "" : `<div class="row"><button class="btn primary" type="button" id="czCheck" data-busy>Verifică răspunsul</button><button class="btn" type="button" id="czShow">Arată soluția fără să răspund</button></div>`}
+    </div>
+    ${V ? `<div class="verdict-box ${V === "corect" ? "ok" : V === "partial" ? "partial" : "bad"}"><b>${V === "corect" ? "Corect" : V === "partial" ? "Parțial corect" : "Nu este diagnosticul corect"}</b>${mdi(C.eval.feedback)}</div>` : ""}
+    ${C.revealed ? `<section class="sol">
+      <div class="card"><h4>Diagnostic</h4><p class="sol-dx">${mdi(d.diagnostic)}</p></div>
+      ${d.rationament ? `<div><h3 class="block-h">Raționament</h3><div class="prose">${md(d.rationament)}</div></div>` : ""}
+      ${arr(d.diferentiale).length ? `<div class="card"><h4>Diagnostic diferențial</h4><ul>${d.diferentiale.map(x => `<li><b>${mdi(x.diagnostic)}</b>: ${mdi(x.de_ce_nu)}</li>`).join("")}</ul></div>` : ""}
+      ${d.investigatii ? `<div><h3 class="block-h">Investigații următoare</h3><div class="prose">${md(d.investigatii)}</div></div>` : ""}
+      ${d.tratament ? `<div><h3 class="block-h">Conduită terapeutică</h3><div class="prose">${md(d.tratament)}</div></div>` : ""}
+    </section>` : ""}`;
+    $("#czCheck") && ($("#czCheck").onclick = checkCaz);
+    $("#czShow") && ($("#czShow").onclick = () => { C.revealed = true; C.answer = $("#czAns").value; renderCaz(); });
+    $("#czAns").oninput = ev => { C.answer = ev.target.value; };
+  }
+  if (state.czOpts) $("#czD").value = state.czOpts;
+  $("#czGo").onclick = genCaz;
+  if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
+}
+
+/* ---------------- instrumente: rezumat high-yield și mnemonice ---------------- */
+function hySourceLabel(){
+  const act = activeSources();
+  if (act.length) return `sursele active (${act.map(s => s.id).join(", ")})`;
+  if (state.result) return `tema „${esc(stripMarks(state.result.titlu))}”`;
+  return "tema scrisă sus, în caseta principală";
+}
+async function genHy(){
+  if (state.busy) return;
+  let mode = "general", material = "", ctx = null;
+  if (activeSources().length){ ctx = buildCtx("sursa"); mode = "sursa"; }
+  else if (state.result) material = `EXPLICAȚIA:\n${resultToMd(state.result, true)}`;
+  else {
+    const q = $("#q").value.trim();
+    if (!q){ toast("Scrie o temă sus sau adaugă un curs"); $("#q").focus(); return; }
+    material = `TEMA: ${q}`;
+  }
+  setBusy(true, "Extrage esențialul…");
+  try {
+    const prompt = `${ROLE}
+${modeRules(mode)}
+
+Fă un rezumat HIGH-YIELD pentru examen. Elimină umplutura academică (istoricul descoperirilor, formulările introductive, repetițiile) și păstrează doar ce se cere frecvent la examen: ideile-cheie, buzzwords (indicii clasice care duc la un diagnostic sau concept), cifrele și criteriile de reținut și capcanele.${mode === "sursa" ? " Pune la finalul fiecărui element trimiterea la sursă, de exemplu [S1 p.4]." : ""}
+FORMAT: răspunde doar cu un obiect JSON:
+{"titlu":"…","esential":["8–15 idei-cheie, câte o propoziție scurtă"],"buzzwords":[{"indiciu":"…","inseamna":"…"}],"cifre":["valori, criterii, doze sau clasificări de reținut"],"capcane":["…"]}
+
+${material}${ctx ? srcSection(ctx) : ""}`;
+    const r = await callClaude(prompt, { tier: "default", images: ctx ? ctx.images : [], noCache: true, progress: ({ text }) => { $("#stSub").textContent = `${fmt(text.length)} caractere`; } });
+    if (!r || !arr(r.esential).length) throw { code: "invalid_json" };
+    state.tools.hy = r; renderTools();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function hyMd(h){
+  const L = [`# High-Yield: ${stripMarks(h.titlu)}`, "", "## Esențial", ...arr(h.esential).map(x => "- " + stripMarks(x)), ""];
+  if (arr(h.buzzwords).length) L.push("## Buzzwords", ...h.buzzwords.map(b => `- ${stripMarks(b.indiciu)} → **${stripMarks(b.inseamna)}**`), "");
+  if (arr(h.cifre).length) L.push("## Cifre și criterii", ...h.cifre.map(x => "- " + stripMarks(x)), "");
+  if (arr(h.capcane).length) L.push("## Capcane", ...h.capcane.map(x => "- " + stripMarks(x)), "");
+  return L.join("\n");
+}
+function hyHtml(h){
+  return `<div class="tool-out">
+    <h4 class="block-h" style="margin:0">${mdi(h.titlu)}</h4>
+    <div class="card"><h4>Esențial</h4><ul>${arr(h.esential).map(x => `<li>${mdi(x)}</li>`).join("")}</ul></div>
+    ${arr(h.buzzwords).length ? `<div class="card"><h4>Buzzwords: indiciu → înseamnă</h4><div class="bz">${h.buzzwords.map(b => `<span>${mdi(b.indiciu)}</span><i>→</i><b>${mdi(b.inseamna)}</b>`).join("")}</div></div>` : ""}
+    ${(arr(h.cifre).length || arr(h.capcane).length) ? `<div class="two">
+      ${arr(h.cifre).length ? `<div class="card"><h4>Cifre și criterii</h4><ul>${h.cifre.map(x => `<li>${mdi(x)}</li>`).join("")}</ul></div>` : ""}
+      ${arr(h.capcane).length ? `<div class="card pit"><h4>Capcane</h4><ul>${h.capcane.map(x => `<li>${mdi(x)}</li>`).join("")}</ul></div>` : ""}
+    </div>` : ""}
+    <div class="row"><button class="btn sm" type="button" id="hyCopy">Copiază</button><button class="btn sm dl" type="button" id="hyDl">Descarcă .md</button></div>
+  </div>`;
+}
+async function genMn(){
+  const q = $("#mnIn").value.trim();
+  if (!q){ toast("Scrie ce vrei să memorezi"); $("#mnIn").focus(); return; }
+  if (state.busy) return;
+  state.tools.mnQ = q;
+  setBusy(true, "Inventează mnemonice…");
+  try {
+    const r = await callClaude(`${ROLE}
+
+Creează mnemonice în limba română pentru a memora: „${q}”.
+Dacă textul e doar numele unei liste, scrie întâi lista corectă și completă, așa cum apare în manualele consacrate. Propune 2–3 variante: un acronim (inițialele formează un cuvânt sau o expresie ușor de reținut; dacă există un acronim consacrat în engleză, de exemplu „I GET SMASHED”, include-l și pe acela), o propoziție-mnemonică și, dacă ajută, o asociere vizuală. Nu deforma și nu scurta lista ca să iasă acronimul.
+FORMAT: răspunde doar cu un obiect JSON:
+{"lista":["elementele de memorat, în ordine"],"mnemonice":[{"tip":"acronim, propoziție sau asociere","mnemonic":"…","cheie":["literă sau cuvânt → element"]}]}`, { tier: "default", noCache: true });
+    if (!r || !arr(r.mnemonice).length) throw { code: "invalid_json" };
+    state.tools.mn = r; renderTools();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function mnHtml(m){
+  return `<div class="tool-out">
+    ${arr(m.lista).length ? `<div class="card"><h4>De memorat</h4><ol class="mn-list">${m.lista.map(x => `<li>${mdi(x)}</li>`).join("")}</ol></div>` : ""}
+    <div class="mn-grid">${arr(m.mnemonice).map(x => `<div class="mn"><span class="label">${esc(x.tip || "")}</span><div class="big">${mdi(x.mnemonic)}</div>${arr(x.cheie).length ? `<ul>${x.cheie.map(k => `<li>${mdi(k)}</li>`).join("")}</ul>` : ""}</div>`).join("")}</div>
+  </div>`;
+}
+function renderTools(){
+  const p = $("#p-tools"), T = state.tools;
+  p.innerHTML = `
+  <section class="tool">
+    <div class="tool-h"><div><h3>Rezumat High-Yield</h3><p class="hint">Filtrează umplutura și păstrează ce se cere la examen: idei-cheie, buzzwords, cifre și capcane. Pornește de la ${hySourceLabel()}.</p></div>
+      <button class="btn primary" type="button" id="hyGo" data-busy>${T.hy ? "Generează din nou" : "Fă rezumatul"}</button></div>
+    ${T.hy ? hyHtml(T.hy) : ""}
+  </section>
+  <section class="tool">
+    <div class="tool-h"><div><h3>Generator de mnemonice</h3><p class="hint">Scrie lista de memorat sau doar numele ei. Primești acronime și propoziții ușor de reținut.</p></div></div>
+    <div class="ask-row"><textarea id="mnIn" rows="2" placeholder="De exemplu: cauzele pancreatitei acute; ramurile arterei carotide externe; efectele adverse ale amiodaronei">${esc(T.mnQ || "")}</textarea><button class="btn primary" type="button" id="mnGo" data-busy>Creează mnemonice</button></div>
+    ${T.mn ? mnHtml(T.mn) : ""}
+  </section>`;
+  $("#hyGo").onclick = genHy;
+  $("#mnGo").onclick = genMn;
+  $("#mnIn").oninput = ev => { T.mnQ = ev.target.value; };
+  $("#mnIn").addEventListener("keydown", ev => { if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) genMn(); });
+  $("#hyCopy") && ($("#hyCopy").onclick = () => copyText(hyMd(T.hy)));
+  $("#hyDl") && ($("#hyDl").onclick = () => saveFile(slug("high-yield " + (T.hy.titlu || "")) + ".md", hyMd(T.hy)));
+  if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
+}
+
+/* ---------------- dicționar integrat: termeni din glosar + „Definește” pe text selectat ---------------- */
+function linkTerms(root, glosar){
+  const terms = arr(glosar).filter(g => g && g.termen && g.definitie && String(g.termen).trim().length > 1)
+    .sort((a, b) => String(b.termen).length - String(a.termen).length);
+  if (!terms.length) return;
+  const blocks = $$(".prose, .lede, td, .case-p", root);
+  for (const block of blocks){
+    for (const g of terms){
+      const term = String(g.termen).trim();
+      let re;
+      try { re = new RegExp("(^|[^\\p{L}\\p{N}])(" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")(?![\\p{L}\\p{N}])", "iu"); } catch { continue; }
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && n.parentElement.closest(".term, .ref, .lv-tag, .label, h3") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+      let node;
+      while ((node = walker.nextNode())){
+        const m = re.exec(node.nodeValue);
+        if (!m) continue;
+        const hit = node.splitText(m.index + m[1].length);
+        hit.splitText(m[2].length);
+        const span = document.createElement("span");
+        span.className = "term"; span.tabIndex = 0;
+        span.dataset.term = term; span.dataset.def = stripMarks(g.definitie);
+        span.textContent = hit.nodeValue;
+        hit.replaceWith(span);
+        break;
+      }
+    }
+  }
+}
+const tipEl = document.createElement("div"); tipEl.className = "tip"; tipEl.hidden = true; tipEl.setAttribute("role", "tooltip"); document.body.appendChild(tipEl);
+const defBtn = document.createElement("button"); defBtn.className = "def-btn"; defBtn.type = "button"; defBtn.hidden = true; document.body.appendChild(defBtn);
+const defCache = {};
+let defRect = null;
+function showTipAt(rect, title, text){
+  tipEl.innerHTML = `<b>${esc(title)}</b>${esc(text)}`;
+  tipEl.hidden = false;
+  const w = Math.min(320, innerWidth - 24);
+  tipEl.style.maxWidth = w + "px";
+  const x = Math.max(scrollX + 12, Math.min(rect.left + scrollX, scrollX + innerWidth - w - 12));
+  tipEl.style.left = x + "px";
+  tipEl.style.top = (rect.bottom + scrollY + 8) + "px";
+}
+function hideTip(){ tipEl.hidden = true; }
+function hideDefBtn(){ defBtn.hidden = true; }
+const termOf = ev => ev.target && ev.target.closest ? ev.target.closest(".term") : null;
+document.addEventListener("mouseover", ev => { const t = termOf(ev); if (t) showTipAt(t.getBoundingClientRect(), t.dataset.term, t.dataset.def); });
+document.addEventListener("mouseout", ev => { if (termOf(ev)) hideTip(); });
+document.addEventListener("focusin", ev => { const t = termOf(ev); if (t) showTipAt(t.getBoundingClientRect(), t.dataset.term, t.dataset.def); });
+document.addEventListener("focusout", ev => { if (termOf(ev)) hideTip(); });
+document.addEventListener("click", ev => {
+  const t = termOf(ev);
+  if (t){ showTipAt(t.getBoundingClientRect(), t.dataset.term, t.dataset.def); return; }
+  if (!ev.target.closest || !ev.target.closest(".tip, .def-btn")) hideTip();
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Escape"){ hideTip(); hideDefBtn(); } });
+function checkSelection(){
+  const sel = window.getSelection();
+  const t = sel ? String(sel).trim() : "";
+  if (!t || t.length < 3 || t.length > 60 || /\n/.test(t) || !sel.rangeCount){ hideDefBtn(); return; }
+  const a = sel.anchorNode; const el = a && (a.nodeType === 1 ? a : a.parentElement);
+  if (!el || !el.closest("#p-explicatie, #p-caz, #p-tools, #p-flash, #p-quiz")){ hideDefBtn(); return; }
+  defRect = sel.getRangeAt(0).getBoundingClientRect();
+  defBtn.textContent = `Definește „${t.length > 28 ? t.slice(0, 26) + "…" : t}”`;
+  defBtn.dataset.term = t;
+  defBtn.hidden = false;
+  defBtn.style.left = Math.max(scrollX + 8, Math.min(defRect.left + scrollX, scrollX + innerWidth - 240)) + "px";
+  defBtn.style.top = (defRect.bottom + scrollY + 6) + "px";
+}
+document.addEventListener("mouseup", ev => { if (ev.target !== defBtn) setTimeout(checkSelection, 0); });
+document.addEventListener("touchend", ev => { if (ev.target !== defBtn) setTimeout(checkSelection, 300); });
+defBtn.addEventListener("mousedown", ev => ev.preventDefault());
+defBtn.onclick = async () => {
+  const term = defBtn.dataset.term, rect = defRect;
+  hideDefBtn();
+  try { window.getSelection().removeAllRanges(); } catch {}
+  const key = term.toLowerCase() + "|" + (state.result ? state.result.titlu : "");
+  if (defCache[key]){ showTipAt(rect, term, defCache[key]); return; }
+  showTipAt(rect, term, "Se caută definiția…");
+  try {
+    const s = await sampleP;
+    const { text } = await s(`Definește pe scurt, în limba română, termenul medical „${term}”${state.result ? ` în contextul temei „${stripMarks(state.result.titlu)}”` : ""}. Cel mult două propoziții, fără introducere și fără formatare. Dacă nu e un termen medical, explică pe scurt sensul lui în context.`, { modelTier: "quick" });
+    defCache[key] = stripMarks(text).trim();
+    showTipAt(rect, term, defCache[key]);
+  } catch (e){ showTipAt(rect, term, errCopy(e)); }
+};
+
+
 /* ---------------- tabs & counts ---------------- */
 function selectTab(t){
   state.tab = t;
   $$(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
-  ["explicatie", "quiz", "prezentare"].forEach(k => $("#p-" + k).hidden = k !== t);
+  ["explicatie", "quiz", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  if (t === "tools") renderTools();
+  hideTip(); hideDefBtn();
 }
 $$(".tab").forEach(b => b.onclick = () => selectTab(b.dataset.tab));
-function updateCounts(){ $("#nQuiz").textContent = state.quiz.list.length; $("#nSlides").textContent = state.slides.list.length; }
-function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); updateCounts(); }
+function updateCounts(){ $("#nQuiz").textContent = state.quiz.list.length; $("#nSlides").textContent = state.slides.list.length; $("#nFlash").textContent = state.flash.list.length; }
+function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); renderFlash(); renderCaz(); renderTools(); updateCounts(); }
 
 /* ---------------- history (this browser only) ---------------- */
 const HKEY = "sinapsa.hist.v1";
@@ -1696,7 +2165,7 @@ function saveHistory(){
   if (!state.result || (state.meta && state.meta.sample)) return;
   const h = readHist();
   if (!state.histId){ state.histId = "h" + Date.now(); state.ctxHist = state.histId; }
-  const entry = { id: state.histId, result: state.result, meta: state.meta, quiz: state.quiz.list, slides: state.slides.list };
+  const entry = { id: state.histId, result: state.result, meta: state.meta, quiz: state.quiz.list, slides: state.slides.list, flash: state.flash.list, caz: state.caz.data };
   const i = h.findIndex(x => x.id === state.histId);
   if (i >= 0) h[i] = entry; else h.unshift(entry);
   writeHist(h.slice(0, 15)); renderHist();
@@ -1714,6 +2183,9 @@ $("#hist").addEventListener("click", ev => {
   state.result = x.result; state.meta = x.meta; state.histId = x.id;
   state.quiz = { list: arr(x.quiz), answers: {}, checked: false };
   state.slides = { list: arr(x.slides), idx: 0 };
+  state.flash = Object.assign(emptyFlash(), { list: arr(x.flash) });
+  state.caz = Object.assign(emptyCaz(), { data: x.caz || null });
+  state.tools.hy = null;
   state.exportSvg = null; state.exportFor = null;
   renderAll(); selectTab("explicatie");
   $(".work").scrollIntoView({ behavior: "smooth", block: "start" });
