@@ -670,14 +670,14 @@ const state = {
   sources: [], srcSeq: 0,
   mode: "general",
   intent: "inteleg",
-  result: SAMPLE.result,
-  meta: SAMPLE.meta,
+  result: null,
+  meta: null,
   histId: null,
   ctx: null,
   level: "ambele",
   tab: "explicatie",
-  quiz: { list: SAMPLE.quiz, answers: {}, checked: false, sample: true },
-  slides: { list: SAMPLE.slides, idx: 0, sample: true },
+  quiz: { list: [], answers: {}, checked: false },
+  slides: { list: [], idx: 0 },
   exportSvg: null, exportFor: null,
   busy: false, ctl: null
 };
@@ -1262,7 +1262,12 @@ function renderExplain(opts){
   const live = !!(opts && opts.partial);
   const r = live ? opts.partial : state.result, m = (live ? opts.meta : state.meta) || {};
   const p = $("#p-explicatie");
-  if (!r){ p.innerHTML = `<div class="placeholder"><h3>Nicio explicație încă</h3><p>Scrie o temă sau adaugă un curs, apoi apasă Explică.</p></div>`; return; }
+  if (!r){
+    p.innerHTML = `<div class="placeholder"><h3>Nicio explicație încă</h3><p>Scrie o temă sau adaugă un curs, apoi apasă Explică.</p>
+      <div class="row" style="margin-top:8px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
+    $("#showSample").onclick = () => toggleSample(true);
+    return;
+  }
   const code = (live && !opts.schemaDone) ? "" : ((r.schema && r.schema.mermaid) || "");
   const cachedSvg = code && mmCache.key === mmKey(code) ? mmCache.svg : "";
   const mmInner = cachedSvg || `<div class="mm-wait">${live && !opts.schemaDone ? "Schema apare imediat ce e scrisă…" : "Se desenează schema…"}</div>`;
@@ -1290,7 +1295,7 @@ function renderExplain(opts){
         <button type="button" data-lv="ambele" aria-pressed="${state.level === "ambele"}">Ambele</button>
       </div>
       <span class="grow"></span>
-      ${live ? "" : `${!m.sample && state.lastReq && state.ctxHist === state.histId ? `<button class="btn sm" type="button" id="regen" data-busy>Regenerează</button>` : ""}
+      ${live ? "" : `${m.sample ? `<button class="btn sm" type="button" id="hideSample">Ascunde exemplul</button>` : ""}${!m.sample && state.lastReq && state.ctxHist === state.histId ? `<button class="btn sm" type="button" id="regen" data-busy>Regenerează</button>` : ""}
       <button class="btn sm" type="button" id="copyMd">Copiază</button>
       <button class="btn sm dl" type="button" id="dlMd">Descarcă .md</button>`}
     </div>
@@ -1340,6 +1345,7 @@ function renderExplain(opts){
   });
   if (live){ if (code && !cachedSvg) drawSchema(r); return; }
   $("#regen") && ($("#regen").onclick = () => generate({ regen: true }));
+  $("#hideSample") && ($("#hideSample").onclick = () => toggleSample(false));
   $("#copyMd").onclick = () => copyText(resultToMd(state.result));
   $("#dlMd").onclick = () => saveFile(slug(r.titlu) + ".md", resultToMd(state.result));
   $("#zoomMm").onclick = ev => { const on = $("#mm").classList.toggle("big"); ev.currentTarget.textContent = on ? "Micșorează" : "Mărește"; };
@@ -1352,8 +1358,19 @@ function renderExplain(opts){
   drawSchema();
 }
 
+function toggleSample(on){
+  if (state.busy) return;
+  state.result = on ? SAMPLE.result : null;
+  state.meta = on ? SAMPLE.meta : null;
+  state.histId = null;
+  state.quiz = on ? { list: SAMPLE.quiz, answers: {}, checked: false, sample: true } : { list: [], answers: {}, checked: false };
+  state.slides = on ? { list: SAMPLE.slides, idx: 0, sample: true } : { list: [], idx: 0 };
+  state.exportSvg = null; state.exportFor = null;
+  renderAll(); selectTab("explicatie");
+}
+
 function ctxForCurrent(){
-  if (state.ctx && !state.meta.sample && state.histId === state.ctxHist) return state.ctx;
+  if (state.ctx && state.meta && !state.meta.sample && state.histId === state.ctxHist) return state.ctx;
   return { mode: (state.meta && state.meta.mode) || "general", srcText: "", images: [], imgMap: "" };
 }
 async function askFollowup(){
