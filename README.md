@@ -4,7 +4,7 @@ Tutore medical pentru studenți. Proiect studențesc independent, fără legătu
 
 Site care explică teme medicale la nivel simplificat și avansat, cu teorie, practică, schemă vizuală, grilă CS/CM și prezentare .pptx. Funcționează din cursul tău (PDF, DOCX, PPTX, TXT, poze) sau ca motor de căutare.
 
-Oricine deschide linkul îl poate folosi, fără cont. Explicațiile sunt generate de Google Gemini, pe nivelul gratuit.
+Oricine deschide linkul îl poate folosi, fără cont. Contul e opțional și servește la sincronizarea între dispozitive. Explicațiile sunt generate de Google Gemini, pe nivelul gratuit.
 
 ## Ce conține folderul
 
@@ -12,7 +12,9 @@ Oricine deschide linkul îl poate folosi, fără cont. Explicațiile sunt genera
 |---|---|
 | `public/index.html` | Site-ul (tot ce vede utilizatorul) |
 | `server.py` | Server mic care ține cheia AI ascunsă și trimite cererile la Gemini |
-| `requirements.txt` | Gol: serverul nu are nevoie de pachete în plus |
+| `kb.py` | Biblioteca comună de explicații (Postgres prin `DATABASE_URL`, altfel temporară) |
+| `accounts.py` | Conturi și sincronizarea istoricului și a băncilor de grile |
+| `requirements.txt` | Driverul Postgres (`psycopg`) |
 
 ---
 
@@ -60,7 +62,7 @@ Linkul site-ului apare sus, de forma `https://sinapsa-xxxx.onrender.com`. Pe el 
 - **Limita gratuită e comună:** toți utilizatorii împart limita zilnică a cheii tale. Limitele exacte le vezi în Google AI Studio, la *Rate limits*. Când limita se termină, site-ul afișează un mesaj și limita revine a doua zi. Serverul încearcă automat și alte modele Gemini gratuite înainte să renunțe.
 - **Protecție anti-abuz:** fiecare vizitator poate trimite cel mult 40 de cereri pe oră. Poți schimba numărul din Render cu variabila `RATE_PER_HOUR`.
 - **Confidențialitate:** pe nivelul gratuit, Google poate folosi conținutul trimis pentru a-și îmbunătăți serviciile. Nu încărca documente cu date care identifică pacienți.
-- **Istoricul** fiecărui utilizator rămâne doar în browserul lui.
+- **Istoricul** rămâne în browser. Cine își face cont îl are, împreună cu băncile de grile și greșelile, pe orice dispozitiv.
 
 ## Modificări ulterioare
 
