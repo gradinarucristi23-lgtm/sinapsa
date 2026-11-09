@@ -765,6 +765,60 @@ button.task:hover{background:var(--hema-soft)}
 .exam-bar #exT.low{color:#ff8f86}
 .exam-res{margin-top:12px}
 @media (max-width:760px){.anat{grid-template-columns:minmax(0,1fr)}.anat-fig.real{max-width:400px;width:100%;margin:0 auto}}
+
+/* v9: 3D, panoul „Progresul meu”, calendarul din colț */
+.prog-btn{margin-left:auto;position:relative}
+.prog-btn ~ .help-btn{margin-left:0}
+.pb-n{font-style:normal;font-family:var(--f-mono);font-size:11px;background:var(--bad);color:#fff;border-radius:999px;padding:0 6px;margin-left:2px}
+@media (max-width:560px){.prog-btn span{display:none}.prog-btn{padding:8px}}
+.m3-box{position:relative;border-radius:12px;overflow:hidden;background:#111;aspect-ratio:4/3.2}
+.m3-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.m3-start{position:absolute;inset:0;width:100%;border:0;background:radial-gradient(circle at 50% 40%,#2b2856,#111);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;font-size:15px}
+.m3-ic{font-family:var(--f-display);font-weight:800;font-size:34px;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;border:2px solid rgba(255,255,255,.5)}
+.m3-start:hover .m3-ic{background:rgba(255,255,255,.12)}
+.m3-pick{display:flex;flex-wrap:wrap;gap:6px}
+.m3-pick .chip.on{background:var(--hema-soft);color:var(--hema);font-weight:600}
+body.no-scroll{overflow:hidden}
+.drawer-ov{position:fixed;inset:0;z-index:75;background:rgba(10,9,20,.45);display:flex;justify-content:flex-end}
+.drawer{width:min(880px,100%);height:100%;background:var(--bg);display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.25);animation:drIn .22s ease-out}
+@keyframes drIn{from{transform:translateX(40px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.drawer{animation:none}}
+.drawer-h{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
+.drawer-h h2{margin:0;font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;flex:1}
+.drawer-h .icon-btn{order:2}
+.drawer-h .lab-nav{order:3;flex-basis:100%}
+.drawer-b{flex:1;overflow:auto;padding:18px clamp(14px,3vw,26px) 40px}
+.cal-w{position:fixed;right:16px;bottom:16px;z-index:40;width:256px;background:var(--surface);border-radius:16px;box-shadow:0 10px 34px -8px rgba(20,16,60,.35),0 0 0 1px var(--line);padding:10px 12px 12px;font-size:13px}
+.cal-w.min{width:auto;padding:0;background:none;box-shadow:none}
+.cal-pill{display:inline-flex;gap:8px;align-items:center;border:0;border-radius:999px;padding:10px 14px;background:var(--cta);color:var(--on-cta);font-weight:600;font-size:13.5px;cursor:pointer;box-shadow:0 8px 24px -8px rgba(20,16,60,.5)}
+.cal-pill svg{width:18px;height:18px}
+.cw-h{display:flex;align-items:center;gap:2px;margin-bottom:4px}
+.cw-h b{flex:1;text-align:center;text-transform:capitalize;font-family:var(--f-display);font-size:15px}
+.cw-h .icon-btn{width:26px;height:26px;font-size:17px;line-height:1}
+.cw-dow,.cw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cw-dow span{font-size:10.5px;color:var(--ink-3);font-family:var(--f-mono);padding:2px 0}
+.cd{border:0;background:none;border-radius:8px;height:28px;font-size:12.5px;cursor:pointer;color:var(--ink);font-variant-numeric:tabular-nums}
+.cd:hover{background:var(--surface-2)}
+.cd.past{color:var(--ink-3);opacity:.6}
+.cd.td{box-shadow:inset 0 0 0 1.5px var(--hema);font-weight:700;color:var(--hema)}
+.cd.ex{background:var(--oc,var(--eosin));color:#fff;font-weight:700;opacity:1}
+.cw-next{display:flex;gap:10px;align-items:center;width:100%;margin-top:8px;border:0;border-radius:12px;background:var(--surface-2);padding:9px 10px;text-align:left;cursor:pointer}
+.cw-next:hover{background:var(--hema-soft)}
+.cw-next b{display:block;font-size:13.5px}
+.cw-next small{display:block;color:var(--ink-2);font-size:12px}
+.cw-cd{flex:none;width:46px;height:46px;border-radius:12px;background:var(--cta);color:var(--on-cta);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.cw-cd b{font-family:var(--f-display);font-size:20px}
+.cw-cd small{color:inherit;opacity:.85;font-size:10.5px}
+.cal-w.compact{width:auto;max-width:300px;display:flex;align-items:center;gap:4px;padding:6px 6px 6px 6px}
+.cal-w.compact .cw-next{margin:0;background:none;padding:4px 6px}
+.cal-w.compact .cw-next:hover{background:var(--surface-2)}
+.cw-tools{display:flex;flex-direction:column;gap:2px}
+.cw-tools .icon-btn{width:28px;height:28px}
+.cw-tools svg{width:16px;height:16px}
+.cw-cd{background:var(--oc,var(--cta))!important;color:#fff!important}
+.cw-cd.empty{background:var(--hema-soft)!important;color:var(--hema)!important}
+.cw-cd.empty svg{width:22px;height:22px}
+@media print{.cal-w{display:none}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -776,6 +830,7 @@ button.task:hover{background:var(--hema-soft)}
       <img src="/usmf-emblema.png" alt="Emblema USMF" width="161" height="234">
       <span class="brand-t"><b>Ghidul studentului USMF</b><small>Proiect studențesc neoficial</small></span>
     </span>
+    <button class="theme-btn prog-btn" id="progBtn" type="button" aria-label="Progresul meu"></button>
     <button class="theme-btn help-btn" id="helpBtn" type="button" aria-label="Cum funcționează ghidul"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg><span>Cum funcționează</span></button>
     <button class="theme-btn" id="themeBtn" type="button"></button>
     <button class="theme-btn acct-btn" id="acctBtn" type="button"></button>
@@ -892,6 +947,11 @@ button.task:hover{background:var(--hema-soft)}
 </div>
 
 <footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.<p class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener" class="ig"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>@pregatire.usmf</a></p></div></footer>
+<div class="drawer-ov" id="progOv" hidden><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="progT">
+  <div class="drawer-h"><h2 id="progT">Progresul meu</h2><button class="icon-btn" type="button" data-pclose aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    <div class="seg lab-nav" id="progNav"></div></div>
+  <div class="drawer-b" id="progBody"></div></aside></div>
+<div class="cal-w" id="calW"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
@@ -1727,7 +1787,7 @@ function renderExplain(opts){
         <li><b>Adaugă cursul, dacă vrei</b>, din panoul <button class="linkbtn" type="button" id="goSrc">Surse</button>. Fără curs, ghidul explică din manualele consacrate.</li>
         <li><b>Apasă Explică.</b> Primești explicația pe două niveluri, simplificat și avansat, cu schemă și întrebări scurte după fiecare parte.</li>
       </ol>
-      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>. Corpul uman interactiv, greșelile, statisticile și planul de studiu sunt în <button class="linkbtn" type="button" id="goLab">Simulation Lab</button>.</p>
+      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>. Corpul uman în 3D e în <button class="linkbtn" type="button" id="goLab">Simulation Lab</button>, iar greșelile, statisticile și calendarul tău sunt în „Progresul meu”, sus.</p>
       <div class="row" style="margin-top:4px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
     $("#showSample").onclick = () => toggleSample(true);
     $("#goBank").onclick = () => selectTab("bank");
@@ -3645,7 +3705,7 @@ async function syncPull(){
     const rb = docs.banks ? JSON.parse(docs.banks.data) : null;
     BANKS = mergeBanks(BANKS, rb); saveBanks();
     const rp = docs.prog ? JSON.parse(docs.prog.data) : null;
-    PROG = mergeProg(PROG, rp); saveProg(); if (state.tab === "lab") renderLab();
+    PROG = mergeProg(PROG, rp); saveProg(); renderLab();
     renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
     SYNC.pulling = false; SYNC.lastPull = Date.now();
     await syncPush("hist"); await syncPush("banks"); await syncPush("prog");
@@ -3747,7 +3807,7 @@ function renderAcct(){
     SYNC.user = null; SYNC.last = 0; SYNC.msg = "";
     if (clear){
       try { [HKEY, HDEL, BKEY, PKEY].forEach(k => localStorage.removeItem(k)); } catch {}
-      PROG = emptyProg(); if (state.tab === "lab") renderLab();
+      PROG = emptyProg(); renderLab();
       BANKS = { banks: [], current: null, del: { banks: {}, questions: {} } };
       renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
     }
@@ -3782,7 +3842,8 @@ helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="tru
     <dt>Vizual</dt><dd>poster, scheme și imagini reale pentru temă</dd>
     <dt>Quiz</dt><dd>grilă CS/CM cu explicație la fiecare variantă</dd>
     <dt>Banca de grile</dt><dd>pui grilele tale de examen; ghidul le amestecă și face altele asemănătoare, pe 3 niveluri</dd>
-    <dt>Simulation Lab</dt><dd>corpul uman interactiv, revizuirea greșelilor, statistici, parcurgerea materiei și calendar de studiu</dd>
+    <dt>Simulation Lab</dt><dd>corpul uman în 3D și în imagini reale, organ cu organ</dd>
+    <dt>Progresul meu</dt><dd>butonul de sus: greșelile de revizuit, statistici, materia parcursă, notițe și calendarul examenelor</dd>
     <dt>Flashcards</dt><dd>carduri de repetat, exportabile în Anki</dd>
     <dt>Caz clinic</dt><dd>un pacient ipotetic, rezolvat pas cu pas</dd>
     <dt>Prezentare</dt><dd>slide-uri gata de descărcat în PowerPoint</dd>
@@ -3807,7 +3868,7 @@ function normProg(p){
 }
 function loadProg(){ try { return normProg(JSON.parse(localStorage.getItem(PKEY) || "null")); } catch { return emptyProg(); } }
 let PROG = loadProg();
-function saveProg(){ try { localStorage.setItem(PKEY, JSON.stringify(PROG)); } catch {} try { schedulePush("prog"); } catch {} }
+function saveProg(){ try { localStorage.setItem(PKEY, JSON.stringify(PROG)); } catch {} try { schedulePush("prog"); } catch {} try { paintCalW(); paintProgBtn(); } catch {} }
 function mergeProg(l, r){
   l = normProg(l); r = normProg(r);
   const del = { wrong: trimTomb(Object.assign({}, r.del.wrong, l.del.wrong)), syl: trimTomb(Object.assign({}, r.del.syl, l.del.syl)), exams: trimTomb(Object.assign({}, r.del.exams, l.del.exams)) };
@@ -3916,6 +3977,7 @@ const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
 function labState(){ if (!state.lab) state.lab = { view: "anat", organ: null, sys: "toate", rev: null }; return state.lab; }
 function labExplain(q, disc){
   if (state.busy){ toast("Așteaptă să se termine explicația curentă"); return; }
+  closeProg();
   $("#q").value = q;
   if (disc && DISCIPLINES.includes(disc)) $("#disc").value = disc;
   selectTab("explicatie");
@@ -3929,7 +3991,7 @@ const SYS = {
   digestiv: { nume: "Digestiv", c: "c4" }, urinar: { nume: "Urinar", c: "c3" }, endocrin: { nume: "Endocrin", c: "c5" },
   hemato: { nume: "Hemato-imun", c: "hema" }, locomotor: { nume: "Locomotor", c: "warn" }
 };
-const ANAT_CAT = { anat: "Anatomie", hist: "Histologie", imag: "Imagistică" };
+const ANAT_CAT = { "3d": "3D", anat: "Anatomie", hist: "Histologie", imag: "Imagistică" };
 /* ordinea contează: organele de la final stau deasupra celor de la început */
 const ORGANS = [
   { id: "muschi", nume: "Mușchii membrului superior", sis: "locomotor", hs: '<path d="M190 540 Q240 505 300 520 L300 900 Q240 960 175 940 Q170 720 190 540 Z"/>', img: { anat: "muscles of the upper limb anatomy", hist: "skeletal muscle histology", imag: "MRI arm muscles" }, teme: ["Mușchii brațului și antebrațului", "Fiziologia contracției musculare", "Miastenia gravis", "Miopatiile"], cuv: ["muschi", "muscul", "miasten", "miopat", "contracti"] },
@@ -3975,6 +4037,7 @@ function loadGal(o){
   });
 }
 function galHtml(o){
+  if ((labState().galCat || "3d") === "3d") return model3dHtml(o.id);
   const st = GAL.get(galKey(o));
   if (!st){ loadGal(o); return `<p class="hint">Se caută imagini reale pe Wikimedia Commons…</p>`; }
   if (st === "loading") return `<p class="hint">Se caută imagini reale pe Wikimedia Commons…</p>`;
@@ -3983,7 +4046,7 @@ function galHtml(o){
 }
 function anatHtml(){
   const L = labState(), sel = ORGANS.find(o => o.id === L.organ);
-  if (!L.galCat) L.galCat = "anat";
+  if (!L.galCat) L.galCat = "3d";
   const studied = new Map(ORGANS.map(o => [o.id, organStudied(o)]));
   const hs = ORGANS.filter(o => o.hs).map(o => `<g class="hs${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" && o.sis !== L.sys ? " dim" : ""}" data-org="${o.id}" data-name="${esc(o.nume)}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.hs}</g>`).join("");
   const nDone = [...studied.values()].filter(Boolean).length;
@@ -4004,7 +4067,7 @@ function anatHtml(){
       <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-own">Explică</button></div>
       <details class="org-more"><summary>Toate organele</summary>${list}</details>
     </div>`
-    : `<div class="org-info empty"><h3>Apasă pe un organ</h3><p class="hint">Vezi imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
+    : `<div class="org-info empty"><h3>Corpul uman în 3D</h3>${model3dHtml("corp")}<h4 class="org-h4">Apasă pe un organ</h4><p class="hint">Îl vezi în 3D și în imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
   return `${chips}<div class="anat">${fig}${info}</div>`;
 }
 /* fereastra cu imaginea mare */
@@ -4232,16 +4295,14 @@ function planIcs(){
 }
 
 /* ---- randare și evenimente ---- */
+function onLab(type, fn){ ["#p-lab", "#progBody"].forEach(sel => { const e = $(sel); if (e) e.addEventListener(type, fn); }); }
 function renderLab(){
-  const L = labState(), p = $("#p-lab"); if (!p) return;
-  const views = [["anat", "Anatomie"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["cal", "Calendar"], ["notes", "Notițe"]];
-  const nRev = dueWrong().length;
-  const body = { anat: anatHtml, rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml, notes: notesHtml }[L.view] || anatHtml;
-  p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Simulation Lab</h2><p class="hint">Corpul uman interactiv, greșelile tale, progresul și planul de studiu.</p></div>
-    <div class="seg lab-nav">${views.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : ""}</button>`).join("")}</div></div>
-    <div class="lab-body">${body()}</div>`;
+  const p = $("#p-lab"), ov = $("#progOv");
+  if (p && (!ov || ov.hidden)) p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Simulation Lab</h2><p class="hint">Alege un organ: îl vezi în 3D, în imagini reale (anatomie, histologie, imagistică) și îi studiezi temele.</p></div></div>
+    <div class="lab-body">${anatHtml()}</div>`;
+  try { renderProg(); paintCalW(); paintProgBtn(); } catch {}
 }
-$("#p-lab").addEventListener("click", ev => {
+onLab("click", ev => {
   const b = ev.target.closest("[data-lv],[data-act],[data-org],[data-sys]"); if (!b || b.tagName === "SELECT") return;
   const L = labState();
   if (b.dataset.lv){ L.view = b.dataset.lv; L.rev = null; renderLab(); return; }
@@ -4260,7 +4321,7 @@ $("#p-lab").addEventListener("click", ev => {
     if (progRecord((R.qs && R.qs[w.id]) || w.q, R.ans, "revizuire", { topic: w.topic, disc: w.disc, wid: w.id })) R.score++;
     R.checked = true; renderLab(); return;
   }
-  if (a === "rev-next"){ const R = L.rev; R.i++; R.ans = []; R.checked = false; renderLab(); $("#p-lab").scrollIntoView({ block: "start", behavior: "smooth" }); return; }
+  if (a === "rev-next"){ const R = L.rev; R.i++; R.ans = []; R.checked = false; renderLab(); $("#progBody").scrollTop = 0; return; }
   if (a === "go-rev"){ L.view = "rev"; revStart(dueWrong()); return; }
   if (a === "syl-add" || a === "syl-cur"){
     const disc = a === "syl-cur" ? (state.result.disciplina && DISCIPLINES.includes(state.result.disciplina) ? state.result.disciplina : $("#sylDisc").value) : $("#sylDisc").value;
@@ -4280,7 +4341,7 @@ $("#p-lab").addEventListener("click", ev => {
   if (a === "ex-del"){ const id = b.dataset.id; PROG.exams = PROG.exams.filter(e => e.id !== id); PROG.del.exams[id] = Date.now(); saveProg(); renderLab(); return; }
   if (a === "ics") return saveFile("plan-de-studiu.ics", new Blob([planIcs()], { type: "text/calendar" }));
 });
-$("#p-lab").addEventListener("change", ev => {
+onLab("change", ev => {
   const t = ev.target, L = labState();
   if (t.dataset && t.dataset.act === "syl-st"){
     const it = PROG.syl.find(i => i.id === t.dataset.id); if (!it) return;
@@ -4291,20 +4352,20 @@ $("#p-lab").addEventListener("change", ev => {
     $$("#rvOpts .opt").forEach(o => o.classList.toggle("sel", $("input", o).checked));
   }
 });
-$("#p-lab").addEventListener("keydown", ev => {
+onLab("keydown", ev => {
   const g = ev.target.closest && ev.target.closest("g[data-org]");
   if (g && (ev.key === "Enter" || ev.key === " ")){ ev.preventDefault(); g.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
 });
 
 /* ---------------- v8: notițe, timp estimat, text în tabel, tipuri de greșeli, mod examen ---------------- */
 /* anatomie: numele organului la trecerea mouse-ului, contururi */
-$("#p-lab").addEventListener("mouseover", ev => {
+onLab("mouseover", ev => {
   const g = ev.target.closest && ev.target.closest("g.hs"), n = $("#hsName");
   if (!n) return;
   if (g){ n.textContent = g.dataset.name; n.hidden = false; } else n.hidden = true;
 });
-$("#p-lab").addEventListener("mouseleave", () => { const n = $("#hsName"); if (n) n.hidden = true; });
-$("#p-lab").addEventListener("click", ev => {
+onLab("mouseleave", () => { const n = $("#hsName"); if (n) n.hidden = true; });
+onLab("click", ev => {
   const b = ev.target.closest("[data-act]"); if (!b) return;
   const L = labState(), a = b.dataset.act;
   if (a === "outl"){ L.outl = b.checked; const f = b.closest(".anat-fig"); if (f) f.classList.toggle("outl", b.checked); }
@@ -4314,7 +4375,7 @@ $("#p-lab").addEventListener("click", ev => {
   else if (a === "note-open") labExplain(b.dataset.q);
   else if (a === "note-del"){ if (confirm("Ștergi notița?")){ saveNote(b.dataset.q, ""); renderLab(); } }
 });
-$("#p-lab").addEventListener("input", ev => {
+onLab("input", ev => {
   const t = ev.target;
   if (t.dataset && t.dataset.note != null){ clearTimeout(t._t); t._t = setTimeout(() => saveNote(t.dataset.note, t.value), 700); }
   if (t.id === "noteQ"){ labState().noteQ = t.value; clearTimeout(t._t); t._t = setTimeout(() => { renderLab(); const q = $("#noteQ"); if (q){ q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 300); }
@@ -4352,7 +4413,7 @@ function paintNotes(){
   const n = PROG.notes.find(x => x.id === noteId(r.titlu)), has = !!(n && n.text && n.text.trim());
   head.insertAdjacentHTML("afterend", `<details class="notes-box"${has ? " open" : ""}><summary>Notițele mele <span class="hint" id="noteSaved">${has ? "salvate" : ""}</span></summary>
     <textarea id="noteTa" rows="4" placeholder="Scrie aici ce vrei să reții din tema asta: o idee, o capcană, o întrebare pentru profesor…">${esc(n ? n.text : "")}</textarea>
-    <p class="hint">Se salvează automat${SYNC.user ? " și se sincronizează cu contul" : ""}. Toate notițele sunt în Simulation Lab → Notițe.</p></details>`);
+    <p class="hint">Se salvează automat${SYNC.user ? " și se sincronizează cu contul" : ""}. Toate notițele sunt în Progresul meu → Notițe.</p></details>`);
   const ta = $("#noteTa"), titlu = r.titlu;
   ta.addEventListener("input", () => { clearTimeout(ta._t); ta._t = setTimeout(() => saveNote(titlu, ta.value), 700); });
 }
@@ -4509,6 +4570,130 @@ renderQuiz = function(){
   if (Q.checked && Q.exam) sc.insertAdjacentHTML("afterend", `<p class="notice exam-res">${Q.exam.timeUp ? "Timpul a expirat. " : ""}Ai lucrat ${Q.exam.min < 1 ? "mai puțin de un minut" : Q.exam.min + (Q.exam.min === 1 ? " minut" : " minute")} și ai ieșit din pagină de ${Q.exam.leaves} ${Q.exam.leaves === 1 ? "dată" : "ori"}.${Q.exam.leaves ? " La un examen supravegheat, ieșirile ar fi fost observate." : ""}</p>`);
   $("#qzExam") && ($("#qzExam").onclick = examStart);
 };
+
+/* ---------------- v9: modele 3D, „Progresul meu”, calendar în colț ---------------- */
+const M3D = {
+  corp: [["9b0b079953b840bc9a13f524b60041e4", "Corpul uman, animat"], ["8a43f3a308994699a4000b17004d5220", "Organele interne"], ["5cfafb312f504815aa3fec55735607a6", "Splanhnologie (Z-Anatomy)"]],
+  creier: [["fc7ae7b989f94c80a50152e71f44e47c", "Creierul (Science Museum)"], ["06dd00c44ebd4b4c86475c6c5c33d500", "Creierul uman"], ["720038f031074c1fa150ea364deb2b59", "Creierul, cu etichete"]],
+  inima: [["3f8072336ce94d18b3d0d055a1ece089", "Inima, realistă"], ["775d6629622740de8a5ed61a959c7506", "Inima care bate"], ["1b7bfb07e6b24dd891099395ed98e989", "Inima, cu etichete"]],
+  plamani: [["ce09f4099a68467880f46e61eb9a3531", "Plămânii, realiști"], ["ad1a6c31b37547fabfc9fe37af69796b", "Plămânii care respiră"], ["50c877863fe64d11a55044afb79f5664", "Plămânii și funcțiile lor"]],
+  ficat: [["08ee1a75c6fa437297848027c1baa94c", "Ficatul"], ["a20686a3e4a54792bfede17ad32f4b1a", "Ficatul, anatomie"], ["6c4e9bd0d49f4828b804259330c0c6c4", "Ficatul și vezica biliară"]],
+  stomac: [["e0f1952de7204654ba469c3e887a029b", "Stomacul, realist"], ["7148476c702340aab6a6579124103ea9", "Stomacul, secțiune"], ["a81f02baae2b416188c9dac98db101a9", "Stomacul (Univ. Dundee)"]],
+  rinichi: [["0215aaf9e9a243cdafca249a979680b0", "Rinichiul, secțiune"], ["e1476ceb1e3b4412af5418eee9c5ed08", "Rinichiul"], ["d7851420a5b84802aacd7e70e6ddb0c7", "Glomerulul renal"]],
+  pancreas: [["b34ba50e38fd455bae43bd07b7ed2d3b", "Pancreasul și duodenul"], ["8acf64dc315b49308b4fcbd47e48b92b", "Pancreasul, secțiune"], ["f9a34dba04624c28a3131970fcac4b81", "Ficat, splină și pancreas"]],
+  intestin: [["8a1ca8e3ca224cdeb9264674416bde38", "Intestinul subțire și gros"], ["851a7f14710c4170a2e9638c72e4701a", "Intestinul subțire cu mezenterul"], ["8c4c69035f4f4773813533d7ca56e516", "Tubul digestiv"]],
+  colon: [["12cae23197da46cf87350694dc0e6539", "Colonul, realist"], ["8a1ca8e3ca224cdeb9264674416bde38", "Intestinul subțire și gros"], ["449839e7e6534cc9a8cd2fdd664e3eb9", "Colita ulcerativă"]],
+  vezica: [["822b2eeb033f42f6a8e0e141287bf34d", "Tractul urinar"], ["3e96c2e9f3f24bb684fc7c8a874a90d6", "Vezica urinară"], ["03d325c81aaa4dfabb74b727fec0a1a4", "Rinichii și sistemul urinar"]],
+  tiroida: [["b7e522c4f5dc4cea97d04a3d6773e96f", "Tiroida"], ["5238a9dfeee4455d84ffc03211aa8798", "Tiroida (Prof. G. Penna)"], ["01414eee96a34e29aba37affd4d28f58", "Tiroida, macro și micro"]],
+  trahee: [["8458de63d0734776aa901615cf1f15ca", "Laringele, traheea și bronhiile"], ["3b247ff11b104e24acbb1c453f5bad46", "Laringele cu mușchi și ligamente"], ["87b255eec46e4ea7be20c3014e68cbbf", "Traheea și laringele, cu etichete"]],
+  biliara: [["6c4e9bd0d49f4828b804259330c0c6c4", "Ficatul și vezica biliară"], ["060f3b31e5b14749884dcdc678d08930", "Vezica biliară, secțiune"], ["4fee79b4476e4720af7b41f5ed087d92", "Vezica biliară, anatomie"]],
+  aorta: [["4e7aad1805584d9780186017f220fa92", "Anevrism de aortă abdominală"], ["33301eb197874104aa54519a81304b71", "Vasele organelor abdominale"], ["e7abdabd3a6d422cb25e6e63b45b1ab0", "Sistemul circulator"]],
+  splina: [["621be4748b6b44fab11da23dc5d880c9", "Splina"], ["acc5ca7b5cc446d9889cdf12892467e2", "Splina, anatomie și histologie"]],
+  suprarenale: [["271e40e97ae048b3bea75e91a82bc84b", "Glanda suprarenală, secțiune"], ["e4f3d676b99b45b88407cdf198cff66a", "Suprarenala, anatomie și histologie"]],
+  maduva: [["d4af33ccf03b4fec8754180bcb480516", "Măduva spinării (Univ. Dundee)"], ["fab2a2dcbb0143e7a6dfa0406043b3a4", "Măduva, secțiune transversală"], ["f0276d0c5ab34d988f92c58c67b330de", "Vertebrele cu măduva"]],
+  muschi: [["5671210f79784619a9232605b0a4e6aa", "Mușchii brațului"], ["af9a4101fa2c483cab363cf0a629762f", "Brațul, anatomie"], ["bd143831279c44e4b09035b872052c60", "Brațul, straturi"]],
+  vase: [["35a61d7aefd24a1ea791ba743d381fae", "Arterele membrului superior"], ["9e710c08b921466d961df64439805e6a", "Arterele membrului superior (2)"], ["7691d2b07f7c42de9c037013b5c2f408", "Venele membrului superior"]],
+  ganglioni: [["14800d739ecb46678d7584a401b0aa77", "Sistemul limfatic"], ["cc6896de8309441aabcefecb2d3f9b50", "Ganglionul limfatic"], ["5abcaca1574248c0860ae1d81b06998d", "Limfaticele capului și gâtului"]]
+};
+function model3dHtml(id){
+  const L = labState(), list = M3D[id] || [];
+  if (!list.length) return `<p class="hint">Pentru acest organ nu am încă un model 3D.</p>`;
+  const mine = L.m3 && L.m3.org === id, k = mine ? Math.min(L.m3.k || 0, list.length - 1) : 0;
+  const on = mine ? L.m3.on !== false : id !== "corp"; // corpul întreg e greu: pornește doar la cerere
+  return `<div class="m3-box">${on
+      ? `<iframe title="${esc(list[k][1])}" src="https://sketchfab.com/models/${list[k][0]}/embed?autostart=1&preload=1&ui_theme=dark&dnt=1" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`
+      : `<button type="button" class="m3-start" data-act="m3-on" data-org="${id}"><span class="m3-ic">3D</span><b>Pornește modelul 3D</b></button>`}</div>
+    ${list.length > 1 ? `<div class="m3-pick">${list.map(([u, n], i) => `<button type="button" class="chip${i === k ? " on" : ""}" data-act="m3-pick" data-m="${id}" data-i="${i}">${esc(n)}</button>`).join("")}</div>` : ""}
+    <p class="hint">Rotești cu mouse-ul sau cu un deget, mărești cu rotița sau cu două degete. Modele 3D de pe Sketchfab, ale autorilor lor.</p>`;
+}
+
+/* ---- „Progresul meu”: panou lateral ---- */
+const PROG_VIEWS = [["cal", "Calendar"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["notes", "Notițe"]];
+function openProg(view, date){
+  const L = labState();
+  if (view) L.view = view;
+  if (!PROG_VIEWS.some(v => v[0] === L.view)) L.view = "cal";
+  L.rev = null;
+  $("#progOv").hidden = false; document.body.classList.add("no-scroll");
+  renderProg();
+  if (date){ const d = $("#exDate"); if (d){ d.value = date; d.focus(); } }
+}
+function closeProg(){ $("#progOv").hidden = true; document.body.classList.remove("no-scroll"); }
+function renderProg(){
+  const ov = $("#progOv"); if (!ov || ov.hidden) return;
+  const L = labState(), nRev = dueWrong().length;
+  if (!PROG_VIEWS.some(v => v[0] === L.view)) L.view = "cal";
+  const body = { rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml, notes: notesHtml }[L.view];
+  $("#progNav").innerHTML = PROG_VIEWS.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : ""}</button>`).join("");
+  $("#progBody").innerHTML = `<div class="lab-body">${body()}</div>`;
+}
+$("#progNav").addEventListener("click", ev => { const b = ev.target.closest("[data-lv]"); if (!b) return; const L = labState(); L.view = b.dataset.lv; L.rev = null; renderProg(); $("#progBody").scrollTop = 0; });
+$("#progOv").addEventListener("click", ev => { if (ev.target === $("#progOv") || ev.target.closest("[data-pclose]")) closeProg(); });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !$("#progOv").hidden && imgOv.hidden) closeProg(); });
+$("#progBtn").onclick = () => openProg();
+function paintProgBtn(){
+  const n = dueWrong().length, b = $("#progBtn"); if (!b) return;
+  b.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Progresul meu</span>${n ? `<i class="pb-n">${n}</i>` : ""}`;
+}
+
+/* ---- calendarul din colț ---- */
+const CALW_KEY = "ghid.calw.mode";
+let calMonth = 0;
+function calWMode(){ try { const v = localStorage.getItem(CALW_KEY); return v === "min" || v === "full" ? v : "compact"; } catch { return "compact"; } }
+function setCalWMode(m){ try { localStorage.setItem(CALW_KEY, m); } catch {} paintCalW(); }
+const ICON_CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+function paintCalW(){
+  const w = $("#calW"); if (!w) return;
+  const today = noon(Date.now()), mode = calWMode();
+  const exams = PROG.exams.filter(e => parseDay(e.date) >= today).sort((a, b) => parseDay(a.date) - parseDay(b.date));
+  const next = exams[0], days = next ? Math.round((parseDay(next.date) - today) / DAY) : null;
+  const when = d => d === 0 ? "azi" : d === 1 ? "mâine" : `în ${d} zile`;
+  if (mode === "min"){
+    w.className = "cal-w min";
+    w.innerHTML = `<button type="button" class="cal-pill" data-cw="compact" aria-label="Arată calendarul">${ICON_CAL}<span>${next ? `${esc(next.disc)} · ${when(days)}` : "Calendar"}</span></button>`;
+    return;
+  }
+  const nextBtn = `<button type="button" class="cw-next" data-cw="open">${next
+      ? `<span class="cw-cd" style="--oc:var(--${discColor(next.disc)})"><b>${days}</b><small>${days === 1 ? "zi" : "zile"}</small></span><span><b>${esc(next.disc)}</b><small>${new Date(parseDay(next.date)).toLocaleDateString("ro-RO", { weekday: "long", day: "numeric", month: "long" })}${exams.length > 1 ? ` · +${exams.length - 1} ${exams.length === 2 ? "examen" : "examene"}` : ""}</small></span>`
+      : `<span class="cw-cd empty">${ICON_CAL}</span><span><b>Data examenului</b><small>Adaug-o și primești planul de studiu</small></span>`}</button>`;
+  if (mode === "compact"){
+    w.className = "cal-w compact";
+    w.innerHTML = `${nextBtn}<div class="cw-tools"><button type="button" class="icon-btn" data-cw="full" aria-label="Arată luna" title="Arată luna">${ICON_CAL}</button><button type="button" class="icon-btn" data-cw="min" aria-label="Micșorează" title="Micșorează">–</button></div>`;
+    return;
+  }
+  const base = new Date(); base.setDate(1); base.setMonth(base.getMonth() + calMonth); base.setHours(12, 0, 0, 0);
+  const y = base.getFullYear(), m = base.getMonth(), first = (base.getDay() + 6) % 7, nDays = new Date(y, m + 1, 0).getDate();
+  const byDay = new Map(); PROG.exams.forEach(e => { if (!byDay.has(e.date)) byDay.set(e.date, []); byDay.get(e.date).push(e); });
+  let cells = "";
+  for (let i = 0; i < first; i++) cells += `<span></span>`;
+  for (let d = 1; d <= nDays; d++){
+    const key = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`, t = new Date(y, m, d, 12).getTime();
+    const ex = byDay.get(key), isT = key === dayKey(today), past = t < today;
+    cells += `<button type="button" class="cd${isT ? " td" : ""}${ex ? " ex" : ""}${past ? " past" : ""}" data-cw="day" data-d="${key}"${ex ? ` style="--oc:var(--${discColor(ex[0].disc)})" title="Examen: ${esc(ex.map(e => e.disc).join(", "))}"` : past ? "" : ` title="Adaugă un examen pe ${d}"`}>${d}</button>`;
+  }
+  w.className = "cal-w full";
+  w.innerHTML = `<div class="cw-h"><button type="button" class="icon-btn" data-cw="prev" aria-label="Luna anterioară">‹</button><b>${esc(base.toLocaleDateString("ro-RO", { month: "long", year: "numeric" }))}</b><button type="button" class="icon-btn" data-cw="next" aria-label="Luna următoare">›</button><button type="button" class="icon-btn" data-cw="compact" aria-label="Ascunde luna" title="Ascunde luna">–</button></div>
+    <div class="cw-dow"><span>L</span><span>Ma</span><span>Mi</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+    <div class="cw-grid">${cells}</div>${nextBtn}`;
+}
+$("#calW").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-cw]"); if (!b) return;
+  const a = b.dataset.cw;
+  if (a === "min" || a === "compact" || a === "full"){ if (a === "full") calMonth = 0; setCalWMode(a); }
+  else if (a === "prev"){ calMonth--; paintCalW(); }
+  else if (a === "next"){ calMonth++; paintCalW(); }
+  else if (a === "open") openProg("cal");
+  else if (a === "day"){ const t = parseDay(b.dataset.d); openProg("cal", t >= noon(Date.now()) && !b.classList.contains("ex") ? b.dataset.d : ""); }
+});
+try { if (matchMedia("(max-width: 700px)").matches && localStorage.getItem(CALW_KEY) == null) localStorage.setItem(CALW_KEY, "min"); } catch {}
+paintCalW(); paintProgBtn();
+
+onLab("click", ev => {
+  const b = ev.target.closest("[data-act]"); if (!b) return;
+  const L = labState(), a = b.dataset.act;
+  if (a === "m3-on"){ L.m3 = { org: b.dataset.org, k: 0, on: true }; renderLab(); }
+  else if (a === "m3-pick"){ L.m3 = { org: b.dataset.m, k: +b.dataset.i, on: true }; renderLab(); }
+});
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");
