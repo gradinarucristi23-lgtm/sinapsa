@@ -715,6 +715,55 @@ button.task:hover{background:var(--hema-soft)}
 .task.recap{background:var(--warn-soft)}
 .task.rev{background:var(--bad-soft);font-weight:600;box-shadow:inset 3px 0 0 var(--bad)}
 .task.rep{color:var(--ink-2)}
+
+/* v8: anatomie reală, galerie, notițe, examen */
+.anat{grid-template-columns:minmax(260px,400px) minmax(0,1fr)}
+.anat-fig.real{background:#f4efe7;padding:0;overflow:hidden}
+.anat-stage{position:relative}
+.anat-stage img{display:block;width:100%;height:auto}
+.anat-stage svg{position:absolute;inset:0;width:100%;height:100%}
+.hs{cursor:pointer;outline:none}
+.hs > *:not(title){fill:var(--oc);fill-opacity:0;stroke:#fff;stroke-opacity:0;stroke-width:4;transition:fill-opacity .15s,stroke-opacity .15s}
+.anat-fig.outl .hs > *:not(title){stroke-opacity:.45;stroke-dasharray:10 8}
+.hs:hover > *:not(title),.hs:focus-visible > *:not(title),.hs.sel > *:not(title){fill-opacity:.32;stroke:var(--oc);stroke-opacity:1;stroke-dasharray:none;stroke-width:5}
+.hs.sel > *:not(title){fill-opacity:.4;stroke:#fff;stroke-width:6}
+.hs.line > *:not(title){fill:none;stroke:var(--oc);stroke-width:34;stroke-opacity:0;stroke-linecap:round;stroke-linejoin:round}
+.anat-fig.outl .hs.line > *:not(title){stroke-opacity:.12;stroke-dasharray:none}
+.hs.line:hover > *:not(title),.hs.line.sel > *:not(title){stroke-opacity:.45;stroke-width:34}
+.hs.dim{opacity:.1}
+.hs-name{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(15,14,26,.85);color:#fff;font-weight:600;font-size:14px;padding:5px 12px;border-radius:999px;pointer-events:none;white-space:nowrap}
+.fig-foot{display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--surface-2);font-size:12.5px}
+.fig-tg{display:inline-flex;gap:6px;align-items:center;cursor:pointer;font-weight:500}
+.fig-credit{color:var(--ink-3)}
+.gal-tabs{align-self:flex-start;margin-top:2px}
+.gal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.gal-it{padding:0;border:0;border-radius:10px;overflow:hidden;background:var(--surface-2);aspect-ratio:1;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.gal-it img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.gal-it:hover img{transform:scale(1.05)}
+.org-h4{margin:8px 0 0;font-size:15px}
+.org-more summary{cursor:pointer;color:var(--ink-2);font-size:13.5px;margin-top:6px}
+.org-list .linkbtn.on{color:var(--hema);font-weight:700}
+.ok-mark{color:var(--ok);font-weight:700;margin-left:4px}
+.img-box-lg{width:min(980px,100%)}
+.iv-img{background:#111;border-radius:10px;display:grid;place-items:center;max-height:62vh;overflow:hidden}
+.iv-img img{max-width:100%;max-height:62vh;object-fit:contain;display:block}
+.iv-cap{display:flex;flex-direction:column;gap:2px;font-size:13.5px}
+.iv-cap span{color:var(--ink-3);font-size:12.5px}
+.iv-exp{background:var(--surface-2);border-radius:10px;padding:10px 14px}
+.est-line{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-2)}
+.est-line svg{width:17px;height:17px;flex:none;color:var(--hema)}
+.notes-box{margin:14px 0 0;background:var(--surface-2);border-radius:12px;padding:10px 14px}
+.notes-box summary{cursor:pointer;font-weight:600}
+.notes-box textarea{width:100%;margin-top:8px;border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;background:var(--surface);font-size:14.5px;resize:vertical;min-height:90px}
+.notes-box .hint{margin:6px 0 0}
+.notes-list{display:flex;flex-direction:column;gap:10px}
+.note-card .lab-ta{min-height:70px}
+.err-types small{max-width:62ch}
+.exam-bar{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px 16px;background:var(--ink);color:var(--surface);font-size:14px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.exam-bar #exT{font-family:var(--f-mono);font-weight:600}
+.exam-bar #exT.low{color:#ff8f86}
+.exam-res{margin-top:12px}
+@media (max-width:760px){.anat{grid-template-columns:minmax(0,1fr)}.anat-fig.real{max-width:400px;width:100%;margin:0 auto}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1924,7 +1973,7 @@ function renderQuiz(){
   if (state.qzOpts){ $("#qzN").value = state.qzOpts.n; $("#qzK").value = state.qzOpts.kind; $("#qzD").value = state.qzOpts.diff; }
   $("#qzGo").onclick = genQuiz;
   $("#qzCheck") && ($("#qzCheck").onclick = () => { Q.checked = true; if (!Q.sample){ const cx = curTopicCtx(); Q.list.forEach((q, i) => progRecord(q, Q.answers[i] || [], "quiz", cx)); } renderQuiz(); p.scrollIntoView({ block: "start", behavior: "smooth" }); });
-  $("#qzReset") && ($("#qzReset").onclick = () => { Q.checked = false; Q.answers = {}; renderQuiz(); });
+  $("#qzReset") && ($("#qzReset").onclick = () => { Q.checked = false; Q.answers = {}; Q.exam = null; if (!Q.sample) Q.list = Q.list.map(shuffleOptions); renderQuiz(); });
   $("#qzCsv") && ($("#qzCsv").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-grila.csv", quizCsv()));
   $("#qzMd") && ($("#qzMd").onclick = () => saveDoc(slug(state.result && state.result.titlu) + "-grila", "Grilă: " + stripMarks((state.result && state.result.titlu) || ""), quizMd(true)));
   $("#qzCopy") && ($("#qzCopy").onclick = () => copyText(quizMd(true)));
@@ -3755,11 +3804,11 @@ setInterval(() => { const w = $("#histWhere"); if (w) w.textContent = (typeof SY
 
 /* ---------------- Simulation Lab: anatomie, greșeli, statistici, materie, calendar ---------------- */
 const PKEY = "ghid.prog.v1", LOGCAP = 3000, DAY = 86400000;
-function emptyProg(){ return { log: [], wrong: [], syl: [], exams: [], del: { wrong: {}, syl: {}, exams: {} } }; }
+function emptyProg(){ return { log: [], wrong: [], syl: [], exams: [], notes: [], del: { wrong: {}, syl: {}, exams: {} } }; }
 function normProg(p){
   p = p && typeof p === "object" ? p : {};
   const d = p.del || {};
-  return { log: arr(p.log), wrong: arr(p.wrong), syl: arr(p.syl), exams: arr(p.exams), del: { wrong: Object.assign({}, d.wrong), syl: Object.assign({}, d.syl), exams: Object.assign({}, d.exams) } };
+  return { log: arr(p.log), wrong: arr(p.wrong), syl: arr(p.syl), exams: arr(p.exams), notes: arr(p.notes), del: { wrong: Object.assign({}, d.wrong), syl: Object.assign({}, d.syl), exams: Object.assign({}, d.exams) } };
 }
 function loadProg(){ try { return normProg(JSON.parse(localStorage.getItem(PKEY) || "null")); } catch { return emptyProg(); } }
 let PROG = loadProg();
@@ -3776,7 +3825,7 @@ function mergeProg(l, r){
     }
     return [...m.values()];
   };
-  return { log: byU(r.log, l.log).sort((a, b) => a.t - b.t).slice(-LOGCAP), wrong: byU(r.wrong, l.wrong, del.wrong), syl: byU(r.syl, l.syl, del.syl), exams: byU(r.exams, l.exams, del.exams), del };
+  return { log: byU(r.log, l.log).sort((a, b) => a.t - b.t).slice(-LOGCAP), wrong: byU(r.wrong, l.wrong, del.wrong), syl: byU(r.syl, l.syl, del.syl), exams: byU(r.exams, l.exams, del.exams), notes: byU(r.notes, l.notes), del };
 }
 
 /* ---- potrivirea temelor ---- */
@@ -3819,14 +3868,14 @@ function progRecord(q, chosen, src, ctx){
   if (!q || !q.enunt || !arr(chosen).length || !arr(q.corecte).length) return null;
   ctx = ctx || {};
   const ok = sameAns(chosen, q.corecte), now = Date.now();
-  PROG.log.push({ id: "l" + now.toString(36) + Math.random().toString(36).slice(2, 7), t: now, src, topic: ctx.topic || "", disc: ctx.disc || "", ok });
+  PROG.log.push(Object.assign({ id: "l" + now.toString(36) + Math.random().toString(36).slice(2, 7), t: now, src, topic: ctx.topic || "", disc: ctx.disc || "", ok }, ok ? {} : { ty: errType(q, chosen) }));
   if (PROG.log.length > LOGCAP) PROG.log = PROG.log.slice(-LOGCAP);
   const id = ctx.wid || qKey(q);
   let w = PROG.wrong.find(x => x.id === id);
   if (!ok){
     const qq = { enunt: q.enunt, tip: q.tip || (arr(q.corecte).length > 1 ? "CM" : "CS"), variante: q.variante, corecte: arr(q.corecte), explicatie: q.explicatie || "", de_ce: q.de_ce || null };
     if (!w){ w = { id, q: qq, topic: ctx.topic || "", disc: ctx.disc || "", src, t: now, n: 0, okRun: 0, rez: 0 }; PROG.wrong.push(w); }
-    w.n = (w.n || 0) + 1; w.okRun = 0; w.rez = 0; w.u = now; w.last = arr(chosen);
+    w.n = (w.n || 0) + 1; w.okRun = 0; w.rez = 0; w.u = now; w.last = arr(chosen); w.lastTxt = arr(chosen).map(L => (q.variante || {})[L]).filter(Boolean);
     delete PROG.del.wrong[id];
   } else if (w && !w.rez){
     w.okRun = (w.okRun || 0) + 1; w.u = now;
@@ -3882,52 +3931,132 @@ function labExplain(q, disc){
 /* ---- anatomie interactivă ---- */
 const SYS = {
   nervos: { nume: "Nervos", c: "c1" }, cardio: { nume: "Cardiovascular", c: "eosin" }, respirator: { nume: "Respirator", c: "c2" },
-  digestiv: { nume: "Digestiv", c: "c4" }, urinar: { nume: "Urinar", c: "c3" }, endocrin: { nume: "Endocrin", c: "c5" }, hemato: { nume: "Hemato-imun", c: "hema" }
+  digestiv: { nume: "Digestiv", c: "c4" }, urinar: { nume: "Urinar", c: "c3" }, endocrin: { nume: "Endocrin", c: "c5" },
+  hemato: { nume: "Hemato-imun", c: "hema" }, locomotor: { nume: "Locomotor", c: "warn" }
 };
+const ANAT_CAT = { anat: "Anatomie", hist: "Histologie", imag: "Imagistică" };
+/* ordinea contează: organele de la final stau deasupra celor de la început */
 const ORGANS = [
-  { id: "maduva", nume: "Măduva spinării", sis: "nervos", d: '<rect x="147" y="84" width="6" height="30" rx="3"/>', teme: ["Anatomia măduvei spinării", "Căile ascendente și descendente ale măduvei", "Sindroamele medulare"], cuv: ["maduv", "medular", "spinal"] },
-  { id: "creier", nume: "Creierul", sis: "nervos", d: '<ellipse cx="150" cy="44" rx="25" ry="21"/>', teme: ["Anatomia emisferelor cerebrale", "Circulația cerebrală și poligonul Willis", "Accidentul vascular cerebral", "Sindromul de hipertensiune intracraniană"], cuv: ["creier", "cerebr", "encefal", "cortex", "avc", "willis"] },
-  { id: "tiroida", nume: "Tiroida", sis: "endocrin", d: '<path d="M139 97 Q137 108 145 110 L150 104 L155 110 Q163 108 161 97 Q156 103 150 101 Q144 103 139 97 Z"/>', teme: ["Fiziologia hormonilor tiroidieni", "Hipotiroidismul", "Hipertiroidismul și boala Graves", "Nodulul tiroidian"], cuv: ["tiroid", "graves", "hashimoto"] },
-  { id: "plamani", nume: "Plămânii", sis: "respirator", d: '<path d="M128 122 Q104 128 100 170 Q98 205 104 222 Q118 214 136 210 L140 140 Q138 124 128 122 Z"/><path d="M172 122 Q196 128 200 170 Q202 205 196 222 Q186 214 176 212 L164 198 L160 140 Q162 124 172 122 Z"/>', teme: ["Mecanica ventilației pulmonare", "Schimbul de gaze alveolo-capilar", "Pneumonia comunitară", "BPOC și astmul bronșic"], cuv: ["plaman", "pulmon", "pneum", "respir", "bronh", "astm", "bpoc", "ventil"] },
-  { id: "inima", nume: "Inima", sis: "cardio", d: '<path d="M150 166 Q157 158 167 163 Q179 170 173 187 Q166 201 156 212 Q147 200 141 188 Q135 171 150 166 Z"/>', teme: ["Ciclul cardiac", "Mecanismul Frank–Starling", "Insuficiența cardiacă", "Infarctul miocardic acut"], cuv: ["inim", "cardi", "miocard", "coronar", "frank", "valv", "aritm"] },
-  { id: "ficat", nume: "Ficatul", sis: "digestiv", d: '<path d="M100 222 Q130 213 172 219 Q179 226 168 236 Q140 252 112 252 Q99 246 100 222 Z"/>', teme: ["Anatomia și vascularizația ficatului", "Metabolismul bilirubinei", "Ciroza hepatică", "Hepatitele virale"], cuv: ["ficat", "hepat", "ciroz", "bilirub", "icter"] },
-  { id: "splina", nume: "Splina", sis: "hemato", d: '<ellipse cx="206" cy="240" rx="7" ry="14"/>', teme: ["Anatomia și funcțiile splinei", "Splenomegalia", "Hiperspenismul"], cuv: ["splin", "splen"] },
-  { id: "stomac", nume: "Stomacul", sis: "digestiv", d: '<path d="M168 227 Q190 221 198 236 Q203 256 187 266 Q172 273 161 262 Q170 256 174 246 Q170 238 168 227 Z"/>', teme: ["Secreția gastrică și reglarea ei", "Boala ulceroasă", "Infecția cu Helicobacter pylori", "Hemoragia digestivă superioară"], cuv: ["stomac", "gastr", "ulcer", "pylori"] },
-  { id: "pancreas", nume: "Pancreasul", sis: "endocrin", d: '<path d="M136 263 Q160 254 190 260 Q188 269 160 271 Q145 273 136 263 Z"/>', teme: ["Pancreasul endocrin și insulina", "Diabetul zaharat tip 1 și tip 2", "Pancreatita acută", "Secreția pancreatică exocrină"], cuv: ["pancrea", "insulin", "diabet", "glicem"] },
-  { id: "rinichi", nume: "Rinichii", sis: "urinar", d: '<ellipse cx="110" cy="284" rx="9" ry="15"/><ellipse cx="190" cy="284" rx="9" ry="15"/>', teme: ["Filtrarea glomerulară", "Sistemul renină–angiotensină–aldosteron", "Sindromul nefrotic vs nefritic", "Insuficiența renală acută"], cuv: ["rinich", "renal", "nefr", "glomer", "renin"] },
-  { id: "suprarenale", nume: "Glandele suprarenale", sis: "endocrin", d: '<path d="M103 270 L110 261 L117 270 Z"/><path d="M183 270 L190 261 L197 270 Z"/>', teme: ["Hormonii corticosuprarenalei", "Sindromul Cushing", "Insuficiența corticosuprarenală (boala Addison)", "Feocromocitomul"], cuv: ["suprarenal", "cortizol", "cushing", "addison", "aldoster", "feocrom"] },
-  { id: "colon", nume: "Colonul", sis: "digestiv", line: true, d: '<path d="M126 334 L120 334 Q108 334 108 322 L108 290 Q108 278 120 278 L180 278 Q192 278 192 290 L192 322 Q192 334 180 336 L160 340"/>', teme: ["Anatomia colonului", "Bolile inflamatorii intestinale", "Cancerul colorectal", "Apendicita acută"], cuv: ["colon", "colorect", "rect", "apendic", "crohn"] },
-  { id: "intestin", nume: "Intestinul subțire", sis: "digestiv", d: '<ellipse cx="150" cy="306" rx="28" ry="19"/>', teme: ["Digestia și absorbția nutrienților", "Boala celiacă", "Ocluzia intestinală"], cuv: ["intestin", "duoden", "jejun", "celiac", "absorb", "ocluz"] },
-  { id: "vezica", nume: "Vezica urinară", sis: "urinar", d: '<ellipse cx="150" cy="345" rx="13" ry="8"/>', teme: ["Fiziologia micțiunii", "Infecțiile tractului urinar", "Litiaza urinară"], cuv: ["vezic", "mictiun", "urinar", "cistit", "litiaz"] }
+  { id: "muschi", nume: "Mușchii membrului superior", sis: "locomotor", hs: '<path d="M190 540 Q240 505 300 520 L300 900 Q240 960 175 940 Q170 720 190 540 Z"/>', img: { anat: "muscles of the upper limb anatomy", hist: "skeletal muscle histology", imag: "MRI arm muscles" }, teme: ["Mușchii brațului și antebrațului", "Fiziologia contracției musculare", "Miastenia gravis", "Miopatiile"], cuv: ["muschi", "muscul", "miasten", "miopat", "contracti"] },
+  { id: "vase", nume: "Vasele membrului superior", sis: "cardio", hs: '<path d="M690 570 L760 580 Q800 760 830 990 L760 1000 Q720 800 690 570 Z"/>', img: { anat: "arteries of the upper limb", hist: "artery vein histology", imag: "angiography upper limb" }, teme: ["Arterele membrului superior", "Sistemul venos și întoarcerea venoasă", "Tromboza venoasă profundă", "Reglarea tensiunii arteriale"], cuv: ["arter", "venoas", "vascul", "trombo", "tensiun"] },
+  { id: "ganglioni", nume: "Ganglionii limfatici", sis: "hemato", hs: '<ellipse cx="410" cy="420" rx="16" ry="70"/><ellipse cx="556" cy="420" rx="16" ry="70"/><ellipse cx="712" cy="690" rx="50" ry="60"/>', img: { anat: "lymph nodes of the neck anatomy", hist: "lymph node histology", imag: "lymph node ultrasound" }, teme: ["Sistemul limfatic: anatomie și funcții", "Răspunsul imun în ganglionul limfatic", "Limfadenopatia: diagnostic diferențial", "Limfoamele Hodgkin și non-Hodgkin"], cuv: ["ganglion", "limf", "adenopat"] },
+  { id: "plamani", nume: "Plămânii", sis: "respirator", hs: '<path d="M330 560 Q360 520 430 530 L425 800 Q390 880 330 880 Q300 760 330 560 Z"/><path d="M545 530 Q620 520 655 570 Q680 760 650 880 Q590 880 560 820 L545 600 Z"/>', img: { anat: "lungs anatomy anterior view", hist: "lung histology alveoli", imag: "normal chest radiograph" }, teme: ["Mecanica ventilației pulmonare", "Schimbul de gaze alveolo-capilar", "Pneumonia comunitară", "BPOC și astmul bronșic"], cuv: ["plaman", "pulmon", "pneum", "respir", "astm", "bpoc", "ventil"] },
+  { id: "inima", nume: "Inima", sis: "cardio", hs: '<path d="M420 560 Q470 545 540 575 Q575 640 565 720 Q540 790 470 800 Q420 780 405 720 Q395 630 420 560 Z"/>', img: { anat: "Gray internal structure of heart", hist: "cardiac muscle histology", imag: "echocardiography four chamber view" }, teme: ["Ciclul cardiac", "Mecanismul Frank–Starling", "Insuficiența cardiacă", "Infarctul miocardic acut"], cuv: ["inim", "cardi", "miocard", "coronar", "frank", "valv", "aritm"] },
+  { id: "trahee", nume: "Laringele și traheea", sis: "respirator", hs: '<path d="M458 262 L510 262 L512 420 L456 420 Z"/>', img: { anat: "larynx trachea anatomy", hist: "trachea histology", imag: "larynx laryngoscopy" }, teme: ["Anatomia laringelui și a traheei", "Clearance-ul mucociliar și tusea", "Laringita și epiglotita"], cuv: ["trahe", "laring", "epiglot"] },
+  { id: "tiroida", nume: "Tiroida", sis: "endocrin", hs: '<ellipse cx="484" cy="446" rx="42" ry="26"/>', img: { anat: "thyroid gland anatomy", hist: "thyroid histology follicles", imag: "thyroid ultrasound" }, teme: ["Fiziologia hormonilor tiroidieni", "Hipotiroidismul", "Hipertiroidismul și boala Graves", "Nodulul tiroidian"], cuv: ["tiroid", "graves", "hashimoto"] },
+  { id: "creier", nume: "Creierul", sis: "nervos", hs: '<ellipse cx="483" cy="148" rx="102" ry="82"/>', img: { anat: "human brain anatomy lateral view", hist: "cerebral cortex histology", imag: "MRI brain normal axial" }, teme: ["Anatomia emisferelor cerebrale", "Circulația cerebrală și poligonul Willis", "Accidentul vascular cerebral", "Sindromul de hipertensiune intracraniană"], cuv: ["creier", "cerebr", "encefal", "cortex", "avc", "willis"] },
+  { id: "colon", nume: "Colonul", sis: "digestiv", line: true, hs: '<path d="M345 1205 Q318 1100 335 1040 Q345 1000 380 1000 L590 990 Q640 1000 648 1050 Q660 1120 640 1200 Q600 1235 560 1225"/>', img: { anat: "large intestine colon anatomy", hist: "colon histology", imag: "colonoscopy normal colon" }, teme: ["Anatomia colonului", "Bolile inflamatorii intestinale", "Cancerul colorectal", "Apendicita acută"], cuv: ["colon", "colorect", "rect", "apendic", "crohn"] },
+  { id: "intestin", nume: "Intestinul subțire", sis: "digestiv", hs: '<ellipse cx="485" cy="1110" rx="105" ry="68"/>', img: { anat: "small intestine anatomy", hist: "small intestine villi histology", imag: "small bowel follow through" }, teme: ["Digestia și absorbția nutrienților", "Boala celiacă", "Ocluzia intestinală"], cuv: ["intestin", "duoden", "jejun", "celiac", "absorb", "ocluz"] },
+  { id: "aorta", nume: "Aorta abdominală", sis: "cardio", hs: '<path d="M470 985 L500 985 L502 1130 L468 1130 Z"/>', img: { anat: "abdominal aorta branches anatomy", hist: "aorta histology elastic", imag: "CT angiography abdominal aorta" }, teme: ["Ramurile aortei abdominale", "Anevrismul de aortă abdominală", "Ateroscleroza"], cuv: ["aort", "anevrism", "ateroscl"] },
+  { id: "ficat", nume: "Ficatul", sis: "digestiv", hs: '<path d="M305 820 Q370 800 445 830 Q440 880 425 900 L385 900 L380 965 Q350 985 320 960 Q298 900 305 820 Z"/>', img: { anat: "anatomy of liver and gall bladder", hist: "liver lobule histology", imag: "liver CT scan" }, teme: ["Anatomia și vascularizația ficatului", "Metabolismul bilirubinei", "Ciroza hepatică", "Hepatitele virale"], cuv: ["ficat", "hepat", "ciroz", "bilirub", "icter"] },
+  { id: "stomac", nume: "Stomacul", sis: "digestiv", hs: '<path d="M548 790 Q610 770 650 820 Q660 870 630 890 Q590 880 560 870 Q545 835 548 790 Z"/>', img: { anat: "stomach anatomy regions", hist: "gastric mucosa histology", imag: "gastroscopy stomach" }, teme: ["Secreția gastrică și reglarea ei", "Boala ulceroasă", "Infecția cu Helicobacter pylori", "Hemoragia digestivă superioară"], cuv: ["stomac", "gastr", "ulcer", "pylori"] },
+  { id: "pancreas", nume: "Pancreasul", sis: "endocrin", hs: '<path d="M432 900 Q470 880 560 880 Q630 895 640 930 Q620 980 540 985 Q460 990 432 960 Z"/>', img: { anat: "pancreas anatomy duodenum", hist: "pancreas histology islets of Langerhans", imag: "pancreas CT" }, teme: ["Pancreasul endocrin și insulina", "Diabetul zaharat tip 1 și tip 2", "Pancreatita acută", "Secreția pancreatică exocrină"], cuv: ["pancrea", "insulin", "diabet", "glicem"] },
+  { id: "biliara", nume: "Vezica biliară", sis: "digestiv", hs: '<path d="M388 950 Q392 905 440 895 Q438 940 410 965 Q392 968 388 950 Z"/>', img: { anat: "gallbladder biliary tree anatomy", hist: "gallbladder histology", imag: "gallbladder ultrasound gallstones" }, teme: ["Fiziologia secreției biliare", "Litiaza biliară", "Colecistita acută"], cuv: ["biliar", "colecist"] },
+  { id: "rinichi", nume: "Rinichii", sis: "urinar", hs: '<ellipse cx="358" cy="1012" rx="32" ry="54"/><ellipse cx="612" cy="1000" rx="30" ry="50"/>', img: { anat: "kidney section vertical", hist: "kidney glomerulus histology", imag: "kidney ultrasound" }, teme: ["Filtrarea glomerulară", "Sistemul renină–angiotensină–aldosteron", "Sindromul nefrotic vs nefritic", "Insuficiența renală acută"], cuv: ["rinich", "renal", "nefr", "glomer", "renin"] },
+  { id: "vezica", nume: "Vezica urinară", sis: "urinar", hs: '<ellipse cx="482" cy="1268" rx="62" ry="46"/>', img: { anat: "urinary bladder anatomy", hist: "urinary bladder transitional epithelium histology", imag: "bladder ultrasound" }, teme: ["Fiziologia micțiunii", "Infecțiile tractului urinar", "Litiaza urinară"], cuv: ["vezic", "mictiun", "urinar", "cistit", "litiaz"] },
+  { id: "splina", nume: "Splina", sis: "hemato", hs: "", img: { anat: "spleen anatomy", hist: "spleen histology white pulp", imag: "spleen ultrasound" }, teme: ["Anatomia și funcțiile splinei", "Splenomegalia", "Hipersplenismul"], cuv: ["splin", "splen"] },
+  { id: "suprarenale", nume: "Glandele suprarenale", sis: "endocrin", hs: "", img: { anat: "adrenal gland anatomy", hist: "adrenal cortex histology zones", imag: "adrenal CT" }, teme: ["Hormonii corticosuprarenalei", "Sindromul Cushing", "Insuficiența corticosuprarenală (boala Addison)", "Feocromocitomul"], cuv: ["suprarenal", "cortizol", "cushing", "addison", "aldoster", "feocrom"] },
+  { id: "maduva", nume: "Măduva spinării", sis: "nervos", hs: "", img: { anat: "spinal cord cross section anatomy", hist: "spinal cord histology", imag: "MRI spine sagittal" }, teme: ["Anatomia măduvei spinării", "Căile ascendente și descendente ale măduvei", "Sindroamele medulare"], cuv: ["maduv", "medular", "spinal"] }
 ];
-const BODY_SVG = `<g class="body-sil">
-  <ellipse cx="150" cy="52" rx="33" ry="39"/><rect x="135" y="84" width="30" height="28" rx="9"/>
-  <path d="M96 110 Q150 98 204 110 Q222 116 224 134 L222 220 Q218 270 206 300 L204 352 Q150 364 96 352 L94 300 Q82 270 78 220 L76 134 Q78 116 96 110 Z"/>
-  <path d="M78 122 Q60 126 56 150 L44 250 Q40 290 38 330 Q36 350 44 352 Q52 352 54 332 L64 252 L74 200 Z"/>
-  <path d="M222 122 Q240 126 244 150 L256 250 Q260 290 262 330 Q264 350 256 352 Q248 352 246 332 L236 252 L226 200 Z"/>
-  <path d="M98 348 L148 356 L146 470 Q144 540 140 580 Q138 594 122 594 Q108 594 110 578 Q108 520 104 470 Q96 400 98 348 Z"/>
-  <path d="M202 348 L152 356 L154 470 Q156 540 160 580 Q162 594 178 594 Q192 594 190 578 Q192 520 196 470 Q204 400 202 348 Z"/></g>`;
 function organStudied(o){
   const texts = readHist().map(h => nrm(stripMarks(h.result && h.result.titlu))).concat(PROG.log.map(e => nrm(e.topic)));
   return new Set(texts.filter(t => t && o.cuv.some(c => t.includes(c)))).size;
 }
+const ORGAN_EN = { muschi: "biceps brachii", vase: "brachial artery", ganglioni: "lymph node", plamani: "human lung", inima: "human heart", trahee: "trachea", tiroida: "thyroid gland", creier: "human brain", colon: "colon", intestin: "small intestine", aorta: "abdominal aorta", ficat: "human liver", stomac: "human stomach", pancreas: "pancreas", biliara: "gallbladder", rinichi: "human kidney", vezica: "urinary bladder", splina: "spleen", suprarenale: "adrenal gland", maduva: "spinal cord" };
+const GAL = new Map();
+function galKey(o){ return o.id + ":" + (labState().galCat || "anat"); }
+function loadGal(o){
+  const cat = labState().galCat || "anat", key = o.id + ":" + cat;
+  if (GAL.has(key)) return;
+  GAL.set(key, "loading");
+  const extra = `${ORGAN_EN[o.id] || ""} ${{ anat: "anatomy", hist: "histology micrograph", imag: "radiology" }[cat]}`.trim();
+  Promise.all([commonsSearch(o.img[cat]).catch(() => []), commonsSearch(extra).catch(() => [])]).then(([a, b]) => {
+    const seen = new Set(), out = [];
+    for (const c of [...a, ...b]) if (!seen.has(c.thumb)){ seen.add(c.thumb); out.push(c); }
+    GAL.set(key, out.slice(0, 9));
+  }).catch(() => GAL.set(key, [])).finally(() => {
+    const g = $("#anatGal"), L = labState();
+    if (g && L.organ === o.id && (L.galCat || "anat") === cat) g.innerHTML = galHtml(o);
+  });
+}
+function galHtml(o){
+  const st = GAL.get(galKey(o));
+  if (!st){ loadGal(o); return `<p class="hint">Se caută imagini reale pe Wikimedia Commons…</p>`; }
+  if (st === "loading") return `<p class="hint">Se caută imagini reale pe Wikimedia Commons…</p>`;
+  if (!st.length) return `<p class="hint">Nu am găsit imagini potrivite. Încearcă altă categorie sau fila Vizual.</p>`;
+  return `<div class="gal-grid">${st.map((c, i) => `<button type="button" class="gal-it" data-act="gal-open" data-i="${i}" title="${esc(c.title)}"><img src="${esc(c.thumb)}" alt="${esc(c.title)}" loading="lazy"></button>`).join("")}</div><p class="hint">Apasă pe o imagine ca s-o vezi mare și s-o explice ghidul.</p>`;
+}
 function anatHtml(){
   const L = labState(), sel = ORGANS.find(o => o.id === L.organ);
+  if (!L.galCat) L.galCat = "anat";
   const studied = new Map(ORGANS.map(o => [o.id, organStudied(o)]));
-  const orgSvg = ORGANS.map(o => `<g class="org${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" && o.sis !== L.sys ? " dim" : ""}" data-org="${o.id}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.d}</g>`).join("");
+  const hs = ORGANS.filter(o => o.hs).map(o => `<g class="hs${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" && o.sis !== L.sys ? " dim" : ""}" data-org="${o.id}" data-name="${esc(o.nume)}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.hs}</g>`).join("");
   const nDone = [...studied.values()].filter(Boolean).length;
   const chips = `<div class="sys-chips"><button type="button" class="chip${L.sys === "toate" ? " on" : ""}" data-sys="toate">Toate</button>${Object.entries(SYS).map(([k, s]) => `<button type="button" class="chip${L.sys === k ? " on" : ""}" data-sys="${k}" style="--oc:var(--${s.c})"><i class="dot"></i>${s.nume}</button>`).join("")}</div>`;
+  const fig = `<div class="anat-fig real${L.outl === false ? "" : " outl"}"><div class="anat-stage">
+      <img src="/anatomie-corp.webp" alt="Ilustrație anatomică a corpului uman cu organele interne" width="960" height="1332">
+      <svg viewBox="0 0 960 1332" role="group" aria-label="Organe pe care poți apăsa">${hs}</svg><span class="hs-name" id="hsName" hidden></span></div>
+    <div class="fig-foot"><label class="fig-tg"><input type="checkbox" data-act="outl"${L.outl === false ? "" : " checked"}> Arată contururile</label><span class="fig-credit">Ilustrație: Mikael Häggström, după Gray's Anatomy (CC0)</span></div></div>`;
+  const list = `<ul class="org-list">${ORGANS.map(o => `<li><button type="button" class="linkbtn${sel && sel.id === o.id ? " on" : ""}" data-org="${o.id}"><i class="dot" style="--oc:var(--${SYS[o.sis].c})"></i>${esc(o.nume)}${studied.get(o.id) ? ` <span class="ok-mark" title="studiat">✓</span>` : ""}</button></li>`).join("")}</ul>`;
   const info = sel ? `<div class="org-info" style="--oc:var(--${SYS[sel.sis].c})">
       <span class="org-sys"><i class="dot"></i>Sistemul ${SYS[sel.sis].nume.toLowerCase()}</span>
       <h3>${esc(sel.nume)}</h3>
+      <div class="seg gal-tabs">${Object.entries(ANAT_CAT).map(([k, t]) => `<button type="button" data-act="gal-cat" data-cat="${k}" aria-pressed="${L.galCat === k}">${t}</button>`).join("")}</div>
+      <div id="anatGal">${galHtml(sel)}</div>
+      <h4 class="org-h4">Teme de studiu</h4>
       <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Alege o temă și ghidul o explică imediat.</p>
       <div class="org-topics">${sel.teme.map(t => `<button type="button" class="org-t" data-act="explain" data-q="${esc(t)}">${esc(t)}<span aria-hidden="true">→</span></button>`).join("")}</div>
       <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-own">Explică</button></div>
+      <details class="org-more"><summary>Toate organele</summary>${list}</details>
     </div>`
-    : `<div class="org-info empty"><h3>Apasă pe un organ</h3><p class="hint">Alegi organul, apoi tema: anatomie, fiziologie sau patologie. Organele colorate mai intens sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}).</p>
-      <ul class="org-list">${ORGANS.map(o => `<li><button type="button" class="linkbtn" data-org="${o.id}"><i class="dot" style="--oc:var(--${SYS[o.sis].c})"></i>${esc(o.nume)}</button></li>`).join("")}</ul></div>`;
-  return `${chips}<div class="anat"><div class="anat-fig"><svg viewBox="30 0 240 600" role="group" aria-label="Corpul uman, organe interactive">${BODY_SVG}${orgSvg}</svg></div>${info}</div>`;
+    : `<div class="org-info empty"><h3>Apasă pe un organ</h3><p class="hint">Vezi imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
+  return `${chips}<div class="anat">${fig}${info}</div>`;
 }
+/* fereastra cu imaginea mare */
+const imgOv = document.createElement("div"); imgOv.className = "acct-ov img-ov"; imgOv.hidden = true; document.body.appendChild(imgOv);
+function openGalImg(i){
+  const L = labState(), o = ORGANS.find(x => x.id === L.organ), list = o && GAL.get(galKey(o));
+  if (!Array.isArray(list) || !list[i]) return;
+  L.galSel = i;
+  const c = list[i], exp = imgExpCache.get(c.thumb);
+  imgOv.innerHTML = `<div class="acct-box img-box-lg" role="dialog" aria-modal="true" aria-label="${esc(c.title)}">
+    <button class="icon-btn ac-x" type="button" data-iv="close" aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    <div class="iv-img"><img src="${esc(c.thumb)}" alt="${esc(c.title)}"></div>
+    <p class="iv-cap"><b>${esc(c.title)}</b><span>${c.author ? esc(c.author) + " · " : ""}${c.license ? esc(c.license) + " · " : ""}<a href="${esc(c.page)}" target="_blank" rel="noopener">Wikimedia Commons</a></span></p>
+    <div class="row"><button class="btn" type="button" data-iv="prev" ${i ? "" : "disabled"}>← Anterioara</button><button class="btn" type="button" data-iv="next" ${i < list.length - 1 ? "" : "disabled"}>Următoarea →</button><span class="grow"></span><button class="btn primary" type="button" data-iv="explain">Explică imaginea</button></div>
+    <div class="iv-exp prose" id="ivExp"${exp ? "" : " hidden"}>${exp ? md(exp) : ""}</div></div>`;
+  imgOv.hidden = false;
+}
+async function explainOrganImg(btn){
+  const L = labState(), o = ORGANS.find(x => x.id === L.organ), list = o && GAL.get(galKey(o)), c = Array.isArray(list) && list[L.galSel];
+  if (!c) return;
+  const out = $("#ivExp"); out.hidden = false;
+  if (imgExpCache.has(c.thumb)){ out.innerHTML = md(imgExpCache.get(c.thumb)); return; }
+  btn.disabled = true; out.innerHTML = `<p class="hint">Se analizează imaginea…</p>`;
+  try {
+    const blob = await (await fetch(c.thumb)).blob();
+    const s = await sampleP;
+    const { text } = await s(`Ești tutore de medicină pentru studenți. Imaginea atașată („${c.title}”, de pe Wikimedia Commons) ilustrează: ${o.nume} (${ANAT_CAT[L.galCat || "anat"].toLowerCase()}).
+Explică în limba română ce se vede: tipul imaginii (desen anatomic, preparat histologic, imagistică), structurile și etichetele (tradu-le în română), ce e important pentru examen și o greșeală frecventă de interpretare. 120–200 de cuvinte, markdown simplu (un paragraf scurt și o listă). Dacă imaginea nu arată organul, spune asta într-o propoziție.`, { modelTier: "default", images: [blob], onText: ({ text }) => { out.innerHTML = md(text); } });
+    imgExpCache.set(c.thumb, text); out.innerHTML = md(text);
+  } catch (e){ out.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Imaginea nu a putut fi pregătită pentru analiză. Încearcă alta.")}</p>`; }
+  finally { btn.disabled = false; }
+}
+imgOv.addEventListener("click", ev => {
+  if (ev.target === imgOv){ imgOv.hidden = true; return; }
+  const b = ev.target.closest("[data-iv]"); if (!b) return;
+  const L = labState(), a = b.dataset.iv;
+  if (a === "close") imgOv.hidden = true;
+  else if (a === "prev") openGalImg(L.galSel - 1);
+  else if (a === "next") openGalImg(L.galSel + 1);
+  else if (a === "explain") explainOrganImg(b);
+});
+document.addEventListener("keydown", ev => {
+  if (imgOv.hidden) return;
+  if (ev.key === "Escape") imgOv.hidden = true;
+  else if (ev.key === "ArrowRight") openGalImg(labState().galSel + 1);
+  else if (ev.key === "ArrowLeft") openGalImg(labState().galSel - 1);
+});
 
 /* ---- revizuirea greșelilor ---- */
 function revHtml(){
@@ -3945,7 +4074,7 @@ function revHtml(){
 function revStart(list){
   const L = labState();
   if (!list.length){ toast("Nu e nimic de revizuit aici"); return; }
-  L.rev = { ids: list.slice(0, 30).map(w => w.id), i: 0, ans: [], checked: false, score: 0 };
+  L.rev = { ids: list.slice(0, 30).map(w => w.id), i: 0, ans: [], checked: false, score: 0, qs: {} };
   renderLab();
 }
 function revRunHtml(){
@@ -3955,7 +4084,7 @@ function revRunHtml(){
   }
   const w = PROG.wrong.find(x => x.id === R.ids[R.i]);
   if (!w){ R.i++; return revRunHtml(); }
-  const q = w.q, ok = R.checked && sameAns(R.ans, q.corecte);
+  const q = R.qs[w.id] || (R.qs[w.id] = shuffleOptions(w.q)), ok = R.checked && sameAns(R.ans, q.corecte);
   const opts = Object.keys(q.variante || {}).map(L => {
     const sel = R.ans.includes(L), cor = q.corecte.includes(L);
     let cls = sel ? "sel" : "";
@@ -4001,6 +4130,7 @@ function statsHtml(){
       <section><h3 class="lab-sub">Puncte slabe</h3>${weak.length ? `<ul class="lab-list">${weak.map(a => tline(a) .replace("</li>", `<button class="btn sm" type="button" data-act="explain" data-q="${esc(a.k)}">Reia tema</button></li>`)).join("")}</ul>` : `<p class="hint">Nicio temă sub 60% (din cele cu cel puțin 3 răspunsuri).</p>`}</section>
       <section><h3 class="lab-sub">Puncte forte</h3>${strong.length ? `<ul class="lab-list">${strong.map(tline).join("")}</ul>` : `<p class="hint">Temele cu peste 80% răspunsuri corecte apar aici.</p>`}</section>
     </div>
+    ${errTypesHtml()}
     <h3 class="lab-sub">Pe tipuri de exercițiu</h3><ul class="lab-list">${src.map(tline).join("")}</ul>`;
 }
 
@@ -4109,9 +4239,9 @@ function planIcs(){
 /* ---- randare și evenimente ---- */
 function renderLab(){
   const L = labState(), p = $("#p-lab"); if (!p) return;
-  const views = [["anat", "Anatomie"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["cal", "Calendar"]];
+  const views = [["anat", "Anatomie"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["cal", "Calendar"], ["notes", "Notițe"]];
   const nRev = dueWrong().length;
-  const body = { anat: anatHtml, rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml }[L.view] || anatHtml;
+  const body = { anat: anatHtml, rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml, notes: notesHtml }[L.view] || anatHtml;
   p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Simulation Lab</h2><p class="hint">Corpul uman interactiv, greșelile tale, progresul și planul de studiu.</p></div>
     <div class="seg lab-nav">${views.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : ""}</button>`).join("")}</div></div>
     <div class="lab-body">${body()}</div>`;
@@ -4132,7 +4262,7 @@ $("#p-lab").addEventListener("click", ev => {
   if (a === "rev-check"){
     const R = L.rev, w = PROG.wrong.find(x => x.id === R.ids[R.i]);
     if (!R.ans.length){ toast("Alege un răspuns"); return; }
-    if (progRecord(w.q, R.ans, "revizuire", { topic: w.topic, disc: w.disc, wid: w.id })) R.score++;
+    if (progRecord((R.qs && R.qs[w.id]) || w.q, R.ans, "revizuire", { topic: w.topic, disc: w.disc, wid: w.id })) R.score++;
     R.checked = true; renderLab(); return;
   }
   if (a === "rev-next"){ const R = L.rev; R.i++; R.ans = []; R.checked = false; renderLab(); $("#p-lab").scrollIntoView({ block: "start", behavior: "smooth" }); return; }
@@ -4170,6 +4300,220 @@ $("#p-lab").addEventListener("keydown", ev => {
   const g = ev.target.closest && ev.target.closest("g[data-org]");
   if (g && (ev.key === "Enter" || ev.key === " ")){ ev.preventDefault(); g.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
 });
+
+/* ---------------- v8: notițe, timp estimat, text în tabel, tipuri de greșeli, mod examen ---------------- */
+/* anatomie: numele organului la trecerea mouse-ului, contururi */
+$("#p-lab").addEventListener("mouseover", ev => {
+  const g = ev.target.closest && ev.target.closest("g.hs"), n = $("#hsName");
+  if (!n) return;
+  if (g){ n.textContent = g.dataset.name; n.hidden = false; } else n.hidden = true;
+});
+$("#p-lab").addEventListener("mouseleave", () => { const n = $("#hsName"); if (n) n.hidden = true; });
+$("#p-lab").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-act]"); if (!b) return;
+  const L = labState(), a = b.dataset.act;
+  if (a === "outl"){ L.outl = b.checked; const f = b.closest(".anat-fig"); if (f) f.classList.toggle("outl", b.checked); }
+  else if (a === "gal-cat"){ L.galCat = b.dataset.cat; renderLab(); }
+  else if (a === "gal-open") openGalImg(+b.dataset.i);
+  else if (a === "err-ai") analyzeErrors(b);
+  else if (a === "note-open") labExplain(b.dataset.q);
+  else if (a === "note-del"){ if (confirm("Ștergi notița?")){ saveNote(b.dataset.q, ""); renderLab(); } }
+});
+$("#p-lab").addEventListener("input", ev => {
+  const t = ev.target;
+  if (t.dataset && t.dataset.note != null){ clearTimeout(t._t); t._t = setTimeout(() => saveNote(t.dataset.note, t.value), 700); }
+  if (t.id === "noteQ"){ labState().noteQ = t.value; clearTimeout(t._t); t._t = setTimeout(() => { renderLab(); const q = $("#noteQ"); if (q){ q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 300); }
+});
+
+/* ---- notițe personale ---- */
+function noteId(titlu){ return "n" + qKey({ enunt: stripMarks(titlu) }).slice(1); }
+function saveNote(titlu, text){
+  const id = noteId(titlu), now = Date.now();
+  let n = PROG.notes.find(x => x.id === id);
+  if (!n){ if (!String(text).trim()) return; n = { id, titlu: stripMarks(titlu) }; PROG.notes.push(n); }
+  n.text = String(text).slice(0, 20000); n.u = now;
+  saveProg();
+  const s = $("#noteSaved"); if (s) s.textContent = n.text.trim() ? "salvate" : "";
+}
+function estimateTime(r){
+  const words = s => String(s || "").split(/\s+/).filter(Boolean).length;
+  let w = words(r.rezumat);
+  arr(r.sectiuni).forEach(s => { w += words(s.simplu) + words(s.avansat); });
+  if (r.tabel) w += arr(r.tabel.randuri).flat().map(words).reduce((a, b) => a + b, 0);
+  if (r.caz_clinic) w += words(r.caz_clinic.prezentare);
+  const nq = arr(r.sectiuni).filter(s => s.fulger && s.fulger.intrebare).length;
+  const read = Math.max(3, Math.round(w / 130));                  // citit atent, text medical dens
+  const study = Math.max(read + 5, Math.round((read * 2 + nq * 1 + 5) / 5) * 5); // + recitire, întrebări, schemă
+  return { read, study, words: w };
+}
+const ICON_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+function paintNotes(){
+  const p = $("#p-explicatie"), r = state.result;
+  if (!r || !p || $(".notes-box", p)) return;
+  const head = $(".ex-head", p); if (!head) return;
+  const est = estimateTime(r);
+  head.insertAdjacentHTML("beforeend", `<div class="est-line">${ICON_CLOCK}<span>≈ <b>${est.read} min</b> de citit atent · <b>${est.study} min</b> ca s-o înveți (cu schema, întrebările și o recitire)</span></div>`);
+  if (state.meta && state.meta.sample) return;
+  const n = PROG.notes.find(x => x.id === noteId(r.titlu)), has = !!(n && n.text && n.text.trim());
+  head.insertAdjacentHTML("afterend", `<details class="notes-box"${has ? " open" : ""}><summary>Notițele mele <span class="hint" id="noteSaved">${has ? "salvate" : ""}</span></summary>
+    <textarea id="noteTa" rows="4" placeholder="Scrie aici ce vrei să reții din tema asta: o idee, o capcană, o întrebare pentru profesor…">${esc(n ? n.text : "")}</textarea>
+    <p class="hint">Se salvează automat${SYNC.user ? " și se sincronizează cu contul" : ""}. Toate notițele sunt în Simulation Lab → Notițe.</p></details>`);
+  const ta = $("#noteTa"), titlu = r.titlu;
+  ta.addEventListener("input", () => { clearTimeout(ta._t); ta._t = setTimeout(() => saveNote(titlu, ta.value), 700); });
+}
+const _renderExplain0 = renderExplain;
+renderExplain = function(opts){ _renderExplain0(opts); if (!(opts && opts.partial)) paintNotes(); };
+function notesHtml(){
+  const L = labState(), q = nrm(L.noteQ || "");
+  const all = PROG.notes.filter(n => n.text && n.text.trim()).sort((a, b) => (b.u || 0) - (a.u || 0));
+  const list = q ? all.filter(n => nrm(n.titlu + " " + n.text).includes(q)) : all;
+  if (!all.length) return `<div class="placeholder"><h3>Nicio notiță încă</h3><p>Sub titlul fiecărei explicații ai căsuța „Notițele mele”. Ce scrii acolo apare aici, pe teme, și se sincronizează cu contul.</p></div>`;
+  return `<input class="vis-in" id="noteQ" placeholder="Caută în notițe…" value="${esc(L.noteQ || "")}">
+    <div class="notes-list">${list.map(n => `<section class="lab-card note-card"><div class="row"><b class="grow">${esc(n.titlu)}</b><span class="hint">${new Date(n.u || Date.now()).toLocaleDateString("ro-RO", { day: "numeric", month: "short" })}</span></div>
+      <textarea class="lab-ta" rows="3" data-note="${esc(n.titlu)}">${esc(n.text)}</textarea>
+      <div class="row"><button class="btn sm" type="button" data-act="note-open" data-q="${esc(n.titlu)}">Deschide tema</button><button class="btn sm danger" type="button" data-act="note-del" data-q="${esc(n.titlu)}">Șterge</button></div></section>`).join("") || `<p class="hint">Nicio notiță nu conține „${esc(L.noteQ)}”.</p>`}</div>`;
+}
+
+/* ---- tipuri de greșeli ---- */
+const ERR_INFO = {
+  negatie: ["Capcane de negație", "Greșești la întrebările cu „NU”, „cu excepția” sau „fals”. Subliniază negația înainte să citești variantele și caută varianta falsă."],
+  incomplet: ["Răspunsuri incomplete la CM", "Bifezi corect, dar prea puțin. La CM sunt 2–4 răspunsuri: judecă fiecare variantă separat, ca adevărat sau fals."],
+  in_plus: ["Variante în plus la CM", "Bifezi și variante false. Atenție la termenii absoluți („întotdeauna”, „niciodată”, „exclusiv”): de obicei fac varianta falsă."],
+  mixt: ["Confuzii la CM", "Și omiți, și adaugi variante: tema e încă neclară. Reia explicația, apoi refă grila."],
+  confuzie: ["Confuzii la CS", "Alegi o variantă apropiată de cea corectă. Pune noțiunile asemănătoare față în față într-un tabel (Instrumente → Text în tabel)."]
+};
+function errType(q, chosen){
+  const cor = arr(q.corecte), ch = arr(chosen);
+  const en = String(q.enunt || "");
+  if (/\bNU\b/.test(en) || /cu excep|\bfals|\bincorect|\bgreșit/i.test(en)) return "negatie";
+  if (cor.length > 1 || ch.length > 1 || q.tip === "CM"){
+    const miss = cor.filter(c => !ch.includes(c)).length, extra = ch.filter(c => !cor.includes(c)).length;
+    if (!extra && miss) return "incomplet";
+    if (extra && !miss) return "in_plus";
+    return "mixt";
+  }
+  return "confuzie";
+}
+function errTypesHtml(){
+  const since = Date.now() - 60 * DAY, bad = PROG.log.filter(e => !e.ok && e.ty && e.t >= since);
+  const L = labState();
+  if (bad.length < 3) return `<h3 class="lab-sub">Ce fel de greșeli faci</h3><p class="hint">Apare după primele greșeli din grile: arată dacă greșești din negații, din răspunsuri incomplete la CM sau din confuzii.</p>`;
+  const agg = Object.keys(ERR_INFO).map(k => ({ k, n: bad.filter(e => e.ty === k).length })).filter(x => x.n).sort((a, b) => b.n - a.n);
+  return `<h3 class="lab-sub">Ce fel de greșeli faci <span class="hint">(ultimele 60 de zile)</span></h3>
+    <ul class="lab-list err-types">${agg.map((x, i) => `<li><span class="grow"><b>${ERR_INFO[x.k][0]}</b><small>${ERR_INFO[x.k][1]}</small></span><span class="acc-bar"><i style="width:${pct(x.n, bad.length)}%;background:var(--bad)"></i></span><span class="acc-v">${x.n}</span></li>`).join("")}</ul>
+    <div class="row"><button class="btn" type="button" data-act="err-ai" ${openWrong().length ? "" : "disabled"}>Analiză AI: ce noțiuni confund?</button></div>
+    ${L.errAi ? `<div class="lab-card prose">${md(L.errAi)}</div>` : ""}`;
+}
+async function analyzeErrors(btn){
+  if (state.busy) return;
+  const items = openWrong().sort((a, b) => (b.u || 0) - (a.u || 0)).slice(0, 25);
+  if (!items.length) return;
+  const txt = items.map((w, i) => `${i + 1}. [${w.topic || "fără temă"}] ${w.q.enunt}\n${Object.entries(w.q.variante || {}).map(([L, v]) => `   ${L}) ${v}`).join("\n")}\n   Corect: ${arr(w.q.corecte).map(c => c + ") " + ((w.q.variante || {})[c] || "")).join(" / ")} · Ales de student: ${(w.lastTxt && w.lastTxt.length ? w.lastTxt.join(" / ") : arr(w.last).join(", ")) || "?"}`).join("\n\n");
+  setBusy(true, "Analizează greșelile…");
+  try {
+    const t = await callClaude(`Ești tutore de medicină. Mai jos sunt întrebările de grilă la care un student a greșit, cu răspunsul corect și ce a ales el.
+Găsește tiparele: ce noțiuni confundă (perechi concrete), ce tip de raționament îi scapă, ce teme trebuie reluate. Fii concret și scurt, în română, markdown:
+- **Confuzii frecvente** (2–4 puncte, fiecare cu distincția corectă într-o frază)
+- **Teme de reluat** (2–4 puncte)
+- **Sfat de rezolvare** (1–2 puncte)
+Nu repeta întrebările.
+
+${txt.slice(0, 12000)}`, { json: false, tier: "default", noCache: true });
+    labState().errAi = typeof t === "string" ? t : (t && t.text) || "";
+    renderLab();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+
+/* ---- text în tabel (Instrumente) ---- */
+function ttState(){ if (!state.tt) state.tt = { text: "", res: null }; return state.tt; }
+function ttMd(t){ return `## ${t.titlu || "Tabel"}\n\n| ${t.coloane.join(" | ")} |\n|${t.coloane.map(() => "---").join("|")}|\n` + t.randuri.map(r => "| " + r.map(c => String(c ?? "").replace(/\|/g, "/")).join(" | ") + " |").join("\n"); }
+function ttHtml(){
+  const T = ttState(), r = T.res;
+  return `<section class="tool" id="ttTool">
+    <div class="tool-h"><div><h3>Text în tabel</h3><p class="hint">Lipește un paragraf din curs sau din notițe. Ghidul îl transformă într-un tabel comparativ, mai ușor de învățat. Dacă lași căsuța goală, folosește explicația curentă.</p></div>
+      <button class="btn primary" type="button" id="ttGo" data-busy>Transformă în tabel</button></div>
+    <textarea id="ttText" class="lab-ta" rows="5" placeholder="De exemplu: diferențele dintre sindromul nefrotic și cel nefritic, așa cum apar în curs…">${esc(T.text)}</textarea>
+    ${r ? `<div class="tbl-wrap"><table><caption>${mdi(r.titlu || "")}</caption><thead><tr>${r.coloane.map(c => `<th>${mdi(c)}</th>`).join("")}</tr></thead><tbody>${r.randuri.map(row => `<tr>${row.map(c => `<td>${mdi(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      <div class="row"><button class="btn sm" type="button" id="ttCopy">Copiază (merge lipit în Excel sau Word)</button><button class="btn sm dl" type="button" id="ttDoc">Descarcă (Word)</button></div>` : ""}
+  </section>`;
+}
+async function genTable(){
+  if (state.busy) return;
+  const T = ttState();
+  T.text = ($("#ttText").value || "").trim();
+  const src = T.text || (state.result ? resultToMd(state.result) : "");
+  if (!src){ toast("Lipește un text sau generează întâi o explicație"); return; }
+  setBusy(true, "Face tabelul…");
+  try {
+    const r = await callClaude(`Transformă textul medical de mai jos într-un singur tabel de învățat, în limba română.
+Reguli: folosește doar informația din text, nu adăuga fapte noi. Alege coloanele potrivite (de ex. entitățile comparate pe coloane și criteriile pe rânduri, sau invers). 2–6 coloane, 3–15 rânduri, celule scurte (maxim 15 cuvinte).
+Răspunde doar cu JSON: {"titlu": "...", "coloane": ["..."], "randuri": [["...", "..."]]}
+
+TEXT:
+${src.slice(0, 14000)}`, { tier: "default", noCache: true });
+    const cols = arr(r && r.coloane).map(String);
+    const rows = arr(r && r.randuri).map(row => cols.map((_, k) => String(arr(row)[k] ?? "")));
+    if (cols.length < 2 || !rows.length) throw { code: "invalid_json" };
+    T.res = { titlu: String(r.titlu || "Tabel"), coloane: cols, randuri: rows };
+    renderTools(); $("#ttTool")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+const _renderTools0 = renderTools;
+renderTools = function(){
+  _renderTools0();
+  const p = $("#p-tools"); if (!p) return;
+  p.insertAdjacentHTML("beforeend", ttHtml());
+  $("#ttGo").onclick = genTable;
+  $("#ttText").addEventListener("input", ev => { ttState().text = ev.target.value; });
+  const T = ttState();
+  $("#ttCopy") && ($("#ttCopy").onclick = () => copyText([T.res.coloane, ...T.res.randuri].map(r => r.map(c => stripMarks(String(c)).replace(/\*\*/g, "").replace(/\t|\n/g, " ")).join("\t")).join("\n")));
+  $("#ttDoc") && ($("#ttDoc").onclick = () => saveDoc(slug("tabel " + T.res.titlu), T.res.titlu, ttMd(T.res)));
+  if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
+};
+
+/* ---- mod examen (Quiz) ---- */
+const EXAM = { on: false, end: 0, leaves: 0, timer: null, n: 0 };
+function examBar(){
+  let b = $("#examBar");
+  if (!EXAM.on){ if (b) b.remove(); return; }
+  if (!b){ document.body.insertAdjacentHTML("beforeend", `<div class="exam-bar" id="examBar" role="status"><b>Mod examen</b><span id="exT"></span><span id="exL"></span><button class="btn sm primary" type="button" id="exEnd">Predă lucrarea</button></div>`); b = $("#examBar"); $("#exEnd").onclick = () => examFinish(false); }
+  const left = Math.max(0, EXAM.end - Date.now()), m = Math.floor(left / 60000), s = Math.floor(left % 60000 / 1000);
+  $("#exT").textContent = `${m}:${String(s).padStart(2, "0")} rămase`;
+  $("#exT").classList.toggle("low", left < 60000);
+  $("#exL").textContent = EXAM.leaves ? `${EXAM.leaves} ${EXAM.leaves === 1 ? "ieșire" : "ieșiri"} din pagină` : "fără ieșiri din pagină";
+  if (!left) examFinish(true);
+}
+function examStart(){
+  const Q = state.quiz; if (!Q.list.length || state.busy) return;
+  if (!confirm(`Mod examen: ${Q.list.length} întrebări, ${Q.list.length} minute. Variantele se amestecă, explicațiile apar doar la final, iar ieșirile din pagină se numără. Începi?`)) return;
+  Q.list = Q.list.map(shuffleOptions); Q.answers = {}; Q.checked = false; Q.exam = null;
+  Object.assign(EXAM, { on: true, end: Date.now() + Q.list.length * 60000, leaves: 0, n: Q.list.length });
+  try { const el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); } catch {}
+  selectTab("quiz"); renderQuiz(); $("#p-quiz").scrollIntoView({ block: "start" });
+  clearInterval(EXAM.timer); EXAM.timer = setInterval(examBar, 1000); examBar();
+}
+function examFinish(timeUp){
+  if (!EXAM.on) return;
+  EXAM.on = false; clearInterval(EXAM.timer); examBar();
+  try { if (document.fullscreenElement) document.exitFullscreen(); } catch {}
+  const used = Math.round((EXAM.n * 60000 - Math.max(0, EXAM.end - Date.now())) / 60000);
+  state.quiz.exam = { timeUp, leaves: EXAM.leaves, min: used };
+  const c = $("#qzCheck");
+  if (c) c.click(); else { state.quiz.checked = true; renderQuiz(); }
+}
+document.addEventListener("visibilitychange", () => { if (EXAM.on && document.hidden){ EXAM.leaves++; examBar(); } });
+document.addEventListener("fullscreenchange", () => { if (EXAM.on && !document.fullscreenElement){ EXAM.leaves++; examBar(); } });
+const _renderQuiz0 = renderQuiz;
+renderQuiz = function(){
+  _renderQuiz0();
+  const Q = state.quiz, sc = $("#p-quiz .q-score");
+  if (!sc || !Q.list.length) return;
+  if (!Q.checked && !EXAM.on && !Q.sample) sc.insertAdjacentHTML("beforeend", `<button class="btn sm" type="button" id="qzExam">Mod examen (cronometrat)</button>`);
+  if (Q.checked && Q.exam) sc.insertAdjacentHTML("afterend", `<p class="notice exam-res">${Q.exam.timeUp ? "Timpul a expirat. " : ""}Ai lucrat ${Q.exam.min < 1 ? "mai puțin de un minut" : Q.exam.min + (Q.exam.min === 1 ? " minut" : " minute")} și ai ieșit din pagină de ${Q.exam.leaves} ${Q.exam.leaves === 1 ? "dată" : "ori"}.${Q.exam.leaves ? " La un examen supravegheat, ieșirile ar fi fost observate." : ""}</p>`);
+  $("#qzExam") && ($("#qzExam").onclick = examStart);
+};
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");
