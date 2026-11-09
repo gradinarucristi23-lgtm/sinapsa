@@ -112,7 +112,7 @@ class Handler(BaseHTTPRequestHandler):
         # ETag: la reîncărcare browserul primește „304, nu s-a schimbat” în loc să descarce din nou pagina
         etag = '"' + hashlib.sha1(data).hexdigest()[:16] + '"'
         cache = "public, max-age=86400" if ctype.startswith("image/") else "no-cache"
-        if self.headers.get("If-None-Match") == etag:
+        if etag in self.headers.get("If-None-Match", "").replace("W/", ""):
             self.send_response(304)
             self.send_header("ETag", etag)
             self.send_header("Cache-Control", cache)
