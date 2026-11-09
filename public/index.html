@@ -622,6 +622,99 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 @media (max-width:560px){#q{min-height:86px}.go-row .btn.primary{flex:1 1 100%;justify-content:center}.go-row .field{flex:1 1 140px}.go-row select{width:100%}}
 .help-tabs dd{margin:0;color:var(--ink-2)}
 @media (max-width:560px){.help-tabs{grid-template-columns:minmax(0,1fr);margin-left:0}.help-tabs dd{margin-bottom:6px}}
+
+/* Simulation Lab */
+footer .contact{margin:8px 0 0;color:var(--ink-2)}
+footer a,.help-box a{color:var(--hema);font-weight:600}
+.tab-lab{color:var(--hema)}
+.lab-h{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.lab-title{margin:0;font-family:var(--f-display);font-size:24px;letter-spacing:-.02em}
+.lab-h .hint{margin:2px 0 0}
+.lab-nav{flex-wrap:wrap}
+.lab-n{font-family:var(--f-mono);font-size:11px;background:var(--bad);color:var(--surface);border-radius:999px;padding:0 6px;margin-left:3px}
+.lab-body{display:flex;flex-direction:column;gap:12px}
+.lab-card{background:var(--surface-2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.lab-sub{margin:10px 0 2px;font-family:var(--f-display);font-size:17px;letter-spacing:-.01em}
+.lab-ta{width:100%;border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;background:var(--surface);font-size:14px;resize:vertical}
+.lab-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.kpi{background:var(--surface-2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column}
+.kpi b{font-family:var(--f-display);font-size:28px;line-height:1.1;letter-spacing:-.02em}
+.kpi span{font-size:13px;color:var(--ink-2)}
+.lab-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.lab-list li{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px solid var(--line);flex-wrap:wrap}
+.lab-list li:first-child{border-top:0}
+.lab-list b{font-weight:600;font-size:14.5px}
+.lab-list small{display:block;font-size:12.5px;color:var(--ink-3)}
+.lab-list .grow{min-width:160px}
+.acc-bar{width:90px;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.acc-bar i{display:block;height:100%;background:var(--hema)}
+.acc-v{font-family:var(--f-mono);font-size:12.5px;width:40px;text-align:right}
+.lab-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.chart{background:var(--surface-2);border-radius:12px;padding:12px}
+.chart svg{width:100%;height:auto;display:block}
+.chart .b-ok{fill:var(--ok)}
+.chart .b-no{fill:var(--bad);fill-opacity:.75}
+.chart .b-v{font:500 11px var(--f-mono);fill:var(--ink-2);text-anchor:middle}
+.chart .b-d{font:12px var(--f-ui);fill:var(--ink-3);text-anchor:middle}
+.chart .b-d.today{fill:var(--ink);font-weight:600}
+.chart .legend{margin-top:6px;font-size:12.5px}
+.lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lg.ok{background:var(--ok)} .lg.no{background:var(--bad);opacity:.75}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--oc,var(--hema));margin-right:6px;flex:none}
+.pill{font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--surface);color:var(--ink-2);white-space:nowrap}
+.pill.st-stapanit{background:var(--ok-soft);color:var(--ok)}
+.pill.st-lucru{background:var(--warn-soft);color:var(--warn)}
+.pill.st-nou{background:var(--surface);color:var(--ink-3)}
+.lab-card.syl{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.syl-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between}
+.syl-h h3{margin:0;font-size:16px}
+.prog-bar{display:flex;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.prog-bar .ps{background:var(--ok)} .prog-bar .pl{background:var(--warn);opacity:.7}
+.sm-sel{padding:4px 6px;font-size:12.5px;border-radius:7px}
+.sys-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sys-chips .chip{display:inline-flex;align-items:center}
+.sys-chips .chip.on{background:var(--hema-soft);color:var(--hema);font-weight:600}
+.anat{display:grid;grid-template-columns:minmax(220px,320px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:700px){.anat{grid-template-columns:minmax(0,1fr)}.anat-fig{max-width:300px;margin:0 auto}}
+.anat-fig{background:var(--surface-2);border-radius:14px;padding:10px}
+.anat-fig svg{width:100%;height:auto;display:block;max-height:560px}
+.body-sil > *{fill:var(--surface);stroke:var(--line-2);stroke-width:1.2}
+.org{cursor:pointer;outline:none;transition:opacity .2s}
+.org > *:not(title){fill:var(--oc);fill-opacity:.38;stroke:var(--oc);stroke-width:1.2;transition:fill-opacity .15s,stroke-width .15s}
+.org.done > *:not(title){fill-opacity:.78}
+.org:hover > *:not(title),.org:focus-visible > *:not(title),.org.sel > *:not(title){fill-opacity:1;stroke-width:2.6}
+.org.line > *:not(title){fill:none;stroke-width:8;stroke-opacity:.45;stroke-linecap:round;stroke-linejoin:round}
+.org.line.done > *:not(title){stroke-opacity:.8}
+.org.line:hover > *:not(title),.org.line.sel > *:not(title){stroke-opacity:1;stroke-width:10}
+.org.dim{opacity:.15}
+.org-info{display:flex;flex-direction:column;gap:8px}
+.org-info h3{margin:0;font-family:var(--f-display);font-size:24px;letter-spacing:-.02em}
+.org-info.empty h3{font-size:20px}
+.org-sys{display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;color:var(--ink-2);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06em}
+.org-topics{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.org-t{display:flex;justify-content:space-between;gap:10px;text-align:left;border:0;background:var(--surface-2);border-radius:10px;padding:11px 13px;font-size:15px;font-weight:500;cursor:pointer;box-shadow:inset 3px 0 0 var(--oc)}
+.org-t:hover{background:var(--hema-soft);color:var(--hema)}
+.org-own{margin-top:4px}
+.org-list{list-style:none;margin:4px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 12px}
+.org-list .linkbtn{display:inline-flex;align-items:center;color:var(--ink);font-size:14px}
+.rev-run{display:flex;flex-direction:column;gap:10px;max-width:760px}
+.rev-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rev-end{padding:10px 0}
+.rev-end h3{margin:0 0 6px;font-family:var(--f-display);font-size:22px}
+.days{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.day{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.day.has-exam{box-shadow:inset 0 0 0 2px var(--eosin)}
+.day-h{display:flex;justify-content:space-between;align-items:baseline;text-transform:capitalize}
+.day-h span{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);text-transform:none}
+.day-b{display:flex;flex-direction:column;gap:5px}
+.task{display:block;text-align:left;border:0;border-radius:8px;padding:7px 9px;font-size:13.5px;line-height:1.35;background:var(--surface);box-shadow:inset 3px 0 0 var(--oc,var(--line-2))}
+button.task{cursor:pointer}
+button.task:hover{background:var(--hema-soft)}
+.task .tk{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.task.exam{background:var(--eosin-soft);font-weight:700;box-shadow:inset 3px 0 0 var(--eosin)}
+.task.recap{background:var(--warn-soft)}
+.task.rev{background:var(--bad-soft);font-weight:600;box-shadow:inset 3px 0 0 var(--bad)}
+.task.rep{color:var(--ink-2)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -735,6 +828,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
         <button class="tab" role="tab" id="t-vis" data-tab="vis" aria-selected="false">Vizual</button>
         <button class="tab" role="tab" id="t-quiz" data-tab="quiz" aria-selected="false">Quiz <span class="n" id="nQuiz">0</span></button>
         <button class="tab" role="tab" id="t-bank" data-tab="bank" aria-selected="false">Banca de grile <span class="n" id="nBank">0</span></button>
+        <button class="tab tab-lab" role="tab" id="t-lab" data-tab="lab" aria-selected="false">Simulation Lab</button>
         <button class="tab" role="tab" id="t-flash" data-tab="flash" aria-selected="false">Flashcards <span class="n" id="nFlash">0</span></button>
         <button class="tab" role="tab" id="t-caz" data-tab="caz" aria-selected="false">Caz clinic</button>
         <button class="tab" role="tab" id="t-prezentare" data-tab="prezentare" aria-selected="false">Prezentare <span class="n" id="nSlides">0</span></button>
@@ -744,6 +838,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
       <div class="tabpanel" id="p-vis" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-quiz" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-bank" role="tabpanel" hidden></div>
+      <div class="tabpanel" id="p-lab" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-prezentare" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-flash" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-caz" role="tabpanel" hidden></div>
@@ -752,7 +847,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
   </main>
 </div>
 
-<footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI (Google Gemini) și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.</div></footer>
+<footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI (Google Gemini) și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.<p class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener">@pregatire.usmf</a></p></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
@@ -1588,10 +1683,11 @@ function renderExplain(opts){
         <li><b>Adaugă cursul, dacă vrei</b>, din panoul <button class="linkbtn" type="button" id="goSrc">Surse</button>. Fără curs, ghidul explică din manualele consacrate.</li>
         <li><b>Apasă Explică.</b> Primești explicația pe două niveluri, simplificat și avansat, cu schemă și întrebări scurte după fiecare parte.</li>
       </ol>
-      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>.</p>
+      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>. Corpul uman interactiv, greșelile, statisticile și planul de studiu sunt în <button class="linkbtn" type="button" id="goLab">Simulation Lab</button>.</p>
       <div class="row" style="margin-top:4px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
     $("#showSample").onclick = () => toggleSample(true);
     $("#goBank").onclick = () => selectTab("bank");
+    $("#goLab").onclick = () => selectTab("lab");
     $("#goSrc").onclick = () => { $("#srcPanel").scrollIntoView({ behavior: "smooth", block: "start" }); };
     return;
   }
@@ -1827,7 +1923,7 @@ function renderQuiz(){
   }
   if (state.qzOpts){ $("#qzN").value = state.qzOpts.n; $("#qzK").value = state.qzOpts.kind; $("#qzD").value = state.qzOpts.diff; }
   $("#qzGo").onclick = genQuiz;
-  $("#qzCheck") && ($("#qzCheck").onclick = () => { Q.checked = true; renderQuiz(); p.scrollIntoView({ block: "start", behavior: "smooth" }); });
+  $("#qzCheck") && ($("#qzCheck").onclick = () => { Q.checked = true; if (!Q.sample){ const cx = curTopicCtx(); Q.list.forEach((q, i) => progRecord(q, Q.answers[i] || [], "quiz", cx)); } renderQuiz(); p.scrollIntoView({ block: "start", behavior: "smooth" }); });
   $("#qzReset") && ($("#qzReset").onclick = () => { Q.checked = false; Q.answers = {}; renderQuiz(); });
   $("#qzCsv") && ($("#qzCsv").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-grila.csv", quizCsv()));
   $("#qzMd") && ($("#qzMd").onclick = () => saveDoc(slug(state.result && state.result.titlu) + "-grila", "Grilă: " + stripMarks((state.result && state.result.titlu) || ""), quizMd(true)));
@@ -2422,6 +2518,7 @@ document.addEventListener("click", ev => {
   const card = b.closest(".fq"), gi = +card.dataset.gi, r = state.result;
   const s = r && arr(r.sectiuni)[gi]; if (!s || !s.fulger) return;
   fqStore(r)[gi] = +b.dataset.k;
+  if (!(state.meta && state.meta.sample)) progRecord(fqToQ(s.fulger), [LETTERS[+b.dataset.k]], "fulger", curTopicCtx());
   card.outerHTML = fqHtml(s.fulger, gi, +b.dataset.k);
 });
 
@@ -3114,6 +3211,7 @@ ${ex.map((q, k) => `${k + 1}. ${q.tip ? "(" + q.tip + ") " : ""}${q.enunt}\n${Ob
 function checkRunner(){
   const R = state.bk.runner; if (!R) return;
   R.checked = true;
+  { const bn = (curBank() && curBank().name) || "Banca de grile"; R.list.forEach((q, i) => progRecord(q, R.answers[i] || [], "bank", { topic: bn, disc: "" })); }
   if (R.fromBank){
     const b = curBank();
     R.list.forEach((q, i) => {
@@ -3359,7 +3457,8 @@ kbInit();
 function selectTab(t){
   state.tab = t;
   $$(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
-  ["explicatie", "vis", "quiz", "bank", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  ["explicatie", "vis", "quiz", "bank", "lab", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  if (t === "lab") renderLab();
   $$(".tab").forEach(b => { const n = $(".n", b); b.classList.toggle("zero", !!n && n.textContent === "0" && b.dataset.tab !== t); });
   if (t === "bank") renderBank();
   if (t === "tools") renderTools();
@@ -3372,11 +3471,11 @@ function paintTabs(){
   const has = !!state.result;
   $$(".tab").forEach(b => {
     const k = b.dataset.tab;
-    b.hidden = !has && k !== "explicatie" && k !== "bank";
+    b.hidden = !has && k !== "explicatie" && k !== "bank" && k !== "lab";
     const n = $(".n", b);
     b.classList.toggle("zero", !!n && n.textContent === "0" && b.getAttribute("aria-selected") !== "true");
   });
-  if (!has && state.tab && state.tab !== "explicatie" && state.tab !== "bank") selectTab("explicatie");
+  if (!has && state.tab && state.tab !== "explicatie" && state.tab !== "bank" && state.tab !== "lab") selectTab("explicatie");
 }
 function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); renderFlash(); renderCaz(); renderTools(); renderVis(); updateCounts(); }
 
@@ -3501,9 +3600,11 @@ async function syncPull(){
     writeHist(mh.items); writeHistDel(mh.del);
     const rb = docs.banks ? JSON.parse(docs.banks.data) : null;
     BANKS = mergeBanks(BANKS, rb); saveBanks();
+    const rp = docs.prog ? JSON.parse(docs.prog.data) : null;
+    PROG = mergeProg(PROG, rp); saveProg(); if (state.tab === "lab") renderLab();
     renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
     SYNC.pulling = false; SYNC.lastPull = Date.now();
-    await syncPush("hist"); await syncPush("banks");
+    await syncPush("hist"); await syncPush("banks"); await syncPush("prog");
   } catch (e){
     if (e.status === 401){ SYNC.user = null; }
     SYNC.msg = e.status === 401 ? "Sesiunea a expirat. Intră din nou în cont." : "Sincronizarea a eșuat. Încearcă din nou.";
@@ -3516,7 +3617,7 @@ function schedulePush(key){
 }
 async function syncPush(key){
   if (!SYNC.user) return;
-  const data = key === "hist" ? JSON.stringify({ items: readHist(), del: readHistDel() }) : JSON.stringify(BANKS);
+  const data = key === "hist" ? JSON.stringify({ items: readHist(), del: readHistDel() }) : key === "prog" ? JSON.stringify(PROG) : JSON.stringify(BANKS);
   try {
     await api("/api/sync/" + key, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ data }) });
     SYNC.last = Date.now(); SYNC.msg = "";
@@ -3601,7 +3702,8 @@ function renderAcct(){
     try { await postJSON("/api/auth/logout"); } catch {}
     SYNC.user = null; SYNC.last = 0; SYNC.msg = "";
     if (clear){
-      try { [HKEY, HDEL, BKEY].forEach(k => localStorage.removeItem(k)); } catch {}
+      try { [HKEY, HDEL, BKEY, PKEY].forEach(k => localStorage.removeItem(k)); } catch {}
+      PROG = emptyProg(); if (state.tab === "lab") renderLab();
       BANKS = { banks: [], current: null, del: { banks: {}, questions: {} } };
       renderHist(); if (state.tab === "bank") renderBank(); updateCounts();
     }
@@ -3636,18 +3738,438 @@ helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="tru
     <dt>Vizual</dt><dd>poster, scheme și imagini reale pentru temă</dd>
     <dt>Quiz</dt><dd>grilă CS/CM cu explicație la fiecare variantă</dd>
     <dt>Banca de grile</dt><dd>pui grilele tale de examen; ghidul le amestecă și face altele asemănătoare, pe 3 niveluri</dd>
+    <dt>Simulation Lab</dt><dd>corpul uman interactiv, revizuirea greșelilor, statistici, parcurgerea materiei și calendar de studiu</dd>
     <dt>Flashcards</dt><dd>carduri de repetat, exportabile în Anki</dd>
     <dt>Caz clinic</dt><dd>un pacient ipotetic, rezolvat pas cu pas</dd>
     <dt>Prezentare</dt><dd>slide-uri gata de descărcat în PowerPoint</dd>
     <dt>Instrumente</dt><dd>rezumat High-Yield, mnemonice, explicarea unei imagini</dd>
   </dl>
-  <p class="hint">Cu un cont (butonul „Intră în cont”), istoricul și grilele tale apar pe orice dispozitiv. Contul e opțional.</p>
+  <p class="hint">Cu un cont (butonul „Intră în cont”), istoricul, grilele și progresul tău apar pe orice dispozitiv. Contul e opțional.</p>
+  <p class="hint">Ai o întrebare? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener">@pregatire.usmf</a></p>
   <div class="row"><span class="grow"></span><button class="btn primary" type="button" data-hclose>Am înțeles</button></div>
 </div>`;
 $("#helpBtn").onclick = () => { helpOv.hidden = false; setTimeout(() => $("[data-hclose].btn", helpOv).focus(), 30); };
 helpOv.addEventListener("click", ev => { if (ev.target === helpOv || ev.target.closest("[data-hclose]")) helpOv.hidden = true; });
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !helpOv.hidden) helpOv.hidden = true; });
 setInterval(() => { const w = $("#histWhere"); if (w) w.textContent = (typeof SYNC !== "undefined" && SYNC.user) ? "sincronizat cu contul" : "pe acest dispozitiv"; }, 1500);
+
+/* ---------------- Simulation Lab: anatomie, greșeli, statistici, materie, calendar ---------------- */
+const PKEY = "ghid.prog.v1", LOGCAP = 3000, DAY = 86400000;
+function emptyProg(){ return { log: [], wrong: [], syl: [], exams: [], del: { wrong: {}, syl: {}, exams: {} } }; }
+function normProg(p){
+  p = p && typeof p === "object" ? p : {};
+  const d = p.del || {};
+  return { log: arr(p.log), wrong: arr(p.wrong), syl: arr(p.syl), exams: arr(p.exams), del: { wrong: Object.assign({}, d.wrong), syl: Object.assign({}, d.syl), exams: Object.assign({}, d.exams) } };
+}
+function loadProg(){ try { return normProg(JSON.parse(localStorage.getItem(PKEY) || "null")); } catch { return emptyProg(); } }
+let PROG = loadProg();
+function saveProg(){ try { localStorage.setItem(PKEY, JSON.stringify(PROG)); } catch {} try { schedulePush("prog"); } catch {} }
+function mergeProg(l, r){
+  l = normProg(l); r = normProg(r);
+  const del = { wrong: trimTomb(Object.assign({}, r.del.wrong, l.del.wrong)), syl: trimTomb(Object.assign({}, r.del.syl, l.del.syl)), exams: trimTomb(Object.assign({}, r.del.exams, l.del.exams)) };
+  const byU = (A, B, d) => {
+    const m = new Map();
+    for (const x of [...A, ...B]){
+      if (!x || !x.id || (d && d[x.id])) continue;
+      const p = m.get(x.id);
+      if (!p || (x.u || x.t || 0) >= (p.u || p.t || 0)) m.set(x.id, x);
+    }
+    return [...m.values()];
+  };
+  return { log: byU(r.log, l.log).sort((a, b) => a.t - b.t).slice(-LOGCAP), wrong: byU(r.wrong, l.wrong, del.wrong), syl: byU(r.syl, l.syl, del.syl), exams: byU(r.exams, l.exams, del.exams), del };
+}
+
+/* ---- potrivirea temelor ---- */
+function nrm(s){ return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+const LAB_STOP = new Set(["pentru", "despre", "care", "este", "sunt", "prin", "dintre", "asupra", "intre", "notiuni", "generale", "principii", "aspecte"]);
+const stemCache = new Map();
+function stemsOf(s){
+  const key = String(s || "");
+  if (stemCache.has(key)) return stemCache.get(key);
+  const out = new Set(nrm(stripMarks(key)).split(/[^a-z0-9]+/).filter(w => w.length >= 4 && !LAB_STOP.has(w)).map(w => w.slice(0, 5)));
+  if (stemCache.size > 4000) stemCache.clear();
+  stemCache.set(key, out); return out;
+}
+function topicSim(item, other){
+  const a = stemsOf(item), b = stemsOf(other);
+  if (!a.size || !b.size) return 0;
+  let n = 0; a.forEach(x => { if (b.has(x)) n++; });
+  return n / a.size;
+}
+function topicStatsFor(titlu){
+  let n = 0, ok = 0;
+  for (const e of PROG.log) if (e.topic && topicSim(titlu, e.topic) >= 0.6){ n++; if (e.ok) ok++; }
+  return { n, ok };
+}
+
+/* ---- înregistrarea răspunsurilor ---- */
+function qKey(q){
+  const s = nrm(q.enunt).replace(/\s+/g, " ").trim();
+  let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+  return "w" + h.toString(36) + s.length.toString(36);
+}
+function sameAns(ch, cor){ ch = arr(ch).slice().sort(); cor = arr(cor).slice().sort(); return ch.length === cor.length && ch.every((c, k) => c === cor[k]); }
+function curTopicCtx(){ const r = state.result; return { topic: stripMarks((r && r.titlu) || ""), disc: (r && r.disciplina) || "" }; }
+function fqToQ(f){
+  const v = {}; arr(f.variante).forEach((x, k) => { v[LETTERS[k]] = x; });
+  const c = Math.max(0, Math.min(arr(f.variante).length - 1, Number(f.corect) || 0));
+  return { enunt: f.intrebare, tip: "CS", variante: v, corecte: [LETTERS[c]], explicatie: f.explicatie || "" };
+}
+function progRecord(q, chosen, src, ctx){
+  if (!q || !q.enunt || !arr(chosen).length || !arr(q.corecte).length) return null;
+  ctx = ctx || {};
+  const ok = sameAns(chosen, q.corecte), now = Date.now();
+  PROG.log.push({ id: "l" + now.toString(36) + Math.random().toString(36).slice(2, 7), t: now, src, topic: ctx.topic || "", disc: ctx.disc || "", ok });
+  if (PROG.log.length > LOGCAP) PROG.log = PROG.log.slice(-LOGCAP);
+  const id = ctx.wid || qKey(q);
+  let w = PROG.wrong.find(x => x.id === id);
+  if (!ok){
+    const qq = { enunt: q.enunt, tip: q.tip || (arr(q.corecte).length > 1 ? "CM" : "CS"), variante: q.variante, corecte: arr(q.corecte), explicatie: q.explicatie || "", de_ce: q.de_ce || null };
+    if (!w){ w = { id, q: qq, topic: ctx.topic || "", disc: ctx.disc || "", src, t: now, n: 0, okRun: 0, rez: 0 }; PROG.wrong.push(w); }
+    w.n = (w.n || 0) + 1; w.okRun = 0; w.rez = 0; w.u = now; w.last = arr(chosen);
+    delete PROG.del.wrong[id];
+  } else if (w && !w.rez){
+    w.okRun = (w.okRun || 0) + 1; w.u = now;
+    if (w.okRun >= 2) w.rez = now;
+  }
+  if (PROG.wrong.length > 600){
+    const open = PROG.wrong.filter(x => !x.rez), done = PROG.wrong.filter(x => x.rez).sort((a, b) => b.rez - a.rez);
+    PROG.wrong = open.slice(-600).concat(done).slice(0, 600);
+  }
+  saveProg();
+  return ok;
+}
+
+/* ---- zile, serie, recapitulare spațiată ---- */
+function noon(t){ const d = new Date(t); d.setHours(12, 0, 0, 0); return d.getTime(); }
+function addDays(t, n){ const d = new Date(t); d.setDate(d.getDate() + n); return noon(d.getTime()); }
+function dayKey(t){ const d = new Date(t); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function parseDay(s){ const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || "")); return m ? new Date(+m[1], +m[2] - 1, +m[3], 12).getTime() : NaN; }
+function activeDays(){
+  const s = new Set(PROG.log.map(e => dayKey(e.t)));
+  readHist().forEach(h => { if (h.meta && h.meta.date) s.add(dayKey(h.meta.date)); });
+  return s;
+}
+function streak(){
+  const s = activeDays(); let t = noon(Date.now()), n = 0;
+  if (!s.has(dayKey(t))) t = addDays(t, -1);
+  while (s.has(dayKey(t))){ n++; t = addDays(t, -1); }
+  return n;
+}
+const REV_GAP = [0, 2, 6];
+function dueAt(w){ return (w.u || w.t || 0) + REV_GAP[Math.min(w.okRun || 0, 2)] * DAY; }
+function openWrong(){ return PROG.wrong.filter(w => !w.rez && w.q && w.q.enunt); }
+function dueWrong(){ const lim = Date.now() + 3600000; return openWrong().filter(w => dueAt(w) <= lim).sort((a, b) => (b.n - a.n) || ((a.u || 0) - (b.u || 0))); }
+function aggBy(keyFn, entries){
+  const m = new Map();
+  for (const e of entries){ const k = keyFn(e); if (!k) continue; const a = m.get(k) || { k, n: 0, ok: 0, last: 0 }; a.n++; if (e.ok) a.ok++; a.last = Math.max(a.last, e.t || 0); m.set(k, a); }
+  return [...m.values()];
+}
+const SRC_LABEL = { quiz: "Quiz", bank: "Banca de grile", fulger: "Întrebări fulger", revizuire: "Revizuire" };
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+
+/* ---- starea filei ---- */
+function labState(){ if (!state.lab) state.lab = { view: "anat", organ: null, sys: "toate", rev: null }; return state.lab; }
+function labExplain(q, disc){
+  if (state.busy){ toast("Așteaptă să se termine explicația curentă"); return; }
+  $("#q").value = q;
+  if (disc && DISCIPLINES.includes(disc)) $("#disc").value = disc;
+  selectTab("explicatie");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  $("#go").click();
+}
+
+/* ---- anatomie interactivă ---- */
+const SYS = {
+  nervos: { nume: "Nervos", c: "c1" }, cardio: { nume: "Cardiovascular", c: "eosin" }, respirator: { nume: "Respirator", c: "c2" },
+  digestiv: { nume: "Digestiv", c: "c4" }, urinar: { nume: "Urinar", c: "c3" }, endocrin: { nume: "Endocrin", c: "c5" }, hemato: { nume: "Hemato-imun", c: "hema" }
+};
+const ORGANS = [
+  { id: "maduva", nume: "Măduva spinării", sis: "nervos", d: '<rect x="147" y="84" width="6" height="30" rx="3"/>', teme: ["Anatomia măduvei spinării", "Căile ascendente și descendente ale măduvei", "Sindroamele medulare"], cuv: ["maduv", "medular", "spinal"] },
+  { id: "creier", nume: "Creierul", sis: "nervos", d: '<ellipse cx="150" cy="44" rx="25" ry="21"/>', teme: ["Anatomia emisferelor cerebrale", "Circulația cerebrală și poligonul Willis", "Accidentul vascular cerebral", "Sindromul de hipertensiune intracraniană"], cuv: ["creier", "cerebr", "encefal", "cortex", "avc", "willis"] },
+  { id: "tiroida", nume: "Tiroida", sis: "endocrin", d: '<path d="M139 97 Q137 108 145 110 L150 104 L155 110 Q163 108 161 97 Q156 103 150 101 Q144 103 139 97 Z"/>', teme: ["Fiziologia hormonilor tiroidieni", "Hipotiroidismul", "Hipertiroidismul și boala Graves", "Nodulul tiroidian"], cuv: ["tiroid", "graves", "hashimoto"] },
+  { id: "plamani", nume: "Plămânii", sis: "respirator", d: '<path d="M128 122 Q104 128 100 170 Q98 205 104 222 Q118 214 136 210 L140 140 Q138 124 128 122 Z"/><path d="M172 122 Q196 128 200 170 Q202 205 196 222 Q186 214 176 212 L164 198 L160 140 Q162 124 172 122 Z"/>', teme: ["Mecanica ventilației pulmonare", "Schimbul de gaze alveolo-capilar", "Pneumonia comunitară", "BPOC și astmul bronșic"], cuv: ["plaman", "pulmon", "pneum", "respir", "bronh", "astm", "bpoc", "ventil"] },
+  { id: "inima", nume: "Inima", sis: "cardio", d: '<path d="M150 166 Q157 158 167 163 Q179 170 173 187 Q166 201 156 212 Q147 200 141 188 Q135 171 150 166 Z"/>', teme: ["Ciclul cardiac", "Mecanismul Frank–Starling", "Insuficiența cardiacă", "Infarctul miocardic acut"], cuv: ["inim", "cardi", "miocard", "coronar", "frank", "valv", "aritm"] },
+  { id: "ficat", nume: "Ficatul", sis: "digestiv", d: '<path d="M100 222 Q130 213 172 219 Q179 226 168 236 Q140 252 112 252 Q99 246 100 222 Z"/>', teme: ["Anatomia și vascularizația ficatului", "Metabolismul bilirubinei", "Ciroza hepatică", "Hepatitele virale"], cuv: ["ficat", "hepat", "ciroz", "bilirub", "icter"] },
+  { id: "splina", nume: "Splina", sis: "hemato", d: '<ellipse cx="206" cy="240" rx="7" ry="14"/>', teme: ["Anatomia și funcțiile splinei", "Splenomegalia", "Hiperspenismul"], cuv: ["splin", "splen"] },
+  { id: "stomac", nume: "Stomacul", sis: "digestiv", d: '<path d="M168 227 Q190 221 198 236 Q203 256 187 266 Q172 273 161 262 Q170 256 174 246 Q170 238 168 227 Z"/>', teme: ["Secreția gastrică și reglarea ei", "Boala ulceroasă", "Infecția cu Helicobacter pylori", "Hemoragia digestivă superioară"], cuv: ["stomac", "gastr", "ulcer", "pylori"] },
+  { id: "pancreas", nume: "Pancreasul", sis: "endocrin", d: '<path d="M136 263 Q160 254 190 260 Q188 269 160 271 Q145 273 136 263 Z"/>', teme: ["Pancreasul endocrin și insulina", "Diabetul zaharat tip 1 și tip 2", "Pancreatita acută", "Secreția pancreatică exocrină"], cuv: ["pancrea", "insulin", "diabet", "glicem"] },
+  { id: "rinichi", nume: "Rinichii", sis: "urinar", d: '<ellipse cx="110" cy="284" rx="9" ry="15"/><ellipse cx="190" cy="284" rx="9" ry="15"/>', teme: ["Filtrarea glomerulară", "Sistemul renină–angiotensină–aldosteron", "Sindromul nefrotic vs nefritic", "Insuficiența renală acută"], cuv: ["rinich", "renal", "nefr", "glomer", "renin"] },
+  { id: "suprarenale", nume: "Glandele suprarenale", sis: "endocrin", d: '<path d="M103 270 L110 261 L117 270 Z"/><path d="M183 270 L190 261 L197 270 Z"/>', teme: ["Hormonii corticosuprarenalei", "Sindromul Cushing", "Insuficiența corticosuprarenală (boala Addison)", "Feocromocitomul"], cuv: ["suprarenal", "cortizol", "cushing", "addison", "aldoster", "feocrom"] },
+  { id: "colon", nume: "Colonul", sis: "digestiv", line: true, d: '<path d="M126 334 L120 334 Q108 334 108 322 L108 290 Q108 278 120 278 L180 278 Q192 278 192 290 L192 322 Q192 334 180 336 L160 340"/>', teme: ["Anatomia colonului", "Bolile inflamatorii intestinale", "Cancerul colorectal", "Apendicita acută"], cuv: ["colon", "colorect", "rect", "apendic", "crohn"] },
+  { id: "intestin", nume: "Intestinul subțire", sis: "digestiv", d: '<ellipse cx="150" cy="306" rx="28" ry="19"/>', teme: ["Digestia și absorbția nutrienților", "Boala celiacă", "Ocluzia intestinală"], cuv: ["intestin", "duoden", "jejun", "celiac", "absorb", "ocluz"] },
+  { id: "vezica", nume: "Vezica urinară", sis: "urinar", d: '<ellipse cx="150" cy="345" rx="13" ry="8"/>', teme: ["Fiziologia micțiunii", "Infecțiile tractului urinar", "Litiaza urinară"], cuv: ["vezic", "mictiun", "urinar", "cistit", "litiaz"] }
+];
+const BODY_SVG = `<g class="body-sil">
+  <ellipse cx="150" cy="52" rx="33" ry="39"/><rect x="135" y="84" width="30" height="28" rx="9"/>
+  <path d="M96 110 Q150 98 204 110 Q222 116 224 134 L222 220 Q218 270 206 300 L204 352 Q150 364 96 352 L94 300 Q82 270 78 220 L76 134 Q78 116 96 110 Z"/>
+  <path d="M78 122 Q60 126 56 150 L44 250 Q40 290 38 330 Q36 350 44 352 Q52 352 54 332 L64 252 L74 200 Z"/>
+  <path d="M222 122 Q240 126 244 150 L256 250 Q260 290 262 330 Q264 350 256 352 Q248 352 246 332 L236 252 L226 200 Z"/>
+  <path d="M98 348 L148 356 L146 470 Q144 540 140 580 Q138 594 122 594 Q108 594 110 578 Q108 520 104 470 Q96 400 98 348 Z"/>
+  <path d="M202 348 L152 356 L154 470 Q156 540 160 580 Q162 594 178 594 Q192 594 190 578 Q192 520 196 470 Q204 400 202 348 Z"/></g>`;
+function organStudied(o){
+  const texts = readHist().map(h => nrm(stripMarks(h.result && h.result.titlu))).concat(PROG.log.map(e => nrm(e.topic)));
+  return new Set(texts.filter(t => t && o.cuv.some(c => t.includes(c)))).size;
+}
+function anatHtml(){
+  const L = labState(), sel = ORGANS.find(o => o.id === L.organ);
+  const studied = new Map(ORGANS.map(o => [o.id, organStudied(o)]));
+  const orgSvg = ORGANS.map(o => `<g class="org${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" && o.sis !== L.sys ? " dim" : ""}" data-org="${o.id}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.d}</g>`).join("");
+  const nDone = [...studied.values()].filter(Boolean).length;
+  const chips = `<div class="sys-chips"><button type="button" class="chip${L.sys === "toate" ? " on" : ""}" data-sys="toate">Toate</button>${Object.entries(SYS).map(([k, s]) => `<button type="button" class="chip${L.sys === k ? " on" : ""}" data-sys="${k}" style="--oc:var(--${s.c})"><i class="dot"></i>${s.nume}</button>`).join("")}</div>`;
+  const info = sel ? `<div class="org-info" style="--oc:var(--${SYS[sel.sis].c})">
+      <span class="org-sys"><i class="dot"></i>Sistemul ${SYS[sel.sis].nume.toLowerCase()}</span>
+      <h3>${esc(sel.nume)}</h3>
+      <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Alege o temă și ghidul o explică imediat.</p>
+      <div class="org-topics">${sel.teme.map(t => `<button type="button" class="org-t" data-act="explain" data-q="${esc(t)}">${esc(t)}<span aria-hidden="true">→</span></button>`).join("")}</div>
+      <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-own">Explică</button></div>
+    </div>`
+    : `<div class="org-info empty"><h3>Apasă pe un organ</h3><p class="hint">Alegi organul, apoi tema: anatomie, fiziologie sau patologie. Organele colorate mai intens sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}).</p>
+      <ul class="org-list">${ORGANS.map(o => `<li><button type="button" class="linkbtn" data-org="${o.id}"><i class="dot" style="--oc:var(--${SYS[o.sis].c})"></i>${esc(o.nume)}</button></li>`).join("")}</ul></div>`;
+  return `${chips}<div class="anat"><div class="anat-fig"><svg viewBox="30 0 240 600" role="group" aria-label="Corpul uman, organe interactive">${BODY_SVG}${orgSvg}</svg></div>${info}</div>`;
+}
+
+/* ---- revizuirea greșelilor ---- */
+function revHtml(){
+  const L = labState();
+  if (L.rev) return revRunHtml();
+  const open = openWrong(), due = dueWrong();
+  if (!open.length) return `<div class="placeholder"><h3>Nicio greșeală de revizuit</h3><p>Greșelile din Quiz, Banca de grile și întrebările fulger apar aici automat. O întrebare iese din listă după ce îi răspunzi corect de 2 ori, la câteva zile distanță.</p></div>`;
+  const groups = aggBy(w => w.topic || "Fără temă", open.map(w => ({ topic: w.topic, t: w.u, ok: false }))).sort((a, b) => b.n - a.n);
+  return `<div class="lab-kpis"><div class="kpi"><b>${due.length}</b><span>de revizuit acum</span></div><div class="kpi"><b>${open.length}</b><span>greșeli active</span></div><div class="kpi"><b>${PROG.wrong.filter(w => w.rez).length}</b><span>rezolvate</span></div></div>
+    <div class="row"><button class="btn primary" type="button" data-act="rev-due" ${due.length ? "" : "disabled"}>Începe revizuirea${due.length ? ` (${Math.min(due.length, 20)})` : ""}</button><button class="btn" type="button" data-act="rev-all">Toate greșelile (${Math.min(open.length, 30)})</button></div>
+    ${due.length ? "" : `<p class="hint">Următoarele întrebări revin la revizuire peste 2, apoi 6 zile. Așa se fixează mai bine.</p>`}
+    <h3 class="lab-sub">Pe teme</h3>
+    <ul class="lab-list">${groups.map(g => `<li><span class="grow"><b>${esc(g.k)}</b><small>${g.n} ${g.n === 1 ? "întrebare" : "întrebări"}</small></span><button class="btn sm" type="button" data-act="rev-topic" data-topic="${esc(g.k)}">Revizuiește</button></li>`).join("")}</ul>`;
+}
+function revStart(list){
+  const L = labState();
+  if (!list.length){ toast("Nu e nimic de revizuit aici"); return; }
+  L.rev = { ids: list.slice(0, 30).map(w => w.id), i: 0, ans: [], checked: false, score: 0 };
+  renderLab();
+}
+function revRunHtml(){
+  const R = labState().rev;
+  if (R.i >= R.ids.length){
+    return `<div class="rev-end"><h3>Revizuire terminată</h3><p><b>${R.score}/${R.ids.length}</b> răspunsuri corecte (${pct(R.score, R.ids.length)}%).</p><p class="hint">Întrebările greșite revin mâine în listă; cele corecte revin peste câteva zile, pentru fixare.</p><div class="row"><button class="btn primary" type="button" data-act="rev-back">Înapoi la greșeli</button></div></div>`;
+  }
+  const w = PROG.wrong.find(x => x.id === R.ids[R.i]);
+  if (!w){ R.i++; return revRunHtml(); }
+  const q = w.q, ok = R.checked && sameAns(R.ans, q.corecte);
+  const opts = Object.keys(q.variante || {}).map(L => {
+    const sel = R.ans.includes(L), cor = q.corecte.includes(L);
+    let cls = sel ? "sel" : "";
+    if (R.checked) cls = cor && sel ? "right" : (!cor && sel ? "wrong" : (cor ? "missed" : ""));
+    const why = R.checked && q.de_ce && q.de_ce[L] ? `<span class="why">${mdi(q.de_ce[L])}</span>` : "";
+    return `<label class="opt ${cls}"><input type="${q.tip === "CM" ? "checkbox" : "radio"}" name="rv" value="${L}" ${sel ? "checked" : ""} ${R.checked ? "disabled" : ""}><span class="L">${L}</span><span>${mdi(q.variante[L])}${why}</span></label>`;
+  }).join("");
+  return `<div class="rev-run">
+    <div class="rev-top"><span class="qq-n">${R.i + 1}/${R.ids.length}</span><span class="qtype ${q.tip === "CM" ? "cm" : ""}">${esc(q.tip)}</span><span class="hint">${esc(w.topic || "")} · ${esc(SRC_LABEL[w.src] || "")} · greșită de ${w.n} ${w.n === 1 ? "dată" : "ori"}</span>${R.checked ? `<span class="verdict ${ok ? "ok" : "no"}">${ok ? "Corect" : "Greșit"}</span>` : ""}</div>
+    <p class="qq-t">${mdi(q.enunt)}</p><div class="opts" id="rvOpts">${opts}</div>
+    ${R.checked ? `<div class="qx"><b>Răspuns: ${q.corecte.join(", ")}</b><br>${mdi(q.explicatie || "")}</div>` : ""}
+    <div class="row"><button class="btn" type="button" data-act="rev-back">Oprește</button><span class="grow"></span>${R.checked ? `<button class="btn primary" type="button" data-act="rev-next">${R.i + 1 < R.ids.length ? "Următoarea" : "Vezi rezultatul"}</button>` : `<button class="btn primary" type="button" data-act="rev-check">Verifică</button>`}</div></div>`;
+}
+
+/* ---- statistici ---- */
+function statsHtml(){
+  const log = PROG.log;
+  if (!log.length) return `<div class="placeholder"><h3>Statisticile apar după primele răspunsuri</h3><p>Rezolvă un Quiz, o grilă din Banca de grile sau întrebările fulger din explicații. Aici vezi apoi acuratețea, seria de zile, punctele forte și punctele slabe.</p></div>`;
+  const n = log.length, ok = log.filter(e => e.ok).length, st = streak();
+  const today = noon(Date.now()), days = [];
+  for (let k = 13; k >= 0; k--){ const t = addDays(today, -k), key = dayKey(t); const es = log.filter(e => dayKey(e.t) === key); days.push({ t, n: es.length, ok: es.filter(e => e.ok).length }); }
+  const max = Math.max(5, ...days.map(d => d.n)), W = 700, H = 170, bw = 32, gap = (W - 20 - bw * 14) / 13;
+  const bars = days.map((d, i) => {
+    const x = 10 + i * (bw + gap), hOk = d.ok / max * (H - 50), hNo = (d.n - d.ok) / max * (H - 50), base = H - 24;
+    const wd = new Date(d.t);
+    return `<g><rect x="${x}" y="${base - hOk}" width="${bw}" height="${hOk}" rx="3" class="b-ok"/><rect x="${x}" y="${base - hOk - hNo}" width="${bw}" height="${hNo}" rx="3" class="b-no"/>
+      ${d.n ? `<text x="${x + bw / 2}" y="${base - hOk - hNo - 6}" class="b-v">${d.n}</text>` : ""}<text x="${x + bw / 2}" y="${H - 6}" class="b-d${i === 13 ? " today" : ""}">${i === 13 ? "azi" : wd.getDate()}</text></g>`;
+  }).join("");
+  const topics = aggBy(e => e.topic, log).filter(a => a.n >= 3);
+  const weak = topics.filter(a => a.ok / a.n < 0.6).sort((a, b) => a.ok / a.n - b.ok / b.n).slice(0, 6);
+  const strong = topics.filter(a => a.ok / a.n >= 0.8).sort((a, b) => b.ok / b.n - a.ok / a.n || b.n - a.n).slice(0, 6);
+  const src = aggBy(e => SRC_LABEL[e.src] || e.src, log).sort((a, b) => b.n - a.n);
+  const tline = a => `<li><span class="grow"><b>${esc(a.k)}</b><small>${a.ok}/${a.n} corecte</small></span><span class="acc-bar"><i style="width:${pct(a.ok, a.n)}%"></i></span><span class="acc-v">${pct(a.ok, a.n)}%</span></li>`;
+  return `<div class="lab-kpis">
+      <div class="kpi"><b>${n}</b><span>întrebări rezolvate</span></div>
+      <div class="kpi"><b>${pct(ok, n)}%</b><span>acuratețe</span></div>
+      <div class="kpi"><b>${st}</b><span>${st === 1 ? "zi la rând" : "zile la rând"}</span></div>
+      <div class="kpi"><b>${openWrong().length}</b><span>greșeli de revizuit</span></div></div>
+    <h3 class="lab-sub">Ultimele 14 zile</h3>
+    <div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Întrebări rezolvate pe zi, ultimele 14 zile">${bars}</svg>
+      <div class="legend"><span><i class="lg ok"></i>corecte</span><span><i class="lg no"></i>greșite</span></div></div>
+    <div class="lab-two">
+      <section><h3 class="lab-sub">Puncte slabe</h3>${weak.length ? `<ul class="lab-list">${weak.map(a => tline(a) .replace("</li>", `<button class="btn sm" type="button" data-act="explain" data-q="${esc(a.k)}">Reia tema</button></li>`)).join("")}</ul>` : `<p class="hint">Nicio temă sub 60% (din cele cu cel puțin 3 răspunsuri).</p>`}</section>
+      <section><h3 class="lab-sub">Puncte forte</h3>${strong.length ? `<ul class="lab-list">${strong.map(tline).join("")}</ul>` : `<p class="hint">Temele cu peste 80% răspunsuri corecte apar aici.</p>`}</section>
+    </div>
+    <h3 class="lab-sub">Pe tipuri de exercițiu</h3><ul class="lab-list">${src.map(tline).join("")}</ul>`;
+}
+
+/* ---- parcurgerea materiei ---- */
+const ST_LABEL = { nou: "Neînceput", lucru: "În lucru", stapanit: "Stăpânit" };
+function itemStatus(it){
+  const s = topicStatsFor(it.titlu);
+  if (it.st && ST_LABEL[it.st]) return { k: it.st, auto: false, s };
+  const explained = readHist().some(h => topicSim(it.titlu, h.result && h.result.titlu) >= 0.6);
+  if (s.n >= 5 && s.ok / s.n >= 0.8) return { k: "stapanit", auto: true, s };
+  if (explained || s.n) return { k: "lucru", auto: true, s };
+  return { k: "nou", auto: true, s };
+}
+function discOptions(sel){ return DISCIPLINES.map(d => `<option${d === sel ? " selected" : ""}>${esc(d)}</option>`).join(""); }
+function matHtml(){
+  const L = labState(), cur = state.result && !(state.meta && state.meta.sample) ? state.result : null;
+  const discs = [...new Set(PROG.syl.map(i => i.disc))];
+  const form = `<div class="lab-card"><h3 class="lab-sub" style="margin-top:0">Adaugă tematica</h3>
+    <p class="hint">Copiază lista de teme din programa catedrei sau din tematica de examen. O temă pe rând. Statusul se actualizează singur din explicațiile și grilele tale.</p>
+    <div class="row"><select id="sylDisc">${discOptions(L.sylDisc || (cur && cur.disciplina) || DISCIPLINES[0])}</select></div>
+    <textarea id="sylText" class="lab-ta" rows="4" placeholder="1. Sistemul renină–angiotensină–aldosteron&#10;2. Filtrarea glomerulară&#10;3. Sindromul nefrotic"></textarea>
+    <div class="row"><button class="btn primary" type="button" data-act="syl-add">Adaugă temele</button>${cur ? `<button class="btn" type="button" data-act="syl-cur">Adaugă tema curentă („${esc(stripMarks(cur.titlu)).slice(0, 40)}”)</button>` : ""}</div></div>`;
+  if (!discs.length) return form + `<div class="placeholder"><h3>Încă nu ai adăugat tematica</h3><p>După ce o adaugi, vezi aici cât ai parcurs din fiecare disciplină, iar Calendarul îți face planul până la examen.</p></div>`;
+  const blocks = discs.map(d => {
+    const items = PROG.syl.filter(i => i.disc === d).sort((a, b) => (a.o || 0) - (b.o || 0));
+    const sts = items.map(i => ({ i, st: itemStatus(i) }));
+    const nS = sts.filter(x => x.st.k === "stapanit").length, nL = sts.filter(x => x.st.k === "lucru").length;
+    return `<section class="lab-card syl"><div class="syl-h"><h3>${esc(d)}</h3><span class="hint">${nS} stăpânite · ${nL} în lucru · ${items.length - nS - nL} neîncepute</span></div>
+      <div class="prog-bar" aria-label="${pct(nS, items.length)}% stăpânit"><i class="ps" style="width:${pct(nS, items.length)}%"></i><i class="pl" style="width:${pct(nL, items.length)}%"></i></div>
+      <ul class="lab-list">${sts.map(({ i, st }) => `<li><span class="pill st-${st.k}">${ST_LABEL[st.k]}</span><span class="grow"><b>${esc(i.titlu)}</b>${st.s.n ? `<small>${st.s.ok}/${st.s.n} răspunsuri corecte</small>` : ""}</span>
+        <select class="sm-sel" data-act="syl-st" data-id="${i.id}" aria-label="Status"><option value="auto"${st.auto ? " selected" : ""}>Automat</option>${Object.entries(ST_LABEL).map(([k, t]) => `<option value="${k}"${!st.auto && st.k === k ? " selected" : ""}>${t}</option>`).join("")}</select>
+        <button class="btn sm" type="button" data-act="explain" data-q="${esc(i.titlu)}" data-disc="${esc(d)}">Explică</button>
+        <button class="icon-btn" type="button" data-act="syl-del" data-id="${i.id}" aria-label="Șterge tema"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></li>`).join("")}</ul></section>`;
+  }).join("");
+  return form + blocks;
+}
+
+/* ---- calendar inteligent ---- */
+function buildPlan(){
+  const today = noon(Date.now()), days = new Map(), warn = [];
+  const add = (t, task) => { const k = dayKey(t); if (!days.has(k)) days.set(k, []); days.get(k).push(task); };
+  const exams = PROG.exams.filter(e => parseDay(e.date) >= today).sort((a, b) => parseDay(a.date) - parseDay(b.date));
+  for (const ex of exams){
+    const eday = parseDay(ex.date), D = Math.round((eday - today) / DAY);
+    add(eday, { k: "exam", disc: ex.disc, txt: "Examen: " + ex.disc });
+    if (D >= 2) add(addDays(eday, -1), { k: "recap", disc: ex.disc, txt: "Recapitulare generală și grile din bancă" });
+    const all = PROG.syl.filter(i => i.disc === ex.disc);
+    if (!all.length){ warn.push(ex.disc); continue; }
+    if (D <= 0) continue;
+    const items = all.map(i => { const st = itemStatus(i); return { i, st, weak: st.s.n >= 3 && st.s.ok / st.s.n < 0.6 }; }).filter(x => x.st.k !== "stapanit");
+    const pr = x => x.weak ? 0 : x.st.k === "nou" ? 1 : 2;
+    items.sort((a, b) => pr(a) - pr(b) || (a.i.o || 0) - (b.i.o || 0));
+    const slots = Math.max(1, D - 1), per = Math.ceil(items.length / slots);
+    items.forEach((x, j) => {
+      const d = Math.floor(j / per);
+      add(addDays(today, d), { k: "nou", disc: ex.disc, txt: x.i.titlu, weak: x.weak });
+      [2, 6].forEach(g => { const rd = addDays(today, d + g); if (rd < eday) add(rd, { k: "rep", disc: ex.disc, txt: x.i.titlu }); });
+    });
+  }
+  const nDue = dueWrong().length;
+  if (nDue) add(today, { k: "rev", txt: `Revizuiește greșelile (${nDue})` });
+  return { days, warn, exams, today };
+}
+function discColor(d){ let h = 0; for (const ch of String(d || "")) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return ["c1", "c2", "c3", "c4", "c5"][h % 5]; }
+function calHtml(){
+  const L = labState(), plan = buildPlan(), today = plan.today;
+  const sylDiscs = [...new Set(PROG.syl.map(i => i.disc))];
+  const form = `<div class="lab-card"><h3 class="lab-sub" style="margin-top:0">Examenele tale</h3>
+    <div class="row"><select id="exDisc">${sylDiscs.map(d => `<option>${esc(d)}</option>`).join("")}${sylDiscs.length ? `<option disabled>──────</option>` : ""}${DISCIPLINES.filter(d => !sylDiscs.includes(d)).map(d => `<option>${esc(d)}</option>`).join("")}</select>
+      <input type="date" id="exDate" class="vis-in" min="${dayKey(today)}" style="max-width:180px"><button class="btn primary" type="button" data-act="ex-add">Adaugă examenul</button></div>
+    ${plan.exams.length ? `<ul class="lab-list">${plan.exams.map(e => { const n = Math.round((parseDay(e.date) - today) / DAY); return `<li><i class="dot" style="--oc:var(--${discColor(e.disc)})"></i><span class="grow"><b>${esc(e.disc)}</b><small>${new Date(parseDay(e.date)).toLocaleDateString("ro-RO", { weekday: "long", day: "numeric", month: "long" })}</small></span><span class="pill">${n === 0 ? "azi" : n === 1 ? "mâine" : `în ${n} zile`}</span><button class="icon-btn" type="button" data-act="ex-del" data-id="${e.id}" aria-label="Șterge examenul"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></li>`; }).join("")}</ul>` : ""}</div>`;
+  if (!plan.exams.length) return form + `<div class="placeholder"><h3>Adaugă data unui examen</h3><p>Planul se face singur: temele neparcurse din <b>Materie</b> se împart pe zilele rămase, temele slabe vin primele, fiecare temă revine la repetare după 2 și 6 zile, iar ziua dinaintea examenului e pentru recapitulare. Greșelile de revizuit apar zilnic.</p></div>`;
+  const last = Math.max(...plan.exams.map(e => parseDay(e.date)));
+  const span = Math.min(45, Math.max(7, Math.round((last - today) / DAY) + 1));
+  const cards = [];
+  for (let k = 0; k < span; k++){
+    const t = addDays(today, k), tasks = plan.days.get(dayKey(t)) || [];
+    if (!tasks.length && k > 0) continue;
+    const ex = tasks.filter(x => x.k === "exam"), rc = tasks.filter(x => x.k === "recap"), nw = tasks.filter(x => x.k === "nou"), rp = tasks.filter(x => x.k === "rep"), rv = tasks.filter(x => x.k === "rev");
+    const lbl = k === 0 ? "Azi" : k === 1 ? "Mâine" : new Date(t).toLocaleDateString("ro-RO", { weekday: "long" });
+    cards.push(`<li class="day${ex.length ? " has-exam" : ""}"><div class="day-h"><b>${lbl}</b><span>${new Date(t).toLocaleDateString("ro-RO", { day: "numeric", month: "short" })}</span></div><div class="day-b">
+      ${ex.map(x => `<div class="task exam" style="--oc:var(--${discColor(x.disc)})">${esc(x.txt)}</div>`).join("")}
+      ${rc.map(x => `<div class="task recap" style="--oc:var(--${discColor(x.disc)})"><b>${esc(x.disc)}:</b> ${esc(x.txt)}</div>`).join("")}
+      ${nw.map(x => `<button type="button" class="task new" style="--oc:var(--${discColor(x.disc)})" data-act="explain" data-q="${esc(x.txt)}" data-disc="${esc(x.disc)}"><span class="tk">${x.weak ? "Temă slabă" : "De învățat"}</span>${esc(x.txt)}</button>`).join("")}
+      ${rp.length ? `<div class="task rep"><span class="tk">Repetă</span>${rp.slice(0, 4).map(x => esc(x.txt)).join(" · ")}${rp.length > 4 ? ` · +${rp.length - 4}` : ""}</div>` : ""}
+      ${rv.map(x => `<button type="button" class="task rev" data-act="go-rev">${esc(x.txt)}</button>`).join("")}
+      ${!tasks.length ? `<span class="hint">Liber. Poți face o grilă din bancă.</span>` : ""}</div></li>`);
+  }
+  return form + (plan.warn.length ? `<p class="notice">Pentru ${plan.warn.map(esc).join(", ")} nu ai adăugat încă tematica. Adaug-o la <button type="button" class="linkbtn" data-lv="mat">Materie</button> și planul se completează singur.</p>` : "")
+    + `<div class="row" style="justify-content:space-between"><h3 class="lab-sub">Planul tău</h3><button class="btn sm dl" type="button" data-act="ics">Adaugă în calendarul telefonului (.ics)</button></div><ul class="days">${cards.join("")}</ul>`;
+}
+function planIcs(){
+  const plan = buildPlan(), esc2 = s => String(s).replace(/\\/g, "\\\\").replace(/[,;]/g, m => "\\" + m).replace(/\n/g, "\\n");
+  const f = t => dayKey(t).replace(/-/g, "");
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Ghidul studentului USMF//Plan//RO", "CALSCALE:GREGORIAN"];
+  [...plan.days.entries()].sort().forEach(([k, tasks], n) => {
+    const t = parseDay(k), ex = tasks.find(x => x.k === "exam");
+    const sum = ex ? ex.txt : `Studiu: ${tasks.filter(x => x.k === "nou").length} teme noi`;
+    const desc = tasks.map(x => (x.k === "nou" ? "De învățat: " : x.k === "rep" ? "Repetă: " : "") + (x.disc && x.k !== "exam" ? x.disc + " - " : "") + x.txt).join("\n");
+    L.push("BEGIN:VEVENT", `UID:ghid-${k}-${n}@usmf-ghid`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`, `DTSTART;VALUE=DATE:${f(t)}`, `DTEND;VALUE=DATE:${f(addDays(t, 1))}`, `SUMMARY:${esc2(sum)}`, `DESCRIPTION:${esc2(desc)}`, "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+
+/* ---- randare și evenimente ---- */
+function renderLab(){
+  const L = labState(), p = $("#p-lab"); if (!p) return;
+  const views = [["anat", "Anatomie"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["cal", "Calendar"]];
+  const nRev = dueWrong().length;
+  const body = { anat: anatHtml, rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml }[L.view] || anatHtml;
+  p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Simulation Lab</h2><p class="hint">Corpul uman interactiv, greșelile tale, progresul și planul de studiu.</p></div>
+    <div class="seg lab-nav">${views.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : ""}</button>`).join("")}</div></div>
+    <div class="lab-body">${body()}</div>`;
+}
+$("#p-lab").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-lv],[data-act],[data-org],[data-sys]"); if (!b || b.tagName === "SELECT") return;
+  const L = labState();
+  if (b.dataset.lv){ L.view = b.dataset.lv; L.rev = null; renderLab(); return; }
+  if (b.dataset.org){ L.organ = b.dataset.org === L.organ && b.tagName !== "BUTTON" ? null : b.dataset.org; renderLab(); return; }
+  if (b.dataset.sys){ L.sys = b.dataset.sys; renderLab(); return; }
+  const a = b.dataset.act;
+  if (a === "explain") return labExplain(b.dataset.q, b.dataset.disc);
+  if (a === "org-own"){ const v = ($("#orgQ").value || "").trim(); const o = ORGANS.find(x => x.id === L.organ); if (v) labExplain(v); else if (o) labExplain(o.teme[0]); return; }
+  if (a === "rev-due") return revStart(dueWrong());
+  if (a === "rev-all") return revStart(openWrong().slice().sort((x, y) => y.n - x.n));
+  if (a === "rev-topic") return revStart(openWrong().filter(w => (w.topic || "Fără temă") === b.dataset.topic));
+  if (a === "rev-back"){ L.rev = null; renderLab(); return; }
+  if (a === "rev-check"){
+    const R = L.rev, w = PROG.wrong.find(x => x.id === R.ids[R.i]);
+    if (!R.ans.length){ toast("Alege un răspuns"); return; }
+    if (progRecord(w.q, R.ans, "revizuire", { topic: w.topic, disc: w.disc, wid: w.id })) R.score++;
+    R.checked = true; renderLab(); return;
+  }
+  if (a === "rev-next"){ const R = L.rev; R.i++; R.ans = []; R.checked = false; renderLab(); $("#p-lab").scrollIntoView({ block: "start", behavior: "smooth" }); return; }
+  if (a === "go-rev"){ L.view = "rev"; revStart(dueWrong()); return; }
+  if (a === "syl-add" || a === "syl-cur"){
+    const disc = a === "syl-cur" ? (state.result.disciplina && DISCIPLINES.includes(state.result.disciplina) ? state.result.disciplina : $("#sylDisc").value) : $("#sylDisc").value;
+    const lines = a === "syl-cur" ? [stripMarks(state.result.titlu)] : ($("#sylText").value || "").split(/\n+/).map(s => s.replace(/^\s*(?:\d+[.)]|[-•*–])\s*/, "").trim()).filter(s => s.length > 2);
+    if (!lines.length){ toast("Scrie cel puțin o temă"); return; }
+    const have = new Set(PROG.syl.filter(i => i.disc === disc).map(i => nrm(i.titlu)));
+    let o = PROG.syl.filter(i => i.disc === disc).length, added = 0;
+    lines.slice(0, 300).forEach(t => { if (have.has(nrm(t))) return; have.add(nrm(t)); PROG.syl.push({ id: "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), disc, titlu: t.slice(0, 200), o: o++, st: "", u: Date.now() }); added++; });
+    L.sylDisc = disc; saveProg(); renderLab(); toast(added ? `Am adăugat ${added} ${added === 1 ? "temă" : "teme"}` : "Temele erau deja în listă"); return;
+  }
+  if (a === "syl-del"){ const id = b.dataset.id; PROG.syl = PROG.syl.filter(i => i.id !== id); PROG.del.syl[id] = Date.now(); saveProg(); renderLab(); return; }
+  if (a === "ex-add"){
+    const disc = $("#exDisc").value, date = $("#exDate").value;
+    if (!date || isNaN(parseDay(date))){ toast("Alege data examenului"); return; }
+    PROG.exams.push({ id: "e" + Date.now().toString(36), disc, date, u: Date.now() }); saveProg(); renderLab(); return;
+  }
+  if (a === "ex-del"){ const id = b.dataset.id; PROG.exams = PROG.exams.filter(e => e.id !== id); PROG.del.exams[id] = Date.now(); saveProg(); renderLab(); return; }
+  if (a === "ics") return saveFile("plan-de-studiu.ics", new Blob([planIcs()], { type: "text/calendar" }));
+});
+$("#p-lab").addEventListener("change", ev => {
+  const t = ev.target, L = labState();
+  if (t.dataset && t.dataset.act === "syl-st"){
+    const it = PROG.syl.find(i => i.id === t.dataset.id); if (!it) return;
+    it.st = t.value === "auto" ? "" : t.value; it.u = Date.now(); saveProg(); renderLab(); return;
+  }
+  if (t.name === "rv" && L.rev && !L.rev.checked){
+    L.rev.ans = $$('#rvOpts input:checked').map(x => x.value).sort();
+    $$("#rvOpts .opt").forEach(o => o.classList.toggle("sel", $("input", o).checked));
+  }
+});
+$("#p-lab").addEventListener("keydown", ev => {
+  const g = ev.target.closest && ev.target.closest("g[data-org]");
+  if (g && (ev.key === "Enter" || ev.key === " ")){ ev.preventDefault(); g.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+});
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");

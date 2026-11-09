@@ -16,7 +16,7 @@ ITER = 200_000
 SESSION_DAYS = 180
 MAX_DOC = 6_000_000          # octeți per document sincronizat
 MAX_USER = 14_000_000        # octeți în total per cont
-SYNC_KEYS = ("hist", "banks")
+SYNC_KEYS = ("hist", "banks", "prog")
 USER_RE = re.compile(r"^[a-z0-9._-]{3,32}$")
 
 
