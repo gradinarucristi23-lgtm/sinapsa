@@ -575,6 +575,53 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 .ac-more summary{cursor:pointer;font-size:13.5px;color:var(--ink-2);margin-top:4px}
 .ac-more .row{margin:8px 0 6px}
 .btn.danger{border-color:color-mix(in srgb,var(--bad) 50%,var(--line-2));color:var(--bad)}
+
+/* v2: claritate și mai puține chenare */
+.acct-ov[hidden]{display:none}
+.tagline{display:none}
+.help-btn{margin-left:auto}
+.help-btn ~ .theme-btn{margin-left:0}
+@media (max-width:560px){.help-btn span,#themeBtn span{display:none}.help-btn,#themeBtn{padding:8px}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink-3:#BFBDDA}}
+:root[data-theme="dark"]{--ink-3:#BFBDDA}
+.hint,.empty-note{color:var(--ink-2)}
+.mode:has(input:disabled){opacity:1}
+.mode:has(input:disabled) b{color:var(--ink-2)}
+.panel{border-color:transparent;box-shadow:var(--shadow)}
+.composer,.work{border-color:transparent}
+.work{box-shadow:var(--shadow)}
+.intent{border-color:transparent;background:var(--surface-2)}
+.intent:hover{border-color:transparent;background:var(--hema-soft)}
+.mode{border-color:transparent;background:var(--surface-2)}
+.mode:has(input:checked){border-color:var(--hema)}
+.src{border-color:transparent;background:var(--surface-2)}
+.chip{border-color:transparent}
+.chip:hover{border-color:transparent;background:var(--hema-soft)}
+.btn{border-color:var(--line)}
+.tab{border-radius:8px 8px 0 0}
+.tab[hidden]{display:none}
+.tab.zero{opacity:.6}
+.tab.zero:hover{opacity:1}
+.hist button.h-open{padding:11px 4px}
+.hist .h-t{font-weight:600;font-size:14px}
+.hist .h-m{font-size:12px;color:var(--ink-3);margin-top:2px}
+.go-row{align-items:flex-end}
+.go-row select{height:44px}
+.go-row .btn.primary{height:44px}
+.placeholder.start{padding-top:18px;gap:10px;max-width:66ch}
+.steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:10px}
+.steps li{counter-increment:st;position:relative;padding:3px 0 0 40px;min-height:28px;color:var(--ink);font-size:15px;line-height:1.45}
+.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--hema-soft);color:var(--hema);font-weight:700;display:grid;place-items:center;font-size:14px}
+.tabs{overflow-y:hidden}
+.start-more{margin:4px 0 0;color:var(--ink-2)}
+.start-more .linkbtn{font-size:inherit}
+.help-box{width:min(560px,100%)}
+.help-tabs{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;margin:0 0 4px 38px;font-size:14px}
+.help-tabs dt{font-weight:600}
+@media (max-width:920px){.main{display:contents}.composer{order:1}.work{order:2}.side{order:3}}
+@media (max-width:560px){#q{min-height:86px}.go-row .btn.primary{flex:1 1 100%;justify-content:center}.go-row .field{flex:1 1 140px}.go-row select{width:100%}}
+.help-tabs dd{margin:0;color:var(--ink-2)}
+@media (max-width:560px){.help-tabs{grid-template-columns:minmax(0,1fr);margin-left:0}.help-tabs dd{margin-bottom:6px}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -586,7 +633,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
       <img src="/usmf-emblema.png" alt="Emblema USMF" width="161" height="234">
       <span class="brand-t"><b>Ghidul studentului USMF</b><small>Proiect studențesc neoficial</small></span>
     </span>
-    <span class="tagline">Tutorele tău de medicină: explică teme din cursul tău sau ca un motor de căutare, cu schemă, grilă și prezentare.</span>
+    <button class="theme-btn help-btn" id="helpBtn" type="button" aria-label="Cum funcționează ghidul"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg><span>Cum funcționează</span></button>
     <button class="theme-btn" id="themeBtn" type="button"></button>
     <button class="theme-btn acct-btn" id="acctBtn" type="button"></button>
   </div>
@@ -629,7 +676,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
     </section>
 
     <section class="panel" id="histPanel">
-      <div class="panel-h"><h2>Istoric</h2><span class="count">pe acest dispozitiv</span></div>
+      <div class="panel-h"><h2>Istoric</h2><span class="count" id="histWhere">pe acest dispozitiv</span></div>
       <ul class="hist" id="hist"></ul>
       <p class="empty-note" id="histEmpty">Temele explicate apar aici.</p>
     </section>
@@ -663,7 +710,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
         </div>
       </div>
 
-      <div class="row">
+      <div class="row go-row">
         <div class="field"><span class="label">Disciplina</span><select id="disc"></select></div>
         <div class="field"><span class="label">Profunzime</span>
           <select id="depth">
@@ -1006,6 +1053,14 @@ async function saveFile(filename, data){
   try { await d.save({ filename, data }); toast("Fișier salvat"); }
   catch (e){ if (e && e.code !== "declined") toast(e.code === "rate_limited" ? "Așteaptă puțin, apoi reîncearcă" : "Fișierul nu a putut fi salvat"); }
 }
+function mdToDoc(title, text){
+  const src = String(text || "").replace(/```mermaid[\s\S]*?```/g, "_(Schema se vede pe site, în fila Explicație sau Vizual, de unde o poți descărca ca imagine.)_");
+  const body = DOMPurify.sanitize(marked.parse(src));
+  return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${esc(stripMarks(title || "Ghidul studentului USMF"))}</title>
+<style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.45;color:#1D1A38}h1{font-size:20pt;color:#3D379A;margin:0 0 6pt}h2{font-size:15pt;color:#3D379A;margin:16pt 0 6pt}h3{font-size:12.5pt;margin:12pt 0 4pt}table{border-collapse:collapse;margin:6pt 0}td,th{border:1px solid #9A99B0;padding:4pt 6pt;vertical-align:top}th{background:#ECEDF5}blockquote{border-left:3pt solid #3D379A;margin:6pt 0;padding:2pt 8pt;background:#F3F4F9}code{font-family:Consolas,monospace}</style></head>
+<body>${body}<p style="color:#66647F;font-size:9pt;margin-top:18pt">Generat cu Ghidul studentului USMF (proiect studențesc neoficial). Explicațiile AI pot conține greșeli: verifică-le cu cursul.</p></body></html>`;
+}
+function saveDoc(name, title, text){ saveFile((name || "ghid") + ".doc", new Blob(["\ufeff" + mdToDoc(title, text)], { type: "application/msword" })); }
 function slug(s){ return String(s || "sinapsa").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60).toLowerCase() || "sinapsa"; }
 
 /* ---------------- sources ---------------- */
@@ -1527,9 +1582,17 @@ function renderExplain(opts){
   const r = live ? opts.partial : state.result, m = (live ? opts.meta : state.meta) || {};
   const p = $("#p-explicatie");
   if (!r){
-    p.innerHTML = `<div class="placeholder"><h3>Nicio explicație încă</h3><p>Scrie o temă sau adaugă un curs, apoi apasă Explică.</p>
-      <div class="row" style="margin-top:8px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
+    p.innerHTML = `<div class="placeholder start"><h3>Începe în 3 pași</h3>
+      <ol class="steps">
+        <li><b>Scrie tema</b> în căsuța de sus, de exemplu „sindromul nefrotic” sau „mecanismul Frank–Starling”.</li>
+        <li><b>Adaugă cursul, dacă vrei</b>, din panoul <button class="linkbtn" type="button" id="goSrc">Surse</button>. Fără curs, ghidul explică din manualele consacrate.</li>
+        <li><b>Apasă Explică.</b> Primești explicația pe două niveluri, simplificat și avansat, cu schemă și întrebări scurte după fiecare parte.</li>
+      </ol>
+      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>.</p>
+      <div class="row" style="margin-top:4px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
     $("#showSample").onclick = () => toggleSample(true);
+    $("#goBank").onclick = () => selectTab("bank");
+    $("#goSrc").onclick = () => { $("#srcPanel").scrollIntoView({ behavior: "smooth", block: "start" }); };
     return;
   }
   const code = (live && !opts.schemaDone) ? "" : ((r.schema && r.schema.mermaid) || "");
@@ -1571,7 +1634,7 @@ function renderExplain(opts){
       <span class="grow"></span>
       ${live ? "" : `${m.sample ? `<button class="btn sm" type="button" id="hideSample">Ascunde exemplul</button>` : ""}${!m.sample && state.lastReq && state.ctxHist === state.histId ? `<button class="btn sm" type="button" id="regen" data-busy>Regenerează</button>` : ""}
       <button class="btn sm" type="button" id="copyMd">Copiază</button>
-      <button class="btn sm dl" type="button" id="dlMd">Descarcă .md</button>`}
+      <button class="btn sm dl" type="button" id="dlMd">Descarcă (Word)</button>`}
     </div>
   </div>
 
@@ -1627,7 +1690,7 @@ function renderExplain(opts){
   $("#regen") && ($("#regen").onclick = () => generate({ regen: true }));
   $("#hideSample") && ($("#hideSample").onclick = () => toggleSample(false));
   $("#copyMd").onclick = () => copyText(resultToMd(state.result));
-  $("#dlMd").onclick = () => saveFile(slug(r.titlu) + ".md", resultToMd(state.result));
+  $("#dlMd").onclick = () => saveDoc(slug(r.titlu), r.titlu, resultToMd(state.result));
   $("#zoomMm").onclick = ev => { const on = $("#mm").classList.toggle("big"); ev.currentTarget.textContent = on ? "Micșorează" : "Mărește"; };
   $("#fixMm").onclick = fixSchema;
   $("#toQuiz").onclick = () => { selectTab("quiz"); if (!state.quiz.list.length || state.quiz.sample) genQuiz(); };
@@ -1760,14 +1823,14 @@ function renderQuiz(){
       <div class="q-score">${Q.checked ? `<span><b>${score}/${Q.list.length}</b> &nbsp;răspunsuri complet corecte (${Math.round(score / Q.list.length * 100)}%)</span>` : `<span>${answered}/${Q.list.length} întrebări răspunse · CS = un răspuns, CM = 2–4 răspunsuri</span>`}
         <span class="row">${Q.checked ? `<button class="btn sm" type="button" id="qzReset">Reia grila</button>` : `<button class="btn sm primary" type="button" id="qzCheck">Verifică răspunsurile</button>`}</span></div>
       <ol class="qs ${Q.checked ? "checked" : ""}">${items}</ol>
-      <div class="q-foot"><button class="btn sm dl" type="button" id="qzCsv">Exportă CSV (Anki)</button><button class="btn sm dl" type="button" id="qzMd">Descarcă .md</button><button class="btn sm" type="button" id="qzCopy">Copiază grila</button></div>`;
+      <div class="q-foot"><button class="btn sm dl" type="button" id="qzCsv">Exportă CSV (Anki)</button><button class="btn sm dl" type="button" id="qzMd">Descarcă (Word)</button><button class="btn sm" type="button" id="qzCopy">Copiază grila</button></div>`;
   }
   if (state.qzOpts){ $("#qzN").value = state.qzOpts.n; $("#qzK").value = state.qzOpts.kind; $("#qzD").value = state.qzOpts.diff; }
   $("#qzGo").onclick = genQuiz;
   $("#qzCheck") && ($("#qzCheck").onclick = () => { Q.checked = true; renderQuiz(); p.scrollIntoView({ block: "start", behavior: "smooth" }); });
   $("#qzReset") && ($("#qzReset").onclick = () => { Q.checked = false; Q.answers = {}; renderQuiz(); });
   $("#qzCsv") && ($("#qzCsv").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-grila.csv", quizCsv()));
-  $("#qzMd") && ($("#qzMd").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-grila.md", quizMd(true)));
+  $("#qzMd") && ($("#qzMd").onclick = () => saveDoc(slug(state.result && state.result.titlu) + "-grila", "Grilă: " + stripMarks((state.result && state.result.titlu) || ""), quizMd(true)));
   $("#qzCopy") && ($("#qzCopy").onclick = () => copyText(quizMd(true)));
   p.querySelector(".qs")?.addEventListener("change", ev => {
     const li = ev.target.closest(".qq"); if (!li) return;
@@ -2204,7 +2267,7 @@ function hyHtml(h){
       ${arr(h.cifre).length ? `<div class="card"><h4>Cifre și criterii</h4><ul>${h.cifre.map(x => `<li>${mdi(x)}</li>`).join("")}</ul></div>` : ""}
       ${arr(h.capcane).length ? `<div class="card pit"><h4>Capcane</h4><ul>${h.capcane.map(x => `<li>${mdi(x)}</li>`).join("")}</ul></div>` : ""}
     </div>` : ""}
-    <div class="row"><button class="btn sm" type="button" id="hyCopy">Copiază</button><button class="btn sm dl" type="button" id="hyDl">Descarcă .md</button></div>
+    <div class="row"><button class="btn sm" type="button" id="hyCopy">Copiază</button><button class="btn sm dl" type="button" id="hyDl">Descarcă (Word)</button></div>
   </div>`;
 }
 async function genMn(){
@@ -2253,7 +2316,7 @@ function renderTools(){
   $("#mnIn").oninput = ev => { T.mnQ = ev.target.value; };
   $("#mnIn").addEventListener("keydown", ev => { if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) genMn(); });
   $("#hyCopy") && ($("#hyCopy").onclick = () => copyText(hyMd(T.hy)));
-  $("#hyDl") && ($("#hyDl").onclick = () => saveFile(slug("high-yield " + (T.hy.titlu || "")) + ".md", hyMd(T.hy)));
+  $("#hyDl") && ($("#hyDl").onclick = () => saveDoc(slug("high-yield " + (T.hy.titlu || "")), "High-Yield: " + (T.hy.titlu || ""), hyMd(T.hy)));
   if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);
 }
 
@@ -3297,13 +3360,24 @@ function selectTab(t){
   state.tab = t;
   $$(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
   ["explicatie", "vis", "quiz", "bank", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  $$(".tab").forEach(b => { const n = $(".n", b); b.classList.toggle("zero", !!n && n.textContent === "0" && b.dataset.tab !== t); });
   if (t === "bank") renderBank();
   if (t === "tools") renderTools();
   if (t === "vis") renderVis();
   hideTip(); hideDefBtn();
 }
 $$(".tab").forEach(b => b.onclick = () => selectTab(b.dataset.tab));
-function updateCounts(){ $("#nQuiz").textContent = state.quiz.list.length; $("#nSlides").textContent = state.slides.list.length; $("#nFlash").textContent = state.flash.list.length; const bb = curBank(); $("#nBank").textContent = bb ? bb.questions.length : 0; }
+function updateCounts(){ $("#nQuiz").textContent = state.quiz.list.length; $("#nSlides").textContent = state.slides.list.length; $("#nFlash").textContent = state.flash.list.length; const bb = curBank(); $("#nBank").textContent = bb ? bb.questions.length : 0; paintTabs(); }
+function paintTabs(){
+  const has = !!state.result;
+  $$(".tab").forEach(b => {
+    const k = b.dataset.tab;
+    b.hidden = !has && k !== "explicatie" && k !== "bank";
+    const n = $(".n", b);
+    b.classList.toggle("zero", !!n && n.textContent === "0" && b.getAttribute("aria-selected") !== "true");
+  });
+  if (!has && state.tab && state.tab !== "explicatie" && state.tab !== "bank") selectTab("explicatie");
+}
 function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); renderFlash(); renderCaz(); renderTools(); renderVis(); updateCounts(); }
 
 /* ---------------- history (this browser only) ---------------- */
@@ -3545,6 +3619,35 @@ acctOv.addEventListener("click", ev => { if (ev.target === acctOv) closeAcct(); 
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !acctOv.hidden) closeAcct(); });
 $("#acctBtn").onclick = openAcct;
 acctInit();
+
+
+/* ---------------- ghid pentru începători ---------------- */
+const helpOv = document.createElement("div"); helpOv.className = "acct-ov"; helpOv.hidden = true; document.body.appendChild(helpOv);
+helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="true" aria-labelledby="helpT">
+  <button class="icon-btn ac-x" type="button" data-hclose aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+  <h2 id="helpT">Cum funcționează</h2>
+  <p>Ghidul îți explică orice temă de medicină pe două niveluri: <b>simplificat</b>, ca să înțelegi ideea, și <b>avansat</b>, cum se cere la examen.</p>
+  <ol class="steps">
+    <li><b>Scrie tema</b> și apasă <b>Explică</b>. Primele părți apar după câteva secunde.</li>
+    <li><b>Cu cursul tău</b>: adaugă fișierul în panoul Surse. Alegi apoi <b>Exclusiv din sursă</b> (doar ce scrie în curs) sau <b>Combinat</b> (cursul plus explicații în plus, marcate cu roz).</li>
+    <li><b>Exersează</b> cu filele de sub căsuță:</li>
+  </ol>
+  <dl class="help-tabs">
+    <dt>Vizual</dt><dd>poster, scheme și imagini reale pentru temă</dd>
+    <dt>Quiz</dt><dd>grilă CS/CM cu explicație la fiecare variantă</dd>
+    <dt>Banca de grile</dt><dd>pui grilele tale de examen; ghidul le amestecă și face altele asemănătoare, pe 3 niveluri</dd>
+    <dt>Flashcards</dt><dd>carduri de repetat, exportabile în Anki</dd>
+    <dt>Caz clinic</dt><dd>un pacient ipotetic, rezolvat pas cu pas</dd>
+    <dt>Prezentare</dt><dd>slide-uri gata de descărcat în PowerPoint</dd>
+    <dt>Instrumente</dt><dd>rezumat High-Yield, mnemonice, explicarea unei imagini</dd>
+  </dl>
+  <p class="hint">Cu un cont (butonul „Intră în cont”), istoricul și grilele tale apar pe orice dispozitiv. Contul e opțional.</p>
+  <div class="row"><span class="grow"></span><button class="btn primary" type="button" data-hclose>Am înțeles</button></div>
+</div>`;
+$("#helpBtn").onclick = () => { helpOv.hidden = false; setTimeout(() => $("[data-hclose].btn", helpOv).focus(), 30); };
+helpOv.addEventListener("click", ev => { if (ev.target === helpOv || ev.target.closest("[data-hclose]")) helpOv.hidden = true; });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !helpOv.hidden) helpOv.hidden = true; });
+setInterval(() => { const w = $("#histWhere"); if (w) w.textContent = (typeof SYNC !== "undefined" && SYNC.user) ? "sincronizat cu contul" : "pe acest dispozitiv"; }, 1500);
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");

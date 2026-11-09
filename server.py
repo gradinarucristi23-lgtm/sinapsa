@@ -3,6 +3,7 @@
 Serveste pagina din /public si trimite cererile catre Google Gemini (API gratuit),
 pastrand cheia ascunsa pe server. Cheia se pune in variabila de mediu GEMINI_API_KEY.
 """
+import hashlib
 import json
 import mimetypes
 import os
@@ -108,10 +109,20 @@ class Handler(BaseHTTPRequestHandler):
             ctype += "; charset=utf-8"
         with open(full, "rb") as f:
             data = f.read()
+        # ETag: la reîncărcare browserul primește „304, nu s-a schimbat” în loc să descarce din nou pagina
+        etag = '"' + hashlib.sha1(data).hexdigest()[:16] + '"'
+        cache = "public, max-age=86400" if ctype.startswith("image/") else "no-cache"
+        if self.headers.get("If-None-Match") == etag:
+            self.send_response(304)
+            self.send_header("ETag", etag)
+            self.send_header("Cache-Control", cache)
+            self.end_headers()
+            return
         self.send_response(200)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
-        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Cache-Control", cache)
+        self.send_header("ETag", etag)
         self.end_headers()
         if not head:
             self.wfile.write(data)
@@ -414,8 +425,24 @@ class Handler(BaseHTTPRequestHandler):
                 pass
 
 
+def keep_awake():
+    """Pe Render gratuit, serverul adoarme după 15 minute fără vizite și prima deschidere durează ~1 minut.
+    Serverul își face singur o vizită prin adresa publică la fiecare 10 minute, ca să rămână pornit."""
+    url = os.environ.get("KEEPALIVE_URL") or os.environ.get("RENDER_EXTERNAL_URL", "")
+    if not url or os.environ.get("KEEPALIVE", "1") == "0":
+        return
+    url = url.rstrip("/") + "/api/health"
+    while True:
+        time.sleep(600)
+        try:
+            urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "ghid-keepalive"}), timeout=30).read()
+        except Exception as e:
+            print("keepalive:", str(e).encode("ascii", "replace").decode(), flush=True)
+
+
 if __name__ == "__main__":
     mimetypes.add_type("application/javascript", ".js")
     mimetypes.add_type("text/markdown", ".md")
     print(f"Sinapsa pe portul {PORT} - cheie Gemini: {'da' if KEY else 'NU'}", flush=True)
+    threading.Thread(target=keep_awake, daemon=True).start()
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
