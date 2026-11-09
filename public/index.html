@@ -625,6 +625,7 @@ table.ddx th:first-child,table.ddx td:first-child{background:var(--surface-2)}
 
 /* Simulation Lab */
 footer .contact{margin:8px 0 0;color:var(--ink-2)}
+a.ig{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}
 footer a,.help-box a{color:var(--hema);font-weight:600}
 .tab-lab{color:var(--hema)}
 .lab-h{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
@@ -844,12 +845,6 @@ button.task:hover{background:var(--hema-soft)}
       <div class="q-wrap">
         <label class="q-label" for="q" id="qLabel">Ce temă vrei să înțelegi?</label>
         <textarea id="q" rows="2" placeholder="De exemplu: mecanismul Frank–Starling, sindromul nefrotic, farmacologia betablocantelor…"></textarea>
-        <div class="examples" id="examples">Încearcă:
-          <button class="chip" type="button">Mecanismul Frank–Starling</button>
-          <button class="chip" type="button">Sindrom nefrotic vs nefritic</button>
-          <button class="chip" type="button">Ciclul Krebs și reglarea lui</button>
-          <button class="chip" type="button">Examenul clinic al aparatului respirator</button>
-        </div>
       </div>
 
       <div class="row go-row">
@@ -896,7 +891,7 @@ button.task:hover{background:var(--hema-soft)}
   </main>
 </div>
 
-<footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.<p class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener">@pregatire.usmf</a></p></div></footer>
+<footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.<p class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener" class="ig"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>@pregatire.usmf</a></p></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
@@ -1385,7 +1380,7 @@ $("#intents").addEventListener("click", ev => {
   $$(".intent").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
   if (state.intent === "curs" && !state.sources.length) $("#fileIn").click();
 });
-$("#examples").addEventListener("click", ev => { const c = ev.target.closest(".chip"); if (c){ $("#q").value = c.textContent; $("#q").focus(); } });
+$("#examples")?.addEventListener("click", ev => { const c = ev.target.closest(".chip"); if (c){ $("#q").value = c.textContent; $("#q").focus(); } });
 $("#disc").innerHTML = `<option value="">Automat</option>` + DISCIPLINES.map(d => `<option>${esc(d)}</option>`).join("");
 
 /* ---------------- prompts ---------------- */
@@ -3425,7 +3420,7 @@ async function kbInit(){
     const s = await kbFetch("status");
     KB.on = !!s.enabled; KB.kind = s.kind; KB.count = s.count;
   } catch { KB.on = false; }
-  $("#kbPanel").hidden = !KB.on;
+  $("#kbPanel").hidden = true; // panoul e ascuns; biblioteca lucrează doar în fundal
   if (KB.on) kbList();
 }
 async function kbList(){
@@ -3794,7 +3789,7 @@ helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="tru
     <dt>Instrumente</dt><dd>rezumat High-Yield, mnemonice, explicarea unei imagini</dd>
   </dl>
   <p class="hint">Cu un cont (butonul „Intră în cont”), istoricul, grilele și progresul tău apar pe orice dispozitiv. Contul e opțional.</p>
-  <p class="hint">Ai o întrebare? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener">@pregatire.usmf</a></p>
+  <p class="hint">Ai o întrebare? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener" class="ig"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>@pregatire.usmf</a></p>
   <div class="row"><span class="grow"></span><button class="btn primary" type="button" data-hclose>Am înțeles</button></div>
 </div>`;
 $("#helpBtn").onclick = () => { helpOv.hidden = false; setTimeout(() => $("[data-hclose].btn", helpOv).focus(), 30); };
