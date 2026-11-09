@@ -348,6 +348,11 @@ details.qa .ans{padding:0 16px 14px 38px;font-family:var(--f-read);font-size:15.
 .dl{display:none!important}
 body.dl-ok .dl{display:inline-flex!important}
 
+.top-note{background:var(--surface-2);border-bottom:1px solid var(--line);color:var(--ink-2);font-size:12.5px;line-height:1.45}
+.top-note .wrap{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;justify-content:space-between;padding-block:7px}
+.tn-disc{flex:1 1 520px;min-width:0}
+.top-note .contact{white-space:nowrap;font-weight:500}
+.top-note a{color:var(--hema);font-weight:600}
 footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
 footer .wrap{padding-block:16px 26px}
 
@@ -824,6 +829,7 @@ body.no-scroll{overflow:hidden}
 </head>
 <body>
 
+<div class="top-note"><div class="wrap"><span class="tn-disc">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.</span><span class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener" class="ig"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>@pregatire.usmf</a></span></div></div>
 <header class="topbar">
   <div class="wrap topbar-in">
     <span class="brand">
@@ -946,7 +952,7 @@ body.no-scroll{overflow:hidden}
   </main>
 </div>
 
-<footer><div class="wrap">Ghidul studentului USMF este un proiect studențesc independent, fără legătură oficială cu USMF „Nicolae Testemițanu”. Explicațiile sunt generate de AI și pot conține greșeli: verifică-le cu cursul și cu ghidurile în vigoare. Nu încărca documente cu date care identifică pacienți.<p class="contact">Întrebări sau sugestii? Scrie-ne pe Instagram: <a href="https://www.instagram.com/pregatire.usmf/" target="_blank" rel="noopener" class="ig"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>@pregatire.usmf</a></p></div></footer>
+
 <div class="drawer-ov" id="progOv" hidden><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="progT">
   <div class="drawer-h"><h2 id="progT">Progresul meu</h2><button class="icon-btn" type="button" data-pclose aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
     <div class="seg lab-nav" id="progNav"></div></div>
