@@ -100,15 +100,18 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?", 1)[0].split("#", 1)[0]
         if path in ("", "/"):
             path = "/index.html"
-        full = os.path.normpath(os.path.join(ROOT, path.lstrip("/")))
-        if not full.startswith(ROOT) or not os.path.isfile(full):
-            self.send_json(404, {"error": "not_found"})
-            return
-        ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
-        if ctype.startswith("text/") or ctype in ("application/javascript", "application/json"):
-            ctype += "; charset=utf-8"
-        with open(full, "rb") as f:
-            data = f.read()
+        if path == "/app.js":
+            data, ctype = build_app_js(), "application/javascript; charset=utf-8"
+        else:
+            full = os.path.normpath(os.path.join(ROOT, path.lstrip("/")))
+            if not full.startswith(ROOT) or not os.path.isfile(full):
+                self.send_json(404, {"error": "not_found"})
+                return
+            ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
+            if ctype.startswith("text/") or ctype in ("application/javascript", "application/json"):
+                ctype += "; charset=utf-8"
+            with open(full, "rb") as f:
+                data = f.read()
         # ETag: la reîncărcare browserul primește „304, nu s-a schimbat” în loc să descarce din nou pagina
         etag = '"' + hashlib.sha1(data).hexdigest()[:16] + '"'
         cache = "public, max-age=86400" if ctype.startswith("image/") else "no-cache"
@@ -423,6 +426,27 @@ class Handler(BaseHTTPRequestHandler):
                 resp.close()
             except Exception:
                 pass
+
+
+_APP_JS = {"key": None, "data": b""}
+
+
+def build_app_js():
+    """Lipește fișierele din public/js (în ordinea numelor) într-un singur script.
+    Codul se editează pe fișiere mici, dar browserul primește un singur script, ca înainte."""
+    folder = os.path.join(ROOT, "js")
+    names = sorted(n for n in os.listdir(folder) if n.endswith(".js"))
+    key = tuple((n, os.path.getmtime(os.path.join(folder, n))) for n in names)
+    if _APP_JS["key"] != key:
+        parts = ['"use strict";']
+        for n in names:
+            with open(os.path.join(folder, n), encoding="utf-8") as f:
+                txt = f.read()
+            if txt.startswith('"use strict";'):
+                txt = txt[len('"use strict";'):]
+            parts.append(f"/* ===== {n} ===== */" + txt)
+        _APP_JS["key"], _APP_JS["data"] = key, "\n".join(parts).encode("utf-8")
+    return _APP_JS["data"]
 
 
 def keep_awake():

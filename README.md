@@ -10,7 +10,10 @@ Oricine deschide linkul îl poate folosi, fără cont. Contul e opțional și se
 
 | Fișier | Rol |
 |---|---|
-| `public/index.html` | Site-ul (tot ce vede utilizatorul) |
+| `public/index.html` | Structura paginii |
+| `public/css/app.css` | Stilul |
+| `public/js/` | Codul site-ului, pe secțiuni (serverul îl trimite lipit ca `/app.js`) |
+| `CLAUDE.md` | Harta proiectului pentru lucrul cu Claude Code |
 | `server.py` | Server mic care ține cheia AI ascunsă și trimite cererile la Gemini |
 | `kb.py` | Biblioteca comună de explicații (Postgres prin `DATABASE_URL`, altfel temporară) |
 | `accounts.py` | Conturi și sincronizarea istoricului și a băncilor de grile |
