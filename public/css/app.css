@@ -876,3 +876,35 @@ body.no-scroll{overflow:hidden}
 .tut-att{position:relative;width:90px}
 .tut-att img{width:90px;height:70px;object-fit:cover;border-radius:8px;display:block}
 .tut-att .icon-btn{position:absolute;top:-8px;right:-8px;background:var(--surface);box-shadow:0 0 0 1px var(--line)}
+
+/* ---- 3D: denumirea în română peste model, mod „testează-te”, căutare ---- */
+.m3-cap{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:12px;background:rgba(18,17,32,.88);color:#fff;box-shadow:0 4px 18px rgba(0,0,0,.35);backdrop-filter:blur(4px)}
+.m3-cap .m3-nm{flex:1;display:flex;align-items:center;gap:8px;min-width:0;font-size:14.5px}
+.m3-cap .m3-nm b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3-cap .m3-nm i{font-style:normal;font-family:var(--f-mono);font-size:12px;min-width:24px;height:24px;padding:0 6px;border-radius:12px;display:grid;place-items:center;background:#ADA8FF;color:#15132B;font-weight:600}
+.m3-cap .m3-q{color:#F2BC5E}
+.m3-cap .btn.sm{white-space:nowrap}
+.m3-nav{border:0;background:rgba(255,255,255,.12);color:#fff;width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;flex:none}
+.m3-nav:hover{background:rgba(255,255,255,.24)}
+.m3-find{min-width:0}
+.m3-ins{margin-top:4px}
+.m3-labels.quiz .m3-n{filter:blur(5px);user-select:none}
+.m3-labels.quiz .rev .m3-n,.m3-labels.quiz button.on.rev .m3-n{filter:none}
+.m3-labels li[hidden]{display:none}
+@media (max-width:560px){.m3-cap{left:6px;right:6px;bottom:6px;gap:6px}.m3-cap .m3-nm{font-size:13.5px}}
+
+/* ---- cazuri clinice: etapele ---- */
+.cl-steps{list-style:none;margin:10px 0 2px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.cl-steps li{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-3);padding:4px 10px 4px 4px;border-radius:999px;background:var(--surface-2)}
+.cl-steps li span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line-2)}
+.cl-steps li.cur{color:var(--hema);background:var(--hema-soft);font-weight:600}
+.cl-steps li.cur span{background:var(--hema);color:var(--on-hema);box-shadow:none}
+.cl-steps li.ok span{background:var(--ok);color:var(--surface);box-shadow:none}
+.cl-steps li.no span{background:var(--bad);color:var(--surface);box-shadow:none}
+
+/* ---- flashcards: repetiția zilnică ---- */
+.fc-next{display:block;font-size:11.5px;font-weight:400;opacity:.8}
+.fc-actions .btn{flex-direction:column;gap:1px}
+.fl-due{margin-top:12px}
+.btn.ghost{background:none;box-shadow:none;color:var(--ink-3)}
+.btn.ghost:hover{color:var(--bad)}

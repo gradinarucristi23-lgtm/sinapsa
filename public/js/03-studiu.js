@@ -336,7 +336,7 @@ function renderFlash(){
   const p = $("#p-flash"), F = state.flash;
   const settings = `<div class="q-settings">
     <div class="field"><span class="label">Cartonașe</span><select id="flN"><option>10</option><option selected>20</option><option>30</option><option>40</option></select></div>
-    <p class="hint grow" style="min-width:200px;margin:0;align-self:center">Întrebarea pe față, răspunsul pe spate. Le repeți aici sau le exporți în Anki.</p>
+    <p class="hint grow" style="min-width:200px;margin:0;align-self:center">Întrebarea pe față, răspunsul pe spate. Fiecare cartonaș răspuns intră în repetiția ta zilnică și revine când e pe cale să-l uiți.</p>
     <button class="btn primary" type="button" id="flGo" data-busy>${F.list.length ? "Generează altele" : "Generează flashcards"}</button></div>`;
   if (!F.list.length){
     p.innerHTML = settings + `<div class="placeholder"><h3>Flashcards pentru memorare</h3><p>Cartonașe high-yield din tema curentă${state.meta && state.meta.mode !== "general" ? " și din cursul tău" : ""}, gata de repetat aici sau de importat în Anki, pentru repetiție distanțată.</p></div>`;
@@ -363,7 +363,7 @@ function renderFlash(){
         </div>
         <label class="fc-only"><input type="checkbox" id="fcOnly" ${F.only ? "checked" : ""}> Arată doar cartonașele neștiute</label>
       </div>` + flashExportRow();
-      const next = known => { F.known[i] = known; F.flipped = false; if (!(F.only && known)) F.idx++; renderFlash(); $("#fcCard")?.focus(); };
+      const next = known => { try { if (!(state.meta && state.meta.sample)) cardRate(c, known, curTopicCtx()); } catch {} F.known[i] = known; F.flipped = false; if (!(F.only && known)) F.idx++; renderFlash(); $("#fcCard")?.focus(); };
       $("#fcCard").onclick = () => { F.flipped = !F.flipped; renderFlash(); $("#fcCard").focus(); };
       $("#fcNo").onclick = () => next(false);
       $("#fcYes").onclick = () => next(true);
@@ -373,6 +373,9 @@ function renderFlash(){
     $("#flCsv").onclick = () => saveFile(slug(state.result && state.result.titlu) + "-flashcards.csv", flashCsv());
     $("#flCopy").onclick = () => copyText(F.list.map((c, k) => `${k + 1}. ${stripMarks(c.fata)}\n   → ${stripMarks(c.spate)}`).join("\n"));
   }
+  const nDue = (() => { try { return dueCards().length; } catch { return 0; } })();
+  if (nDue) p.insertAdjacentHTML("afterbegin", `<div class="notice kb-hit fl-due"><span>Ai <b>${nDue} ${nDue === 1 ? "cartonaș" : "cartonașe"}</b> de repetat azi, din temele învățate înainte.</span><span class="row"><button class="btn sm primary" type="button" id="flDue">Repetă acum</button></span></div>`);
+  $("#flDue") && ($("#flDue").onclick = () => openProg("cards"));
   if (state.flOpts) $("#flN").value = state.flOpts;
   $("#flGo").onclick = genFlash;
   if (state.busy) $$("[data-busy]", p).forEach(b => b.disabled = true);

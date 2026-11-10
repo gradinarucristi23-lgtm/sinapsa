@@ -60,29 +60,85 @@ async function kbSaveSlides(){
   if (!KB.on || !state.result || !state.meta || state.meta.mode !== "general") return;
   try { await kbFetch("slides", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ titlu: state.result.titlu, slides: state.slides.list }) }); if (!KB.q) kbList(); } catch {}
 }
+/* golește tot ce ținea de tema anterioară (quiz, prezentare, flashcards, caz, instrumente, vizual) */
+function resetTopicExtras(slides){
+  state.histId = null; state.exportSvg = null; state.exportFor = null;
+  state.quiz = { list: [], answers: {}, checked: false };
+  state.slides = { list: arr(slides), idx: 0 };
+  state.flash = emptyFlash(); state.caz = emptyCaz(); state.tools.hy = null; state.vis = emptyVis();
+}
+/* numerele dintr-un text (doze, valori, criterii): reformularea nu are voie să le schimbe */
+function numsOf(o){ return (JSON.stringify(o).match(/\d+(?:[.,]\d+)?/g) || []).map(x => x.replace(",", ".")); }
+function sameNumbers(a, b){
+  const A = new Set(numsOf(a)), B = numsOf(b), Bs = new Set(B);
+  if (B.some(x => !A.has(x))) return false;
+  let kept = 0; A.forEach(x => { if (Bs.has(x)) kept++; });
+  return !A.size || kept / A.size >= 0.9;
+}
 async function kbOpen(id){
   if (state.busy) return;
   try {
     const d = await kbFetch("get?id=" + encodeURIComponent(id));
     state.result = d.result;
     state.meta = { mode: "general", query: d.query || "", sample: false, date: d.updated || Date.now(), sources: [], fromKb: true };
-    state.ctx = null; state.lastReq = null; state.histId = null;
-    state.exportSvg = null; state.exportFor = null;
-    state.quiz = { list: [], answers: {}, checked: false };
-    state.slides = { list: arr(d.slides), idx: 0 };
-    state.flash = emptyFlash(); state.caz = emptyCaz(); state.tools.hy = null; state.vis = emptyVis();
+    state.ctx = null; state.lastReq = null;
+    resetTopicExtras(d.slides);
     saveHistory(); showNotice("");
     renderAll(); selectTab("explicatie");
     $(".work").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch { toast("Tema nu a putut fi deschisă din bibliotecă"); }
 }
-function showKbHit(top){
+/* Tema există deja în bibliotecă: pornim de la ea și o reformulăm cu modelul rapid (mai ieftin decât o explicație de la zero).
+   Dacă AI-ul nu răspunde (limită, rețea), deschidem varianta salvată, ca studentul să aibă oricum explicația. */
+function kbRewordPrompt(src){
+  return `Mai jos este o explicație medicală pentru studenți, în format JSON. Rescrie-o în limba română CU ALTE CUVINTE: reformulează frazele, schimbă topica și legăturile dintre idei, poți alege alte exemple clinice echivalente, ca textul să nu fie identic cu originalul.
+Reguli stricte:
+- Păstrează EXACT aceeași structură JSON: aceleași chei, același număr de secțiuni și de elemente în fiecare listă, aceleași valori pentru câmpurile de tip/categorie.
+- Păstrează toate faptele: valori, doze, criterii, clasificări, eponime și termenii medicali consacrați. Nu adăuga și nu elimina informații.
+- Păstrează marcajele speciale din text (de ex. {+ +}, [S1 p.4], **…**) și formatul markdown.
+Răspunde doar cu JSON-ul rescris.
+
+JSON:
+${JSON.stringify(src)}`;
+}
+async function kbReword(top, req){
+  setBusy(true, "Caută în biblioteca comună…");
+  let d = null;
+  try { d = await kbFetch("get?id=" + encodeURIComponent(top.id)); } catch {}
+  if (!d || !d.result || !Array.isArray(d.result.sectiuni)){ setBusy(false); state.kbSkip = true; return generate(); }
+  showNotice(""); selectTab("explicatie");
+  const base = d.result, src = Object.assign({}, base); delete src.schema;
+  const liveMeta = { mode: "general", query: req.query, sample: false, sources: [], fromKb: true, reworded: true };
+  $("#stText").textContent = "Reformulează explicația din bibliotecă…";
+  let r = null, lastDraw = 0;
+  try {
+    r = await callClaude(kbRewordPrompt(src), { tier: "quick", noCache: true, progress: ({ text }) => {
+      $("#stSub").textContent = `${fmt(text.length)} caractere`;
+      const now = Date.now(); if (now - lastDraw < 300) return; lastDraw = now;
+      const part = partialJSON(text);
+      if (part && (part.titlu || part.rezumat)) renderExplain({ partial: Object.assign(part, { schema: base.schema }), meta: liveMeta, schemaDone: true });
+    } });
+    if (!r || typeof r !== "object" || !Array.isArray(r.sectiuni) || r.sectiuni.length < Math.ceil(base.sectiuni.length * 0.7)) r = null;
+    else if (!sameNumbers(src, Object.assign({}, r, { schema: undefined }))) r = null; // a schimbat o valoare: păstrăm originalul
+  } catch (e){
+    if (e && e.code === "cancelled"){ setBusy(false); renderExplain(); showNotice(""); return; }
+    r = null;
+  }
+  const reworded = !!r;
+  if (r){ if (base.schema !== undefined) r.schema = base.schema; } else r = base;
+  state.lastReq = req; state.ctx = req.ctx;
+  state.result = r;
+  state.meta = { mode: "general", query: req.query || d.query || "", sample: false, date: Date.now(), sources: [], fromKb: true, reworded };
+  resetTopicExtras(d.slides);
+  saveHistory(); renderAll(); selectTab("explicatie");
+  setBusy(false);
   const n = $("#notice");
   n.className = "notice kb-hit"; n.hidden = false;
-  n.innerHTML = `<span>Tema există deja în biblioteca comună: <b>${esc(top.titlu)}</b>${top.slides ? " (cu prezentare)" : ""}. O poți deschide instant, fără să aștepți AI-ul.</span>
-    <span class="row"><button class="btn sm primary" type="button" id="kbHitOpen">Deschide din bibliotecă</button><button class="btn sm" type="button" id="kbHitNew">Generează una nouă</button></span>`;
-  $("#kbHitOpen").onclick = () => { showNotice(""); kbOpen(top.id); };
+  n.innerHTML = `<span>${reworded ? "Tema exista deja în biblioteca comună, așa că ți-am pregătit-o mai repede, reformulată." : "Tema exista deja în biblioteca comună. Vezi explicația salvată (reformularea n-a fost posibilă acum)."}</span>
+    <span class="row"><button class="btn sm" type="button" id="kbHitNew">Generează una de la zero</button></span>`;
   $("#kbHitNew").onclick = () => { showNotice(""); state.kbSkip = true; generate(); };
+  if (req.intent === "examen") await genQuiz();
+  else if (req.intent === "prezentare" && !state.slides.list.length) await genSlides();
 }
 $("#kbList").addEventListener("click", ev => { const b = ev.target.closest("[data-kb]"); if (b) kbOpen(b.dataset.kb); });
 $("#kbQ").addEventListener("input", ev => { KB.q = ev.target.value; clearTimeout(kbList._t); kbList._t = setTimeout(kbList, 250); });
@@ -374,9 +430,9 @@ helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="tru
     <dt>Vizual</dt><dd>poster, scheme și imagini reale pentru temă</dd>
     <dt>Quiz</dt><dd>grilă CS/CM cu explicație la fiecare variantă</dd>
     <dt>Banca de grile</dt><dd>pui grilele tale de examen; ghidul le amestecă și face altele asemănătoare, pe 3 niveluri</dd>
-    <dt>Anatomy &amp; Clinical Lab</dt><dd>anatomie 3D, histologie, radiologie, identificarea structurilor, cazuri clinice interactive și semiologie</dd>
-    <dt>AI Tutor</dt><dd>vorbești cu tutorele: te ascultă, îți explică, discută un caz sau o imagine</dd>
-    <dt>Progresul meu</dt><dd>butonul de sus: greșelile de revizuit, statistici, materia parcursă, notițe și calendarul examenelor</dd>
+    <dt>Anatomie și clinică</dt><dd>anatomie 3D cu denumiri în română (și mod „testează-te”), histologie, imagistică, identificarea structurilor, cazuri clinice interactive și semiologie</dd>
+    <dt>Tutorele AI</dt><dd>vorbești cu tutorele: te ascultă, îți explică, discută un caz sau o imagine</dd>
+    <dt>Progresul meu</dt><dd>butonul de sus: cartonașele de repetat azi, greșelile de revizuit, statistici, materia parcursă, notițe și, dacă ai cont, calendarul examenelor</dd>
     <dt>Flashcards</dt><dd>carduri de repetat, exportabile în Anki</dd>
     <dt>Caz clinic</dt><dd>un pacient ipotetic, rezolvat pas cu pas</dd>
     <dt>Prezentare</dt><dd>slide-uri gata de descărcat în PowerPoint</dd>

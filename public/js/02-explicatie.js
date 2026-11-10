@@ -47,7 +47,7 @@ async function generate({ regen = false } = {}){
   }
   if (!regen && req.mode === "general" && KB.on){
     const hits = await kbSearch(req.query, 4);
-    if (hits[0] && hits[0].same && !state.kbSkip){ showKbHit(hits[0]); return; }
+    if (hits[0] && hits[0].same && !state.kbSkip){ await kbReword(hits[0], req); return; }
     state.kbSkip = false;
     req.kbHits = hits.filter(h => h.score >= 0.34);
   }
@@ -260,7 +260,7 @@ function renderExplain(opts){
   <div class="ex-head">
     <div class="eyebrow"><span>${esc(r.disciplina || "Medicină")}</span>
       <span class="badge m-${m.mode}">${MODE_LABEL[m.mode] || ""}</span>
-      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}${m.fromKb ? `<span class="badge m-sursa">Din biblioteca comună</span>` : ""}
+      ${m.sample ? `<span class="badge sample">Exemplu · generează propria temă</span>` : ""}${m.fromKb ? `<span class="badge m-sursa">${m.reworded ? "Din biblioteca comună, reformulată" : "Din biblioteca comună"}</span>` : ""}
       ${live ? `<span class="badge live"><span class="pulse"></span>Se scrie…</span>` : ""}</div>
     <h1>${mdi(r.titlu)}</h1>
     <p class="lede">${mdi(r.rezumat)}</p>

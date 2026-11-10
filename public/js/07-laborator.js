@@ -1,18 +1,18 @@
 "use strict";
 /* ---------------- Simulation Lab: anatomie, greșeli, statistici, materie, calendar ---------------- */
 const PKEY = "ghid.prog.v1", LOGCAP = 3000, DAY = 86400000;
-function emptyProg(){ return { log: [], wrong: [], syl: [], exams: [], notes: [], del: { wrong: {}, syl: {}, exams: {} } }; }
+function emptyProg(){ return { log: [], wrong: [], syl: [], exams: [], notes: [], cards: [], del: { wrong: {}, syl: {}, exams: {}, cards: {} } }; }
 function normProg(p){
   p = p && typeof p === "object" ? p : {};
   const d = p.del || {};
-  return { log: arr(p.log), wrong: arr(p.wrong), syl: arr(p.syl), exams: arr(p.exams), notes: arr(p.notes), del: { wrong: Object.assign({}, d.wrong), syl: Object.assign({}, d.syl), exams: Object.assign({}, d.exams) } };
+  return { log: arr(p.log), wrong: arr(p.wrong), syl: arr(p.syl), exams: arr(p.exams), notes: arr(p.notes), cards: arr(p.cards), del: { wrong: Object.assign({}, d.wrong), syl: Object.assign({}, d.syl), exams: Object.assign({}, d.exams), cards: Object.assign({}, d.cards) } };
 }
 function loadProg(){ try { return normProg(JSON.parse(localStorage.getItem(PKEY) || "null")); } catch { return emptyProg(); } }
 let PROG = loadProg();
 function saveProg(){ try { localStorage.setItem(PKEY, JSON.stringify(PROG)); } catch {} try { schedulePush("prog"); } catch {} try { paintCalW(); paintProgBtn(); } catch {} }
 function mergeProg(l, r){
   l = normProg(l); r = normProg(r);
-  const del = { wrong: trimTomb(Object.assign({}, r.del.wrong, l.del.wrong)), syl: trimTomb(Object.assign({}, r.del.syl, l.del.syl)), exams: trimTomb(Object.assign({}, r.del.exams, l.del.exams)) };
+  const del = { wrong: trimTomb(Object.assign({}, r.del.wrong, l.del.wrong)), syl: trimTomb(Object.assign({}, r.del.syl, l.del.syl)), exams: trimTomb(Object.assign({}, r.del.exams, l.del.exams)), cards: trimTomb(Object.assign({}, r.del.cards, l.del.cards)) };
   const byU = (A, B, d) => {
     const m = new Map();
     for (const x of [...A, ...B]){
@@ -22,7 +22,7 @@ function mergeProg(l, r){
     }
     return [...m.values()];
   };
-  return { log: byU(r.log, l.log).sort((a, b) => a.t - b.t).slice(-LOGCAP), wrong: byU(r.wrong, l.wrong, del.wrong), syl: byU(r.syl, l.syl, del.syl), exams: byU(r.exams, l.exams, del.exams), notes: byU(r.notes, l.notes), del };
+  return { log: byU(r.log, l.log).sort((a, b) => a.t - b.t).slice(-LOGCAP), wrong: byU(r.wrong, l.wrong, del.wrong), syl: byU(r.syl, l.syl, del.syl), exams: byU(r.exams, l.exams, del.exams), notes: byU(r.notes, l.notes), cards: byU(r.cards, l.cards).filter(c => !(del.cards[c.id] >= (c.u || c.t || 0))), del };
 }
 
 /* ---- potrivirea temelor ---- */
@@ -106,6 +106,110 @@ const REV_GAP = [0, 2, 6];
 function dueAt(w){ return (w.u || w.t || 0) + REV_GAP[Math.min(w.okRun || 0, 2)] * DAY; }
 function openWrong(){ return PROG.wrong.filter(w => !w.rez && w.q && w.q.enunt); }
 function dueWrong(){ const lim = Date.now() + 3600000; return openWrong().filter(w => dueAt(w) <= lim).sort((a, b) => (b.n - a.n) || ((a.u || 0) - (b.u || 0))); }
+/* ---- flashcards cu repetiție distanțată (pachetul personal, sincronizat în cont) ----
+   Fiecare cartonaș răspuns intră în pachet. „Știu” îl urcă o treaptă (revine peste 1, 3, 7, 16, 35, 75 de zile),
+   „Nu știu” îl coboară la început și revine chiar azi. */
+const CARD_INT = [0, 1, 3, 7, 16, 35, 75], CARD_CAP = 3000;
+function cardId(fata){ return "c" + qKey({ enunt: stripMarks(fata) }).slice(1); }
+function endOfToday(){ const d = new Date(); d.setHours(23, 59, 59, 999); return d.getTime(); }
+function dueCards(){ const lim = endOfToday(); return PROG.cards.filter(c => c && c.fata && (c.due || 0) <= lim).sort((a, b) => (a.due || 0) - (b.due || 0)); }
+function cardNextLabel(box){ const d = CARD_INT[Math.min(box, CARD_INT.length - 1)]; return d === 1 ? "mâine" : `peste ${d} zile`; }
+function cardRate(card, known, ctx){
+  if (!card || !card.fata) return null;
+  const id = cardId(card.fata), now = Date.now();
+  let c = PROG.cards.find(x => x.id === id);
+  if (!c){
+    c = { id, fata: card.fata, spate: card.spate, tag: card.tag || "", ref: card.ref || "", topic: (ctx && ctx.topic) || "", disc: (ctx && ctx.disc) || "", box: 0, n: 0, lapses: 0, t: now };
+    PROG.cards.push(c); delete PROG.del.cards[id];
+  }
+  const wasDue = c.due == null || c.due <= endOfToday();
+  c.n = (c.n || 0) + 1; c.u = now; c.last = now;
+  if (known){ if (wasDue){ c.box = Math.min((c.box || 0) + 1, CARD_INT.length - 1); c.due = addDays(now, CARD_INT[c.box]); } }
+  else { if (c.box) c.lapses = (c.lapses || 0) + 1; c.box = 0; c.due = now; }
+  if (PROG.cards.length > CARD_CAP){
+    PROG.cards.sort((a, b) => (b.u || 0) - (a.u || 0));
+    PROG.cards.splice(CARD_CAP).forEach(x => { PROG.del.cards[x.id] = now; });
+  }
+  saveProg();
+  return c;
+}
+function cardsDelTopic(topic){
+  const now = Date.now();
+  PROG.cards = PROG.cards.filter(c => { if ((c.topic || "Fără temă") !== topic) return true; PROG.del.cards[c.id] = now; return false; });
+  saveProg();
+}
+function cardsHtml(){
+  const L = labState();
+  if (L.cr) return cardsRunHtml();
+  const all = PROG.cards, due = dueCards();
+  if (!all.length) return `<div class="placeholder"><h3>Încă nu ai cartonașe de repetat</h3><p>Generează flashcards la o temă și răspunde la ele cu „Știu” sau „Nu știu”. Fiecare cartonaș intră aici și revine exact când e pe cale să-l uiți: peste 1, 3, 7, 16 zile și tot așa.</p></div>`;
+  const tom = addDays(Date.now(), 1), dueTom = all.filter(c => (c.due || 0) > endOfToday() && (c.due || 0) <= tom + DAY / 2).length;
+  const learned = all.filter(c => (c.box || 0) >= 3).length;
+  const groups = aggBy(c => c.topic || "Fără temă", all.map(c => ({ topic: c.topic, t: c.u, ok: (c.box || 0) >= 3 }))).sort((a, b) => b.last - a.last);
+  const dueBy = new Map(); due.forEach(c => { const k = c.topic || "Fără temă"; dueBy.set(k, (dueBy.get(k) || 0) + 1); });
+  return `<div class="lab-kpis"><div class="kpi"><b>${due.length}</b><span>de repetat azi</span></div><div class="kpi"><b>${all.length}</b><span>cartonașe în pachet</span></div><div class="kpi"><b>${learned}</b><span>fixate (revin rar)</span></div></div>
+    <div class="row"><button class="btn primary" type="button" data-act="cr-start" ${due.length ? "" : "disabled"}>Repetă acum${due.length ? ` (${Math.min(due.length, 50)})` : ""}</button></div>
+    ${due.length ? "" : `<p class="hint">Gata pe azi.${dueTom ? ` Mâine revin ${dueTom} ${dueTom === 1 ? "cartonaș" : "cartonașe"}.` : ""} Cartonașele revin la intervale tot mai mari, pe măsură ce le știi.</p>`}
+    <h3 class="lab-sub">Pe teme</h3>
+    <ul class="lab-list">${groups.map(g => `<li><span class="grow"><b>${esc(g.k)}</b><small>${g.n} ${g.n === 1 ? "cartonaș" : "cartonașe"} · ${g.ok} fixate${dueBy.get(g.k) ? ` · <b>${dueBy.get(g.k)} azi</b>` : ""}</small></span>${dueBy.get(g.k) ? `<button class="btn sm" type="button" data-act="cr-topic" data-topic="${esc(g.k)}">Repetă</button>` : ""}<button class="btn sm ghost" type="button" data-act="cr-del" data-topic="${esc(g.k)}" title="Scoate tema din repetiție">Scoate</button></li>`).join("")}</ul>`;
+}
+function cardsStart(list){
+  if (!list.length){ toast("Nu e nimic de repetat aici"); return; }
+  labState().cr = { ids: list.slice(0, 50).map(c => c.id), i: 0, flipped: false, ok: 0, seen: 0 };
+  renderProg();
+}
+function cardsRunHtml(){
+  const R = labState().cr;
+  while (R.i < R.ids.length && !PROG.cards.some(c => c.id === R.ids[R.i])) R.i++;
+  if (R.i >= R.ids.length){
+    const left = dueCards().length;
+    return `<div class="rev-end"><h3>Repetiție terminată</h3><p><b>${R.ok}/${R.seen}</b> răspunsuri „Știu” din prima.</p><p class="hint">${left ? `Mai ai ${left} ${left === 1 ? "cartonaș" : "cartonașe"} pentru azi (cele la care ai spus „Nu știu” revin la final).` : "Ai terminat tot ce era de repetat azi. Revino mâine."}</p><div class="row">${left ? `<button class="btn primary" type="button" data-act="cr-start">Continuă (${left})</button>` : ""}<button class="btn" type="button" data-act="cr-back">Înapoi la pachet</button></div></div>`;
+  }
+  const c = PROG.cards.find(x => x.id === R.ids[R.i]);
+  return `<div class="fc-wrap cr-run">
+    <div class="fc-meta"><span>${R.i + 1} / ${R.ids.length}</span><span>${esc(c.topic || "")}</span></div>
+    <button class="fc${R.flipped ? " back" : ""}" type="button" data-act="cr-flip" aria-label="Întoarce cartonașul">
+      <span class="fc-tag">${esc(c.tag || "")}${(c.box || 0) ? ` · treapta ${c.box}` : " · nou"}</span>
+      <span class="fc-side">${R.flipped ? "Răspuns" : "Întrebare"}</span>
+      <span class="fc-text"><span>${mdi(R.flipped ? c.spate : c.fata)}</span></span>
+      <span class="fc-hint">${R.flipped ? "Te-ai descurcat?" : "Apasă pe cartonaș sau Space ca să vezi răspunsul"}</span>
+    </button>
+    <div class="fc-actions">
+      <button class="btn" type="button" data-act="cr-no" ${R.flipped ? "" : "disabled"}>Nu știu <small class="fc-next">revine azi</small></button>
+      <button class="btn primary" type="button" data-act="cr-yes" ${R.flipped ? "" : "disabled"}>Știu <small class="fc-next">${cardNextLabel(Math.min((c.box || 0) + 1, CARD_INT.length - 1))}</small></button>
+    </div>
+    <div class="row"><button class="btn sm" type="button" data-act="cr-back">Oprește</button><span class="hint">Taste: Space întoarce, 1 = Nu știu, 2 = Știu</span></div>
+  </div>`;
+}
+function cardsAct(a, b){
+  const L = labState();
+  if (a === "cr-start"){ cardsStart(dueCards()); return true; }
+  if (a === "cr-topic"){ cardsStart(dueCards().filter(c => (c.topic || "Fără temă") === b.dataset.topic)); return true; }
+  if (a === "cr-del"){ if (confirm(`Scoți din repetiție cartonașele temei „${b.dataset.topic}”?`)){ cardsDelTopic(b.dataset.topic); renderProg(); } return true; }
+  if (a === "cr-back"){ L.cr = null; renderProg(); return true; }
+  const R = L.cr; if (!R) return false;
+  if (a === "cr-flip"){ R.flipped = !R.flipped; renderProg(); const f = $("#progBody .cr-run .fc"); if (f) f.focus(); return true; }
+  if ((a === "cr-yes" || a === "cr-no") && R.flipped){
+    const c = PROG.cards.find(x => x.id === R.ids[R.i]); if (!c) return true;
+    const known = a === "cr-yes";
+    if (!R.done) R.done = {};
+    if (!R.done[c.id]){ R.done[c.id] = 1; R.seen++; if (known) R.ok++; }
+    cardRate(c, known);
+    if (!known) R.ids.push(c.id);
+    R.i++; R.flipped = false; renderProg();
+    const f = $("#progBody .cr-run .fc"); if (f) f.focus();
+    return true;
+  }
+  return false;
+}
+document.addEventListener("keydown", ev => {
+  const L = state.lab; if (!L || !L.cr || $("#progOv").hidden || L.view !== "cards") return;
+  if (ev.target.closest && ev.target.closest("input, textarea, select")) return;
+  const map = { " ": "cr-flip", "1": "cr-no", "2": "cr-yes" }, a = map[ev.key];
+  if (!a) return;
+  if (ev.key === " " && ev.target.closest && ev.target.closest("button")) return; // pe un buton, Space face deja click
+  ev.preventDefault(); cardsAct(a, ev.target);
+});
 function aggBy(keyFn, entries){
   const m = new Map();
   for (const e of entries){ const k = keyFn(e); if (!k) continue; const a = m.get(k) || { k, n: 0, ok: 0, last: 0 }; a.n++; if (e.ok) a.ok++; a.last = Math.max(a.last, e.t || 0); m.set(k, a); }
@@ -204,9 +308,9 @@ function anatHtml(){
       <div class="seg gal-tabs">${Object.entries(ANAT_CAT).map(([k, t]) => `<button type="button" data-act="gal-cat" data-cat="${k}" aria-pressed="${L.galCat === k}">${t}</button>`).join("")}</div>
       <div id="anatGal">${galHtml(sel)}</div>
       <h4 class="org-h4">Teme de studiu</h4>
-      <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Apasă pe o temă pentru un insight scurt. Explicația completă, detaliată, o ceri doar dacă vrei.</p>
-      <div class="org-topics">${sel.teme.map(t => `<div class="org-ti"><button type="button" class="org-t" data-act="insight" data-q="${esc(t)}" aria-expanded="false"><span>${esc(t)}</span><span class="ins-ic">${ICON_BULB} Insight</span></button><div class="ins" hidden></div></div>`).join("")}</div>
-      <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-ins">Insight</button></div><div class="ins" id="orgOwnIns" hidden></div>
+      <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Apasă pe o temă și primești ideea-cheie, pe scurt. Explicația completă, detaliată, o ceri doar dacă vrei.</p>
+      <div class="org-topics">${sel.teme.map(t => `<div class="org-ti"><button type="button" class="org-t" data-act="insight" data-q="${esc(t)}" aria-expanded="false"><span>${esc(t)}</span><span class="ins-ic">${ICON_BULB} Ideea-cheie</span></button><div class="ins" hidden></div></div>`).join("")}</div>
+      <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-ins">Ideea-cheie</button></div><div class="ins" id="orgOwnIns" hidden></div>
       <details class="org-more"><summary>Toate organele</summary>${list}</details>
     </div>`
     : L.sys !== "toate" ? sysPanelHtml(L.sys) : `<div class="org-info empty"><h3>Corpul uman în 3D</h3>${model3dHtml("corp")}<h4 class="org-h4">Apasă pe un organ</h4><p class="hint">Îl vezi în 3D și în imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
@@ -451,6 +555,7 @@ onLab("click", ev => {
   if (b.dataset.org){ L.organ = b.dataset.org === L.organ && b.tagName !== "BUTTON" ? null : b.dataset.org; renderLab(); return; }
   if (b.dataset.sys){ L.sys = b.dataset.sys; L.organ = null; L.sysView = null; renderLab(); return; }
   const a = b.dataset.act;
+  if (a && a.startsWith("cr-") && cardsAct(a, b)) return;
   if (a === "explain") return labExplain(b.dataset.q, b.dataset.disc);
   if (a === "org-own"){ const v = ($("#orgQ").value || "").trim(); const o = ORGANS.find(x => x.id === L.organ); if (v) labExplain(v); else if (o) labExplain(o.teme[0]); return; }
   if (a === "rev-due") return revStart(dueWrong());
@@ -750,11 +855,16 @@ function model3dHtml(id){
 }
 
 /* ---- „Progresul meu”: panou lateral ---- */
-const PROG_VIEWS = [["cal", "Calendar"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["notes", "Notițe"]];
+const PROG_VIEWS_ALL = [["cal", "Calendar"], ["cards", "Cartonașe"], ["rev", "Greșeli"], ["stats", "Statistici"], ["mat", "Materie"], ["notes", "Notițe"]];
+/* calendarul (examene și plan) apare doar cu cont: fără cont nu are unde să se păstreze între dispozitive */
+function hasAcct(){ try { return !!(SYNC && SYNC.user); } catch { return false; } }
+function progViews(){ return PROG_VIEWS_ALL.filter(v => v[0] !== "cal" || hasAcct()); }
+function defProgView(){ return hasAcct() ? "cal" : dueCards().length ? "cards" : "rev"; }
 function openProg(view, date){
-  const L = labState();
+  const L = labState(), views = progViews();
   if (view) L.view = view;
-  if (!PROG_VIEWS.some(v => v[0] === L.view)) L.view = "cal";
+  if (!views.some(v => v[0] === L.view)) L.view = defProgView();
+  L.cr = null;
   L.rev = null;
   $("#progOv").hidden = false; document.body.classList.add("no-scroll");
   renderProg();
@@ -763,18 +873,23 @@ function openProg(view, date){
 function closeProg(){ $("#progOv").hidden = true; document.body.classList.remove("no-scroll"); }
 function renderProg(){
   const ov = $("#progOv"); if (!ov || ov.hidden) return;
-  const L = labState(), nRev = dueWrong().length;
-  if (!PROG_VIEWS.some(v => v[0] === L.view)) L.view = "cal";
-  const body = { rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml, notes: notesHtml }[L.view];
-  $("#progNav").innerHTML = PROG_VIEWS.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : ""}</button>`).join("");
+  const L = labState(), nRev = dueWrong().length, nCards = dueCards().length, views = progViews();
+  if (!views.some(v => v[0] === L.view)) L.view = defProgView();
+  const body = { rev: revHtml, stats: statsHtml, mat: matHtml, cal: calHtml, notes: notesHtml, cards: cardsHtml }[L.view];
+  const badge = k => k === "rev" && nRev ? ` <span class="lab-n">${nRev}</span>` : k === "cards" && nCards ? ` <span class="lab-n">${nCards}</span>` : "";
+  $("#progNav").innerHTML = views.map(([k, t]) => `<button type="button" data-lv="${k}" aria-pressed="${L.view === k}">${t}${badge(k)}</button>`).join("");
   $("#progBody").innerHTML = `<div class="lab-body">${body()}</div>`;
 }
-$("#progNav").addEventListener("click", ev => { const b = ev.target.closest("[data-lv]"); if (!b) return; const L = labState(); L.view = b.dataset.lv; L.rev = null; renderProg(); $("#progBody").scrollTop = 0; });
+$("#progNav").addEventListener("click", ev => { const b = ev.target.closest("[data-lv]"); if (!b) return; const L = labState(); L.view = b.dataset.lv; L.rev = null; L.cr = null; renderProg(); $("#progBody").scrollTop = 0; });
 $("#progOv").addEventListener("click", ev => { if (ev.target === $("#progOv") || ev.target.closest("[data-pclose]")) closeProg(); });
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !$("#progOv").hidden && imgOv.hidden) closeProg(); });
 $("#progBtn").onclick = () => openProg();
+/* la intrarea sau ieșirea din cont: calendarul apare sau dispare */
+const _paintAcct7 = paintAcct;
+let _acctWas = null;
+paintAcct = function(){ _paintAcct7(); const now = hasAcct(); if (now === _acctWas) return; _acctWas = now; try { paintCalW(); renderProg(); } catch {} };
 function paintProgBtn(){
-  const n = dueWrong().length, b = $("#progBtn"); if (!b) return;
+  const n = dueWrong().length + dueCards().length, b = $("#progBtn"); if (!b) return;
   b.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Progresul meu</span>${n ? `<i class="pb-n">${n}</i>` : ""}`;
 }
 
@@ -786,6 +901,8 @@ function setCalWMode(m){ try { localStorage.setItem(CALW_KEY, m); } catch {} pai
 const ICON_CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
 function paintCalW(){
   const w = $("#calW"); if (!w) return;
+  w.hidden = !hasAcct();
+  if (w.hidden){ w.innerHTML = ""; return; }
   const today = noon(Date.now()), mode = calWMode();
   const exams = PROG.exams.filter(e => parseDay(e.date) >= today).sort((a, b) => parseDay(a.date) - parseDay(b.date));
   const next = exams[0], days = next ? Math.round((parseDay(next.date) - today) / DAY) : null;

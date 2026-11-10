@@ -1,5 +1,5 @@
 "use strict";
-/* ---------------- v11: Anatomy & Clinical Lab (identificare, cazuri, semiologie), galerie 3 + „Mai multe”, AI Tutor ---------------- */
+/* ---------------- v11: Laboratorul de anatomie și clinică (identificare, cazuri, semiologie), galerie 3 + „Mai multe”, AI Tutor ---------------- */
 ANAT_CAT.imag = "Radiologie și imagistică";
 /* galerie: cele mai bune 3, restul la „Mai multe” */
 const _galHtml10 = galHtml;
@@ -22,7 +22,7 @@ renderLab = function(){
   if (!L.lab) L.lab = "anat";
   if (p && (!ov || ov.hidden)){
     const body = L.lab === "ident" ? identHtml() : L.lab === "caz" ? cazLabHtml() : L.lab === "semio" ? semioHtml() : anatHtml();
-    p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Anatomy &amp; Clinical Lab</h2><p class="hint">Anatomie 3D, histologie, radiologie, identificarea structurilor, cazuri clinice și semiologie.</p></div>
+    p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Laboratorul de anatomie și clinică</h2><p class="hint">Anatomie 3D cu denumiri în română, histologie, imagistică, identificarea structurilor, cazuri clinice și semiologie.</p></div>
       <div class="seg lab-nav">${LAB_VIEWS.map(([k, t]) => `<button type="button" data-lab="${k}" aria-pressed="${L.lab === k}">${t}</button>`).join("")}</div></div>
       <div class="lab-body">${body}</div>`;
   }
@@ -80,7 +80,9 @@ function cazLabHtml(){
     <span class="grow"></span><button type="button" class="btn primary" data-act="cl-new" data-busy>${C ? "Alt pacient" : "Pacient nou"}</button></div>`;
   if (!C) return head + `<div class="placeholder"><h3>Un pacient fictiv, pas cu pas</h3><p>Primești prezentarea, apoi decizi la fiecare etapă: anamneză, examen obiectiv, investigații, diagnostic și tratament. După fiecare alegere afli rezultatul și de ce. Pacienții sunt inventați, pentru exersare.</p></div>`;
   const shown = C.pasi.slice(0, C.i + 1);
-  return head + `<div class="cl-case">
+  const steps = `<ol class="cl-steps" aria-label="Etapele cazului">${C.pasi.map((p, k) => { const a = C.ans[k], st = a == null ? (k === C.i ? "cur" : "") : a === p.corect ? "ok" : "no";
+    return `<li class="${st}"><span>${a == null ? k + 1 : a === p.corect ? "✓" : "✗"}</span>${esc(p.etapa || "Etapa " + (k + 1))}</li>`; }).join("")}</ol>`;
+  return head + steps + `<div class="cl-case">
     <div class="cl-pt"><b>${esc(C.titlu || "Caz clinic")}</b><p>${md(C.prezentare)}</p></div>
     ${shown.map((p, k) => { const ans = C.ans[k], done = ans != null;
       return `<section class="cl-step"><span class="cl-et">${k + 1}. ${esc(p.etapa)}</span><p class="qq-t">${mdi(p.intrebare)}</p>
@@ -170,7 +172,7 @@ $("#p-lab").addEventListener("click", ev => {
 $("#p-lab").addEventListener("change", ev => { if (ev.target.dataset && ev.target.dataset.act === "ident-org"){ labState().identOrg = ev.target.value; labState().ident = null; renderLab(); } });
 Object.assign(SRC_LABEL, { identificare: "Identificarea structurilor", caz: "Cazuri clinice", semiologie: "Semiologie" });
 
-/* ---------------- AI Tutor ---------------- */
+/* ---------------- Tutorele AI ---------------- */
 const TKEY = "ghid.tutor.v1";
 const TUT = { msgs: (() => { try { return JSON.parse(localStorage.getItem(TKEY) || "[]") || []; } catch { return []; } })(), busy: false, img: null, mode: "explica", ctl: null };
 function tutSave(){ try { localStorage.setItem(TKEY, JSON.stringify(TUT.msgs.slice(-40))); } catch {} }
@@ -180,7 +182,7 @@ function renderTutor(){
   const p = $("#p-tutor"); if (!p) return;
   const topic = state.result && !(state.meta && state.meta.sample) ? stripMarks(state.result.titlu) : "";
   p.innerHTML = `<div class="tut">
-    <div class="tut-h"><div><h2 class="lab-title">AI Tutor</h2><p class="hint">Vorbești cu tutorul tău de medicină. Întreabă orice, cere să te asculte sau trimite o imagine (radiografie, preparat, schemă).</p></div>
+    <div class="tut-h"><div><h2 class="lab-title">Tutorele AI</h2><p class="hint">Vorbești cu tutorul tău de medicină. Întreabă orice, cere să te asculte sau trimite o imagine (radiografie, preparat, schemă).</p></div>
       <div class="row"><select id="tutMode" aria-label="Mod">${Object.entries(TUT_MODES).map(([k, t]) => `<option value="${k}"${TUT.mode === k ? " selected" : ""}>${t}</option>`).join("")}</select><button type="button" class="btn sm" id="tutNew">Conversație nouă</button></div></div>
     <div class="tut-log" id="tutLog">${TUT.msgs.length ? TUT.msgs.map(tutMsgHtml).join("") : `<div class="tut-empty"><p class="hint">Începe cu o întrebare sau alege una:</p><div class="tut-st">${TUT_STARTERS.map(s => `<button type="button" class="chip" data-st="${esc(s)}">${esc(s)}</button>`).join("")}</div></div>`}</div>
     <form class="tut-in" id="tutForm">
@@ -210,7 +212,7 @@ async function tutSend(){
   const a = { r: "a", t: "" }; TUT.msgs.push(a); TUT.busy = true; renderTutor();
   const hist = TUT.msgs.slice(-14, -1).map(m => `${m.r === "u" ? "STUDENT" : "TUTORE"}: ${m.t}`).join("\n\n");
   const modeTxt = { explica: "Explică clar, întâi simplu, apoi la nivel de examen; folosește exemple clinice.", socratic: "Nu da răspunsul direct: pune o singură întrebare pe rând, așteaptă răspunsul, corectează blând și urcă treptat dificultatea.", caz: "Condu un caz clinic fictiv pas cu pas: dă câte o informație, întreabă ce ar face studentul, apoi comentează." }[TUT.mode];
-  const prompt = `Ești „AI Tutor”, tutorele de medicină al Ghidului studentului USMF. Vorbești în română, cald și concis, ca un asistent universitar bun. ${modeTxt}
+  const prompt = `Ești „Tutorele AI”, tutorele de medicină al Ghidului studentului USMF. Vorbești în română, cald și concis, ca un asistent universitar bun. ${modeTxt}
 Folosește markdown (liste scurte, **termeni-cheie**). Dacă nu ești sigur de ceva, spune. Pentru întrebări despre pacienți reali, amintește că nu înlocuiești medicul. Răspunde doar la ce ține de medicină și studiu.
 ${ctxOn && r ? `Tema deschisă de student: „${stripMarks(r.titlu)}”. Rezumat: ${stripMarks(r.rezumat || "").slice(0, 600)}\n` : ""}
 Conversația de până acum:

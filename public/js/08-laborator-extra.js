@@ -3,31 +3,72 @@
 const VIEWER_JS = "https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js";
 let M3API = null;
 function m3Models(id){ return id.startsWith("sys:") ? (SYS3D[id.slice(4)] || []) : (M3D_FULL[id] || []); }
+/* modelul curent: denumirile în română și structura selectată (Sketchfab își scrie etichetele în engleză, așa că le ascundem și le arătăm pe ale noastre) */
+let M3CUR = { names: [], title: "", i: -1 };
 model3dHtml = function(id){
   const L = labState(), list = m3Models(id);
   if (!list.length) return `<p class="hint">Pentru acest organ nu am încă un model 3D.</p>`;
   const mine = L.m3 && L.m3.org === id, k = mine ? Math.min(L.m3.k || 0, list.length - 1) : 0;
   const on = mine ? L.m3.on !== false : id !== "corp";
   const [uid, title, names] = list[k];
+  const same = M3CUR.uid === uid;
+  M3CUR = { uid, names, title, i: same ? M3CUR.i : -1 };
+  const quiz = !!L.m3quiz;
   return `<h4 class="m3-title">${esc(title)}</h4>
     <div class="m3-box">${on
-      ? `<iframe data-uid="${uid}" title="${esc(title)}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`
+      ? `<iframe data-uid="${uid}" data-names="${names.length ? 1 : 0}" title="${esc(title)}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe><div class="m3-cap" id="m3Cap" hidden></div>`
       : `<button type="button" class="m3-start" data-act="m3-on" data-org="${id}"><span class="m3-ic">3D</span><b>Pornește modelul 3D</b></button>`}</div>
     ${list.length > 1 ? `<div class="m3-pick">${list.map(([u, n, hs], i) => `<button type="button" class="chip${i === k ? " on" : ""}" data-act="m3-pick" data-m="${id}" data-i="${i}">${esc(n)}${hs.length ? ` · ${hs.length} structuri` : ""}</button>`).join("")}</div>` : ""}
-    ${names.length ? `<div class="m3-labels"><div class="row"><b>Structuri denumite pe model (${names.length})</b><span class="hint">Apasă pe o denumire și modelul se rotește spre ea.</span></div>
-      <ol>${names.map((n, i) => `<li><button type="button" data-act="m3-ann" data-i="${i}">${esc(n)}</button></li>`).join("")}</ol></div>`
+    <div class="ins m3-ins" id="m3Ins" hidden></div>
+    ${names.length ? `<div class="m3-labels${quiz ? " quiz" : ""}">
+        <div class="row"><b>Structuri denumite pe model (${names.length})</b><span class="grow"></span>
+          <label class="fig-tg"><input type="checkbox" data-act="m3-quiz"${quiz ? " checked" : ""}> Testează-te (ascunde denumirile)</label></div>
+        ${names.length > 8 ? `<input class="vis-in m3-find" id="m3Find" type="search" placeholder="${quiz ? "Căutarea e oprită în modul test" : "Caută o structură…"}" aria-label="Caută o structură pe model"${quiz ? " disabled" : ""}>` : ""}
+        <p class="hint m3-hint">${m3Hint(quiz)}</p>
+        <ol>${names.map((n, i) => `<li><button type="button" data-act="m3-ann" data-i="${i}"><span class="m3-n">${esc(n)}</span></button></li>`).join("")}</ol></div>`
       : `<p class="hint">La acest model, denumirile sunt scrise direct pe structuri.</p>`}
     <p class="hint">Rotești cu mouse-ul sau cu un deget, mărești cu rotița sau cu două degete. Modele 3D de pe Sketchfab, ale autorilor lor.</p>`;
 };
+function m3Hint(quiz){ return quiz ? "Apasă pe un număr de pe model sau din listă, ghicește structura, apoi apasă „Arată”." : "Apasă pe o denumire și modelul se rotește spre ea. Poți apăsa și pe numerele de pe model, sau pe ‹ › ca să le parcurgi pe rând."; }
+/* selectează structura i: o evidențiază în listă și îi arată denumirea românească peste model */
+function m3Select(i){
+  const cap = $("#m3Cap"), n = M3CUR.names.length; if (!cap || !n) return;
+  const btns = $$('.m3-labels [data-act="m3-ann"]');
+  M3CUR.i = i;
+  btns.forEach(x => x.classList.toggle("on", +x.dataset.i === i));
+  if (i < 0 || i >= n){ cap.hidden = true; return; }
+  const name = M3CUR.names[i], b = btns[i], quiz = !!labState().m3quiz, shown = !quiz || (b && b.classList.contains("rev"));
+  cap.innerHTML = `<button type="button" class="m3-nav" data-act="m3-step" data-d="-1" aria-label="Structura anterioară">‹</button>
+    <span class="m3-nm"><i>${i + 1}</i>${shown ? `<b>${esc(name)}</b>` : `<b class="m3-q">Ce structură este?</b>`}</span>
+    ${shown ? `<button type="button" class="btn sm" data-act="m3-ins" data-q="${esc(name)}">Pe scurt</button>` : `<button type="button" class="btn sm primary" data-act="m3-rev" data-i="${i}">Arată</button>`}
+    <button type="button" class="m3-nav" data-act="m3-step" data-d="1" aria-label="Structura următoare">›</button>`;
+  cap.hidden = false;
+  if (b){ const ol = b.closest("ol"), r = b.getBoundingClientRect(), ro = ol.getBoundingClientRect(); if (r.top < ro.top || r.bottom > ro.bottom) b.scrollIntoView({ block: "nearest" }); }
+}
+function m3Go(i){
+  const n = M3CUR.names.length; if (!n) return;
+  i = ((i % n) + n) % n;
+  m3Select(i);
+  if (!M3API){ toast("Modelul 3D încă se încarcă"); return; }
+  try { M3API.gotoAnnotation(i, { preventCameraAnimation: false, preventCameraMove: false }); } catch {}
+}
 async function initM3(){
   const f = document.querySelector(".m3-box iframe[data-uid]:not([data-init])"); if (!f) return;
   f.dataset.init = "1"; M3API = null;
-  const uid = f.dataset.uid, plain = () => { f.src = `https://sketchfab.com/models/${uid}/embed?autostart=1&preload=1&ui_theme=dark&dnt=1`; };
+  const uid = f.dataset.uid, ro = f.dataset.names === "1";
+  const plain = () => { f.src = `https://sketchfab.com/models/${uid}/embed?autostart=1&preload=1&ui_theme=dark&dnt=1${ro ? "&annotation_tooltip_visible=0" : ""}`; };
   try { await loadScript(VIEWER_JS); } catch {}
   if (!window.Sketchfab || !f.isConnected){ if (f.isConnected) plain(); return; }
   try {
-    new window.Sketchfab(f).init(uid, { autostart: 1, preload: 1, ui_theme: "dark", ui_hint: 0, dnt: 1,
-      success: api => { api.start(); api.addEventListener("viewerready", () => { if (f.isConnected) M3API = api; }); },
+    new window.Sketchfab(f).init(uid, { autostart: 1, preload: 1, ui_theme: "dark", ui_hint: 0, dnt: 1, annotation_tooltip_visible: ro ? 0 : 1,
+      success: api => { api.start(); api.addEventListener("viewerready", () => {
+        if (!f.isConnected) return;
+        M3API = api;
+        if (ro){
+          api.addEventListener("annotationSelect", i => { if (f.isConnected && typeof i === "number") m3Select(i); });
+          if (M3CUR.i >= 0) m3Go(M3CUR.i);
+        }
+      }); },
       error: plain });
   } catch { plain(); }
 }
@@ -99,14 +140,14 @@ function sysPanelHtml(s){
   </div>`;
 }
 
-/* ---- insight-uri la temele de studiu ---- */
+/* ---- ideea-cheie la temele de studiu ---- */
 const INS_KEY = "ghid.insights.v1";
 function insRead(){ try { return JSON.parse(localStorage.getItem(INS_KEY) || "{}") || {}; } catch { return {}; } }
 function insWrite(t, v){ try { const o = insRead(); o[t] = v; const ks = Object.keys(o); while (ks.length > 150) delete o[ks.shift()]; localStorage.setItem(INS_KEY, JSON.stringify(o)); } catch {} }
 const ICON_BULB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V16h5v-.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z"/></svg>';
 function insBody(topic, text, loading){
-  return `${loading && !text ? `<p class="hint">Se pregătește insight-ul…</p>` : `<div class="prose">${md(text)}</div>`}
-    <div class="row ins-act"><button type="button" class="btn sm primary" data-act="explain-deep" data-q="${esc(topic)}">Explicație completă, detaliată →</button>${loading ? "" : `<button type="button" class="btn sm" data-act="ins-new" data-q="${esc(topic)}">Alt insight</button>`}</div>`;
+  return `${loading && !text ? `<p class="hint">Se pregătește ideea-cheie…</p>` : `<div class="prose">${md(text)}</div>`}
+    <div class="row ins-act"><button type="button" class="btn sm primary" data-act="explain-deep" data-q="${esc(topic)}">Explicație completă, detaliată →</button>${loading ? "" : `<button type="button" class="btn sm" data-act="ins-new" data-q="${esc(topic)}">Altă idee-cheie</button>`}</div>`;
 }
 async function showInsight(topic, box, fresh){
   if (!box) return;
@@ -116,11 +157,11 @@ async function showInsight(topic, box, fresh){
   box.innerHTML = insBody(topic, "", true);
   try {
     const s = await sampleP;
-    const { text } = await s(`Ești tutore de medicină pentru studenți la USMF. Dă UN SINGUR insight despre tema „${topic}”${o ? ` (organul: ${o.nume})` : ""}: ideea-cheie care face tema să aibă sens sau legătura pe care studenții o ratează (de la mecanism la consecința clinică).
+    const { text } = await s(`Ești tutore de medicină pentru studenți la USMF. Dă O SINGURĂ idee-cheie despre tema „${topic}”${o ? ` (organul: ${o.nume})` : ""}: ideea-cheie care face tema să aibă sens sau legătura pe care studenții o ratează (de la mecanism la consecința clinică).
 Reguli: 2–3 propoziții, maximum 55 de cuvinte, în română. Fără introducere, fără titlu, fără liste, fără să explici toată tema. Îngroașă cu ** un singur termen-cheie.${fresh ? " Alege alt unghi decât cel mai evident." : ""}`, { modelTier: "quick", onText: ({ text }) => { if (box.isConnected) box.innerHTML = insBody(topic, text, true); } });
     insWrite(topic, text);
     if (box.isConnected) box.innerHTML = insBody(topic, text);
-  } catch (e){ if (box.isConnected) box.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Insight-ul nu a putut fi generat. Încearcă din nou.")}</p>`; }
+  } catch (e){ if (box.isConnected) box.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Ideea-cheie nu a putut fi pregătită. Încearcă din nou.")}</p>`; }
 }
 onLab("click", ev => {
   const b = ev.target.closest("[data-act]"); if (!b) return;
@@ -135,12 +176,27 @@ onLab("click", ev => {
   else if (a === "ins-new") showInsight(b.dataset.q, b.closest(".ins"), true);
   else if (a === "explain-deep") labExplain(b.dataset.q, b.dataset.disc, true);
   else if (a === "org-ins"){ const v = ($("#orgQ").value || "").trim(); if (!v){ toast("Scrie o temă"); return; } showInsight(v, $("#orgOwnIns")); }
-  else if (a === "m3-ann"){
-    if (!M3API){ toast("Modelul 3D încă se încarcă"); return; }
-    try { M3API.gotoAnnotation(+b.dataset.i, { preventCameraAnimation: false, preventCameraMove: false }); } catch {}
-    $$(".m3-labels button.on").forEach(x => x.classList.remove("on")); b.classList.add("on");
-  }
+  else if (a === "m3-ann") m3Go(+b.dataset.i);
+  else if (a === "m3-step") m3Go(M3CUR.i + (+b.dataset.d || 1));
+  else if (a === "m3-rev"){ const x = $(`.m3-labels [data-act="m3-ann"][data-i="${b.dataset.i}"]`); if (x) x.classList.add("rev"); m3Select(+b.dataset.i); }
+  else if (a === "m3-ins") showInsight(`${b.dataset.q} (${M3CUR.title})`, $("#m3Ins"));
   else if (a === "sys-view"){ L.sysView = b.dataset.v; renderLab(); }
   else if (a === "sys-open"){ const s = L.sys, imgs = SYS_IMG[s] || []; ivOpen(imgs, +b.dataset.i, `Sistemul ${SYS[s].nume.toLowerCase()}`); }
+});
+$("#p-lab").addEventListener("input", ev => {
+  if (ev.target.id !== "m3Find") return;
+  const q = nrm(ev.target.value.trim());
+  $$(".m3-labels li").forEach(li => { li.hidden = !!q && !nrm(M3CUR.names[+li.firstElementChild.dataset.i] || "").includes(q); });
+});
+$("#p-lab").addEventListener("change", ev => {
+  if (!ev.target.dataset || ev.target.dataset.act !== "m3-quiz") return;
+  const L = labState(); L.m3quiz = ev.target.checked;
+  const box = ev.target.closest(".m3-labels"); if (!box) return;
+  box.classList.toggle("quiz", L.m3quiz);
+  $$(".rev", box).forEach(x => x.classList.remove("rev"));
+  const f = $("#m3Find", box);
+  if (f){ f.disabled = L.m3quiz; f.placeholder = L.m3quiz ? "Căutarea e oprită în modul test" : "Caută o structură…"; if (L.m3quiz){ f.value = ""; $$("li", box).forEach(li => { li.hidden = false; }); } }
+  const h = $(".m3-hint", box); if (h) h.textContent = m3Hint(L.m3quiz);
+  m3Select(M3CUR.i);
 });
 $("#p-lab").addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "orgQ"){ ev.preventDefault(); const b = $('[data-act="org-ins"]'); if (b) b.click(); } });
