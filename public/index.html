@@ -824,6 +824,71 @@ body.no-scroll{overflow:hidden}
 .cw-cd.empty{background:var(--hema-soft)!important;color:var(--hema)!important}
 .cw-cd.empty svg{width:22px;height:22px}
 @media print{.cal-w{display:none}}
+
+/* v10 */
+.m3-title{margin:2px 0 6px;font-size:15px}
+.m3-labels{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.m3-labels .row{gap:4px 10px}
+.m3-labels ol{margin:0;padding:0 0 0 22px;columns:2 200px;column-gap:18px;font-size:13.5px}
+.m3-labels li{break-inside:avoid;margin:1px 0}
+.m3-labels button{border:0;background:none;padding:2px 4px;border-radius:6px;text-align:left;cursor:pointer;color:var(--ink);font-size:13.5px}
+.m3-labels button:hover,.m3-labels button.on{background:var(--hema-soft);color:var(--hema)}
+.gal-it{position:relative}
+.gal-cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(10,9,20,.85));color:#fff;font-size:11.5px;font-weight:600;line-height:1.25;padding:14px 6px 5px;text-align:left}
+.org-ti{display:flex;flex-direction:column;gap:6px}
+.org-t .ins-ic{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--hema);white-space:nowrap}
+.org-t .ins-ic svg{width:15px;height:15px}
+.org-t[aria-expanded="true"]{background:var(--hema-soft)}
+.ins{background:var(--surface);border-radius:10px;padding:10px 12px;box-shadow:inset 0 0 0 1px var(--line),inset 3px 0 0 var(--oc,var(--hema));font-size:14.5px}
+.ins .prose p{margin:0 0 6px}
+.ins-act{margin-top:4px}
+.hs.hide{display:none}
+.anat-fig.sys-on .anat-stage img{filter:grayscale(.9) brightness(1.08);opacity:.42}
+.hs.sysv > *:not(title){fill-opacity:.62;stroke:var(--oc);stroke-opacity:1;stroke-dasharray:none;stroke-width:4}
+.hs.sysv.line > *:not(title){fill:none;stroke-opacity:.75;stroke-width:30}
+.sys-img{display:block;width:100%;padding:0;border:0;background:#fff;border-radius:12px;overflow:hidden;cursor:zoom-in;box-shadow:inset 0 0 0 1px var(--line)}
+.sys-img img{display:block;width:100%;height:auto;max-height:620px;object-fit:contain}
+.sys-orgs{display:flex;flex-wrap:wrap;gap:6px}
+.sys-orgs .chip{display:inline-flex;align-items:center}
+
+/* v11 */
+.ident{display:flex;flex-direction:column;gap:10px;max-width:880px}
+.ident-q{margin:0}
+.ident-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px}
+.ident-opts .opt{display:block;text-align:left;background:var(--surface);font:inherit;color:inherit}
+.ident-opts .opt:disabled{cursor:default}
+.cl-case{display:flex;flex-direction:column;gap:12px;max-width:880px}
+.cl-pt{background:var(--surface-2);border-radius:12px;padding:12px 14px}
+.cl-pt p{margin:6px 0 0}
+.cl-step{background:var(--surface);border-radius:12px;padding:12px 14px;box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:8px}
+.cl-et{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--hema)}
+.cl-step p{margin:0}
+.cl-res{margin-top:6px!important}
+.cl-end{background:var(--ok-soft);border-radius:12px;padding:12px 14px}
+.cl-end h3{margin:0 0 6px}
+.sm-list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;max-width:880px}
+.tut{display:flex;flex-direction:column;gap:12px;max-width:900px;margin:0 auto}
+.tut-h{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;justify-content:space-between}
+.tut-log{display:flex;flex-direction:column;gap:10px;min-height:280px;max-height:62vh;overflow:auto;padding:12px;background:var(--surface-2);border-radius:14px}
+.tut-m{max-width:86%;border-radius:14px;padding:10px 14px;font-size:15px;line-height:1.55}
+.tut-m.u{align-self:flex-end;background:var(--cta);color:var(--on-cta);border-bottom-right-radius:4px}
+.tut-m.a{align-self:flex-start;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);border-bottom-left-radius:4px}
+.tut-m .prose p{margin:0 0 6px}.tut-m .prose p:last-child{margin:0}
+.tut-imgnote{display:block;font-size:12px;opacity:.8}
+.tut-empty{margin:auto;text-align:center}
+.tut-st{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tut-st .chip{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);padding:6px 12px;font-size:13.5px}
+.ident .m3-box{aspect-ratio:16/10}
+.tut-in{display:flex;flex-direction:column;gap:6px}
+.tut-row{display:flex;gap:8px;align-items:flex-end}
+.tut-row textarea{flex:1;min-height:52px;resize:vertical;border:1px solid var(--line-2);border-radius:12px;padding:10px 12px;background:var(--surface);font-size:15px}
+.tut-row textarea:focus{border-color:var(--hema);outline:none;box-shadow:0 0 0 3px var(--hema-soft)}
+.tut-clip{width:40px;height:40px;cursor:pointer}
+.tut-clip svg{width:20px;height:20px}
+.tut-ctx{font-size:13px;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.tut-att{position:relative;width:90px}
+.tut-att img{width:90px;height:70px;object-fit:cover;border-radius:8px;display:block}
+.tut-att .icon-btn{position:absolute;top:-8px;right:-8px;background:var(--surface);box-shadow:0 0 0 1px var(--line)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -933,7 +998,8 @@ body.no-scroll{overflow:hidden}
         <button class="tab" role="tab" id="t-vis" data-tab="vis" aria-selected="false">Vizual</button>
         <button class="tab" role="tab" id="t-quiz" data-tab="quiz" aria-selected="false">Quiz <span class="n" id="nQuiz">0</span></button>
         <button class="tab" role="tab" id="t-bank" data-tab="bank" aria-selected="false">Banca de grile <span class="n" id="nBank">0</span></button>
-        <button class="tab tab-lab" role="tab" id="t-lab" data-tab="lab" aria-selected="false">Simulation Lab</button>
+        <button class="tab tab-lab" role="tab" id="t-lab" data-tab="lab" aria-selected="false">Anatomy &amp; Clinical Lab</button>
+        <button class="tab tab-lab" role="tab" id="t-tutor" data-tab="tutor" aria-selected="false">AI Tutor</button>
         <button class="tab" role="tab" id="t-flash" data-tab="flash" aria-selected="false">Flashcards <span class="n" id="nFlash">0</span></button>
         <button class="tab" role="tab" id="t-caz" data-tab="caz" aria-selected="false">Caz clinic</button>
         <button class="tab" role="tab" id="t-prezentare" data-tab="prezentare" aria-selected="false">Prezentare <span class="n" id="nSlides">0</span></button>
@@ -944,6 +1010,7 @@ body.no-scroll{overflow:hidden}
       <div class="tabpanel" id="p-quiz" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-bank" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-lab" role="tabpanel" hidden></div>
+      <div class="tabpanel" id="p-tutor" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-prezentare" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-flash" role="tabpanel" hidden></div>
       <div class="tabpanel" id="p-caz" role="tabpanel" hidden></div>
@@ -1793,7 +1860,7 @@ function renderExplain(opts){
         <li><b>Adaugă cursul, dacă vrei</b>, din panoul <button class="linkbtn" type="button" id="goSrc">Surse</button>. Fără curs, ghidul explică din manualele consacrate.</li>
         <li><b>Apasă Explică.</b> Primești explicația pe două niveluri, simplificat și avansat, cu schemă și întrebări scurte după fiecare parte.</li>
       </ol>
-      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>. Corpul uman în 3D e în <button class="linkbtn" type="button" id="goLab">Simulation Lab</button>, iar greșelile, statisticile și calendarul tău sunt în „Progresul meu”, sus.</p>
+      <p class="start-more">După prima explicație apar și filele <b>Vizual</b>, <b>Quiz</b>, <b>Flashcards</b>, <b>Caz clinic</b>, <b>Prezentare</b> și <b>Instrumente</b>. Ai deja grile de la examen? Pune-le în <button class="linkbtn" type="button" id="goBank">Banca de grile</button>. Corpul uman în 3D, cazurile clinice și semiologia sunt în <button class="linkbtn" type="button" id="goLab">Anatomy &amp; Clinical Lab</button>, iar în <b>AI Tutor</b> vorbești cu tutorele, iar greșelile, statisticile și calendarul tău sunt în „Progresul meu”, sus.</p>
       <div class="row" style="margin-top:4px"><button class="btn" type="button" id="showSample">Arată un exemplu</button><span class="hint">Sistemul renină–angiotensină–aldosteron, cu grilă și prezentare</span></div></div>`;
     $("#showSample").onclick = () => toggleSample(true);
     $("#goBank").onclick = () => selectTab("bank");
@@ -3567,7 +3634,8 @@ kbInit();
 function selectTab(t){
   state.tab = t;
   $$(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
-  ["explicatie", "vis", "quiz", "bank", "lab", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  ["explicatie", "vis", "quiz", "bank", "lab", "tutor", "flash", "caz", "prezentare", "tools"].forEach(k => $("#p-" + k).hidden = k !== t);
+  if (t === "tutor") renderTutor();
   if (t === "lab") renderLab();
   $$(".tab").forEach(b => { const n = $(".n", b); b.classList.toggle("zero", !!n && n.textContent === "0" && b.dataset.tab !== t); });
   if (t === "bank") renderBank();
@@ -3581,11 +3649,11 @@ function paintTabs(){
   const has = !!state.result;
   $$(".tab").forEach(b => {
     const k = b.dataset.tab;
-    b.hidden = !has && k !== "explicatie" && k !== "bank" && k !== "lab";
+    b.hidden = !has && k !== "explicatie" && k !== "bank" && k !== "lab" && k !== "tutor";
     const n = $(".n", b);
     b.classList.toggle("zero", !!n && n.textContent === "0" && b.getAttribute("aria-selected") !== "true");
   });
-  if (!has && state.tab && state.tab !== "explicatie" && state.tab !== "bank" && state.tab !== "lab") selectTab("explicatie");
+  if (!has && state.tab && state.tab !== "explicatie" && state.tab !== "bank" && state.tab !== "lab" && state.tab !== "tutor") selectTab("explicatie");
 }
 function renderAll(){ renderExplain(); renderQuiz(); renderSlides(); renderFlash(); renderCaz(); renderTools(); renderVis(); updateCounts(); }
 
@@ -3848,7 +3916,8 @@ helpOv.innerHTML = `<div class="acct-box help-box" role="dialog" aria-modal="tru
     <dt>Vizual</dt><dd>poster, scheme și imagini reale pentru temă</dd>
     <dt>Quiz</dt><dd>grilă CS/CM cu explicație la fiecare variantă</dd>
     <dt>Banca de grile</dt><dd>pui grilele tale de examen; ghidul le amestecă și face altele asemănătoare, pe 3 niveluri</dd>
-    <dt>Simulation Lab</dt><dd>corpul uman în 3D și în imagini reale, organ cu organ</dd>
+    <dt>Anatomy &amp; Clinical Lab</dt><dd>anatomie 3D, histologie, radiologie, identificarea structurilor, cazuri clinice interactive și semiologie</dd>
+    <dt>AI Tutor</dt><dd>vorbești cu tutorele: te ascultă, îți explică, discută un caz sau o imagine</dd>
     <dt>Progresul meu</dt><dd>butonul de sus: greșelile de revizuit, statistici, materia parcursă, notițe și calendarul examenelor</dd>
     <dt>Flashcards</dt><dd>carduri de repetat, exportabile în Anki</dd>
     <dt>Caz clinic</dt><dd>un pacient ipotetic, rezolvat pas cu pas</dd>
@@ -3981,11 +4050,12 @@ const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
 
 /* ---- starea filei ---- */
 function labState(){ if (!state.lab) state.lab = { view: "anat", organ: null, sys: "toate", rev: null }; return state.lab; }
-function labExplain(q, disc){
+function labExplain(q, disc, deep){
   if (state.busy){ toast("Așteaptă să se termine explicația curentă"); return; }
   closeProg();
   $("#q").value = q;
   if (disc && DISCIPLINES.includes(disc)) $("#disc").value = disc;
+  if (deep) $("#depth").value = "complex";
   selectTab("explicatie");
   window.scrollTo({ top: 0, behavior: "smooth" });
   $("#go").click();
@@ -4054,10 +4124,10 @@ function anatHtml(){
   const L = labState(), sel = ORGANS.find(o => o.id === L.organ);
   if (!L.galCat) L.galCat = "3d";
   const studied = new Map(ORGANS.map(o => [o.id, organStudied(o)]));
-  const hs = ORGANS.filter(o => o.hs).map(o => `<g class="hs${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" && o.sis !== L.sys ? " dim" : ""}" data-org="${o.id}" data-name="${esc(o.nume)}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.hs}</g>`).join("");
+  const hs = ORGANS.filter(o => o.hs).map(o => `<g class="hs${o.line ? " line" : ""}${studied.get(o.id) ? " done" : ""}${sel && sel.id === o.id ? " sel" : ""}${L.sys !== "toate" ? (o.sis !== L.sys ? " hide" : " sysv") : ""}" data-org="${o.id}" data-name="${esc(o.nume)}" style="--oc:var(--${SYS[o.sis].c})" tabindex="0" role="button" aria-label="${esc(o.nume)}"><title>${esc(o.nume)}</title>${o.hs}</g>`).join("");
   const nDone = [...studied.values()].filter(Boolean).length;
   const chips = `<div class="sys-chips"><button type="button" class="chip${L.sys === "toate" ? " on" : ""}" data-sys="toate">Toate</button>${Object.entries(SYS).map(([k, s]) => `<button type="button" class="chip${L.sys === k ? " on" : ""}" data-sys="${k}" style="--oc:var(--${s.c})"><i class="dot"></i>${s.nume}</button>`).join("")}</div>`;
-  const fig = `<div class="anat-fig real${L.outl === false ? "" : " outl"}"><div class="anat-stage">
+  const fig = `<div class="anat-fig real${L.outl === false ? "" : " outl"}${L.sys !== "toate" ? " sys-on" : ""}"><div class="anat-stage">
       <img src="/anatomie-corp.webp" alt="Ilustrație anatomică a corpului uman cu organele interne" width="960" height="1332">
       <svg viewBox="0 0 960 1332" role="group" aria-label="Organe pe care poți apăsa">${hs}</svg><span class="hs-name" id="hsName" hidden></span></div>
     <div class="fig-foot"><label class="fig-tg"><input type="checkbox" data-act="outl"${L.outl === false ? "" : " checked"}> Arată contururile</label><span class="fig-credit">Ilustrație: Mikael Häggström, după Gray's Anatomy (CC0)</span></div></div>`;
@@ -4068,12 +4138,12 @@ function anatHtml(){
       <div class="seg gal-tabs">${Object.entries(ANAT_CAT).map(([k, t]) => `<button type="button" data-act="gal-cat" data-cat="${k}" aria-pressed="${L.galCat === k}">${t}</button>`).join("")}</div>
       <div id="anatGal">${galHtml(sel)}</div>
       <h4 class="org-h4">Teme de studiu</h4>
-      <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Alege o temă și ghidul o explică imediat.</p>
-      <div class="org-topics">${sel.teme.map(t => `<button type="button" class="org-t" data-act="explain" data-q="${esc(t)}">${esc(t)}<span aria-hidden="true">→</span></button>`).join("")}</div>
-      <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-own">Explică</button></div>
+      <p class="hint">${studied.get(sel.id) ? `Ai lucrat deja ${studied.get(sel.id)} ${studied.get(sel.id) === 1 ? "temă legată" : "teme legate"} de acest organ.` : "Încă nu ai studiat nicio temă legată de acest organ."} Apasă pe o temă pentru un insight scurt. Explicația completă, detaliată, o ceri doar dacă vrei.</p>
+      <div class="org-topics">${sel.teme.map(t => `<div class="org-ti"><button type="button" class="org-t" data-act="insight" data-q="${esc(t)}" aria-expanded="false"><span>${esc(t)}</span><span class="ins-ic">${ICON_BULB} Insight</span></button><div class="ins" hidden></div></div>`).join("")}</div>
+      <div class="row org-own"><input class="vis-in grow" id="orgQ" placeholder="Altă temă despre ${esc(sel.nume.toLowerCase())}…"><button class="btn sm" type="button" data-act="org-ins">Insight</button></div><div class="ins" id="orgOwnIns" hidden></div>
       <details class="org-more"><summary>Toate organele</summary>${list}</details>
     </div>`
-    : `<div class="org-info empty"><h3>Corpul uman în 3D</h3>${model3dHtml("corp")}<h4 class="org-h4">Apasă pe un organ</h4><p class="hint">Îl vezi în 3D și în imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
+    : L.sys !== "toate" ? sysPanelHtml(L.sys) : `<div class="org-info empty"><h3>Corpul uman în 3D</h3>${model3dHtml("corp")}<h4 class="org-h4">Apasă pe un organ</h4><p class="hint">Îl vezi în 3D și în imagini reale (anatomie, histologie, imagistică) și alegi o temă de studiu. Organele marcate cu ✓ sunt cele pe care le-ai studiat deja (${nDone} din ${ORGANS.length}). Splina, suprarenalele și măduva nu se văd în desen: le găsești în listă.</p>${list}</div>`;
   return `${chips}<div class="anat">${fig}${info}</div>`;
 }
 /* fereastra cu imaginea mare */
@@ -4313,7 +4383,7 @@ onLab("click", ev => {
   const L = labState();
   if (b.dataset.lv){ L.view = b.dataset.lv; L.rev = null; renderLab(); return; }
   if (b.dataset.org){ L.organ = b.dataset.org === L.organ && b.tagName !== "BUTTON" ? null : b.dataset.org; renderLab(); return; }
-  if (b.dataset.sys){ L.sys = b.dataset.sys; renderLab(); return; }
+  if (b.dataset.sys){ L.sys = b.dataset.sys; L.organ = null; L.sysView = null; renderLab(); return; }
   const a = b.dataset.act;
   if (a === "explain") return labExplain(b.dataset.q, b.dataset.disc);
   if (a === "org-own"){ const v = ($("#orgQ").value || "").trim(); const o = ORGANS.find(x => x.id === L.organ); if (v) labExplain(v); else if (o) labExplain(o.teme[0]); return; }
@@ -4700,6 +4770,385 @@ onLab("click", ev => {
   if (a === "m3-on"){ L.m3 = { org: b.dataset.org, k: 0, on: true }; renderLab(); }
   else if (a === "m3-pick"){ L.m3 = { org: b.dataset.m, k: +b.dataset.i, on: true }; renderLab(); }
 });
+
+/* ---------------- v10: 3D cu denumiri, imagini alese, insight-uri, vizualizare pe sisteme ---------------- */
+const M3D_FULL = {"corp":[["26d08389de354277be032be39af5aba4","Tubul digestiv complet, cu structuri denumite",["Esofagul","Stomacul","Pilorul","Duodenul","Colonul ascendent","Colonul transvers","Colonul descendent","Flexura colică stângă (splenică)","Flexura colică dreaptă (hepatică)","Cecul","Apendicele vermiform","Colonul sigmoid","Rectul","Valva ileocecală (Bauhin)","Vezica biliară","Corpul pancreasului","Capul pancreasului","Ficatul"]],["ed05d3b7b49b4014a09d7a9d62e4f421","Abdomenul: organele și vasele",["Fundul","Corpul gastric","Antrul piloric","Pilorul","Bulbul duodenal","Porțiunea descendentă a duodenului (D2)","Porțiunea orizontală a duodenului (D3)","Porțiunea ascendentă a duodenului (D4)","Coada pancreasului","Capul pancreasului","Cecul","Apendicele vermiform","Ureterele distale","Vezica biliară"]],["035316622877438cb62de673b8f19217","Organele interne ale omului",["Esofagul","Ficatul","Stomacul","Vezica biliară","Colonul","Colonul","Jejunul","Apendicele vermiform","Intestinul subțire","Rectul"]],["5cfafb312f504815aa3fec55735607a6","Splanhnologie: organele interne (Z-Anatomy)",["Stomacul","Intestinul gros","Rinichiul drept","Traheea","Esofagul","Corpul spongios al penisului","Vezicula seminală","Vezica urinară","Splina","Mezocolonul"]]],"creier":[["ca4ac3a96999498fbcdf04510c9cc31f","Creierul uman: lobi, șanțuri și trunchi",["Emisfera cerebrală stângă","Emisfera cerebrală dreaptă","Nervul optic","Corpul amigdaloid și aria olfactivă","Sistemul ventricular cerebral","Corpul calos","Cerebelul","Puntea (pontul)","Pedunculul cerebral","Talamusul","Hipocampul","Putamenul și nucleul caudat","Comisura anterioară","Indusium griseum"]],["95b4e19bb32c4edeb46fcb3db048037c","Creierul cu structurile interne (nuclei bazali, sistem limbic)",["Lobul frontal","Lobul temporal","Lobul parietal","Lobul occipital","Cerebelul","Bulbul rahidian","Puntea (pontul)","Hipocampul","Amigdala (corpul amigdaloid)","Putamenul","Globus pallidus extern","Globus pallidus intern","Capul nucleului caudat","Coada nucleului caudat"]],["2e0c39b0ec834469a629a216ca954686","Lobii cerebrali, colorați și denumiți",["Corpul calos","Lobul frontal","Lobul parietal","Lobul temporal","Lobul occipital","Șanțul central (Rolando)","Șanțul lateral (Sylvius)","Șanțul parieto-occipital","Șanțul corpului calos","Șanțul cingulat"]]],"inima":[["10472481071e4375b8233289c277d411","Inima: anatomia externă",["Atriul stâng","Auricula stângă","Vena cavă superioară","Atriul drept","Vena cavă inferioară","Arcul aortic","Trunchiul brahiocefalic","Artera carotidă comună stângă","Artera subclavie stângă","Trunchiul pulmonar","Artera pulmonară dreaptă","Artera coronară dreaptă","Artera circumflexă","Artera interventriculară anterioară","Artera interventriculară posterioară","Sinusul coronar","Vena cardiacă mare","Vena cardiacă mijlocie","Vena interventriculară anterioară","Vena cardiacă mică"]],["9f48eaa481cc4a43baeb9e1f03882cff","Inima: anatomia internă (cavități și valve)",["Arcul aortic","Trunchiul pulmonar","Septul interventricular","Vena cavă superioară","Atriul drept","Vena cavă inferioară","Auricula dreaptă","Fosa ovală","Valva atrioventriculară dreaptă (tricuspidă)","Cordajele tendinoase","Mușchiul papilar","Trabeculele cărnoase ale ventriculului drept","Valva pulmonară","Atriul stâng","Auricula stângă","Valva aortică","Valva atrioventriculară stângă (mitrală)","Cordajele tendinoase","Mușchiul papilar","Trabeculele cărnoase ale ventriculului stâng"]],["0ae97a04e5484f57972d0494151b231c","Inima: fețe, margini și șanțuri",["Vena cavă inferioară","Infundibulul","Crucea inimii (crux cordis)","Artera circumflexă stângă","Tavanul atriului stâng","Auricula dreaptă","Apexul (vârful)","Marginea ascuțită (dreaptă) a inimii","Sinusul transvers al pericardului","Regiunea nodului sinoatrial","Artera interventriculară anterioară (descendentă anterioară)","Venele pulmonare drepte","Venele pulmonare stângi","Marginea obtuză (stângă) a inimii","Artera nodului sinoatrial","Artera coronară dreaptă","Auricula stângă","Aorta ascendentă","Vena cavă superioară","Artera pulmonară"]],["e48637d3399a4e5184bdf169929dc36e","Inima: vase coronare și vasele mari",["Inima","Valva mitrală","Valva aortică","Cordajele tendinoase","Valva tricuspidă","Valva pulmonară","Atriul drept","Ventriculul drept","Ventriculul stâng","Atriul stâng","Vena cavă superioară","Vena cavă inferioară","Venele pulmonare stângi","Aorta","Artera subclavie stângă","Artera carotidă comună stângă","Trunchiul brahiocefalic","Artera pulmonară"]]],"plamani":[["13c8cd9fcf654bec89d40d48de9f4202","Plămânii: lobi și fisuri",["Traheea","Carina traheală","Lobul superior al plămânului drept","Lobul mijlociu al plămânului drept","Lobul inferior al plămânului drept","Bronhia principală stângă","Artera pulmonară","Vena pulmonară","Lobul superior al plămânului stâng","Lobul inferior al plămânului stâng"]],["2b22c4884d8245b5b65bd698a79bd3af","Plămânul: fețe și amprente",["Lingula plămânului stâng","Amprenta aortică","Bronhia principală","Artera pulmonară","Apexul (vârful)","Lobul superior","Lobul inferior","Vena pulmonară","Fisura oblică"]],["ad95ed8290b24f56a6bfd14252d10514","Inima și plămânii, cu etichete",["Plămânul drept","Plămânul stâng","Aorta","Inima","Artera pulmonară","Vena cavă superioară"]]],"ficat":[["08ee1a75c6fa437297848027c1baa94c","Ficatul: fețe, lobi și hil",["Vena cavă","Artera cistică","Vena portă","Artera hepatică proprie","Vezica biliară"]],["4b59f2195fb54f86a89fe69f6205b569","Ficatul: segmente și vene hepatice (tumoră 5/8)",["Tumoră în segmentele 5/8","Hilul hepatic","Vena hepatică accesorie a segmentelor 6/7","Lobul caudat","Șanțul venelor hepatice dreaptă și mijlocie"]],["ed05d3b7b49b4014a09d7a9d62e4f421","Abdomenul: organele și vasele",["Fundul","Corpul gastric","Antrul piloric","Pilorul","Bulbul duodenal","Porțiunea descendentă a duodenului (D2)","Porțiunea orizontală a duodenului (D3)","Porțiunea ascendentă a duodenului (D4)","Coada pancreasului","Capul pancreasului","Cecul","Apendicele vermiform","Ureterele distale","Vezica biliară"]]],"stomac":[["a81f02baae2b416188c9dac98db101a9","Stomacul: regiuni și pliuri (Univ. Dundee)",["Esofagul","Joncțiunea eso-gastrică","Pliurile longitudinale ale mucoasei","Pliurile mucoasei gastrice","Sfincterul piloric","Orificiul piloric","Duodenul superior (D1)","Duodenul descendent (D2)"]],["672d9de10eec4f0facf48205f5e468d3","Stomacul: model complet",["Duodenul","Esofagul","Pliurile mucoasei gastrice","Antrul piloric","Fundul","Stratul muscular longitudinal","Stratul muscular circular","Stratul muscular oblic de sub mucoasă"]],["4a126774bb084a5eabde64d68a99cfb1","Stomacul: secțiune cu straturile peretelui",["Duodenul","Esofagul","Pliurile mucoasei gastrice","Antrul piloric","Fundul","Stratul muscular longitudinal","Stratul muscular circular","Stratul muscular oblic de sub mucoasă"]]],"rinichi":[["c4860bca39a3474ca4ec7dfba5801685","Rinichiul: anatomie, cu etichete",["Corticala renală","Piramidele renale (Malpighi)","Coloana renală (Bertin)","Artera renală","Vena renală","Ureterul","Grăsimea din sinusul renal","Calicele renal mic","Calicele renal mare","Bazinetul (pelvisul renal)"]],["5f871fca3685439ba867761bcdfd1948","Rinichiul: secțiune frontală",["Capsula renală","Corticala renală","Medulara renală","Calicele renale (mari și mici)","Bazinetul (pelvisul renal)","Artera renală","Vena renală","Ureterul"]],["68a030f7dad444b0b6b4a9ce6a572625","Rinichiul: vase și căi urinare",["Vena renală","Artera renală","Ureterul","Capsula fibroasă","Corticala"]]],"pancreas":[["b34ba50e38fd455bae43bd07b7ed2d3b","Pancreasul și duodenul",["Pancreasul","Duodenul","Canalul pancreatic (Wirsung)","Canalul coledoc","Vena portă","Aorta abdominală","Confluența canalului pancreatic cu coledocul (ampula Vater)"]],["ed05d3b7b49b4014a09d7a9d62e4f421","Abdomenul: organele și vasele",["Fundul","Corpul gastric","Antrul piloric","Pilorul","Bulbul duodenal","Porțiunea descendentă a duodenului (D2)","Porțiunea orizontală a duodenului (D3)","Porțiunea ascendentă a duodenului (D4)","Coada pancreasului","Capul pancreasului","Cecul","Apendicele vermiform","Ureterele distale","Vezica biliară"]],["f9a34dba04624c28a3131970fcac4b81","Ficatul, splina și pancreasul",["Ficatul","Splina","Stomacul","Pancreasul","Vezica biliară"]]],"intestin":[["851a7f14710c4170a2e9638c72e4701a","Intestinul subțire cu mezenterul (Univ. Dundee)",["Jejunul","Pereți groși, cu multe pliuri","Ileonul","Pereți subțiri, cu puține pliuri","Mezenterul","Vasele drepte lungi","Vasele drepte scurte"]],["3a920101c4304eacaa3a422faacfc660","Intestinul: anatomie (Univ. Dundee)",["Stomacul","Colonul","Pancreasul","Rectul","Apendicele vermiform","Ileonul","Jejunul"]],["8c4c69035f4f4773813533d7ca56e516","Tubul digestiv, de la esofag la rect",["Intestinul subțire","Intestinul gros","Teniile colonului","Stomacul","Ficatul"]]],"colon":[["4dec0fa1b79441a08d289d903f0eb61f","Intestinul gros: segmente și repere (Univ. Dundee)",["Colonul ascendent","Flexura colică dreaptă (hepatică)","Colonul transvers","Flexura colică stângă (splenică)","Colonul descendent","Colonul sigmoid","Rectul","Ileonul","Joncțiunea ileocecală","Apendicele vermiform","Mezocolonul","Sfincterul ileocecal","Haustrele colonului","Teniile colonului","Apendicele epiploice","Canalul anal","Anusul","Sfincterul anal extern","Sfincterul anal intern","Coloanele anale (Morgagni)"]],["c3dd04f639444b51bfa1d36e5e965d43","Peretele colonului: celule și vase",["Criptele Lieberkühn","Celulele caliciforme","Tunica musculară","Vas limfatic","Vena submucoasei","Inelele capilare","Musculara mucoasei","Artera submucoasei","Fibrele de colagen","Mucusul"]],["e945014204424dbeae669d515956dcd8","Colita ulcerativă vs boala Crohn",["Fisurile","Leziune uniformă și continuă (colita ulcerativă)","Leziuni discontinue („skip lesions”)","Pseudopolipi","Perete îngroșat","Aspect de „pavaj” al mucoasei (boala Crohn)"]]],"vezica":[["822b2eeb033f42f6a8e0e141287bf34d","Tractul urinar complet",["Rinichiul stâng","Rinichiul drept","Glanda suprarenală stângă","Glanda suprarenală dreaptă","Ureterul stâng","Ureterul drept","Vezica urinară","Canalul deferent stâng","Canalul deferent drept","Vezicula seminală stângă","Vezicula seminală dreaptă","Prostata"]],["4258252eb7c04e748ab7501eb5f1abb1","Sistemul urinar: rinichi, uretere, vezică",["Rinichiul drept","Rinichiul stâng","Glanda suprarenală dreaptă","Glanda suprarenală stângă","Joncțiunea pielo-ureterală","Strâmtoarea superioară a pelvisului","Vărsarea ureterului în vezică","Ureterul stâng","Vezica urinară","Uretra"]],["03d325c81aaa4dfabb74b727fec0a1a4","Rinichii și sistemul urinar",["Rinichiul drept și glanda suprarenală","Rinichiul stâng și glanda suprarenală","Vena cavă inferioară","Aorta abdominală","Vezica urinară"]]],"tiroida":[["1397c94d778848cbae862ac78811f925","Tiroida în regiunea cervicală, cu vase și mușchi",["Glanda tiroidă","Lobul piramidal","Traheea","Cartilajul tiroid","Cartilajul cricoid","M. cricotiroidian","Ligamentul cricotiroidian","M. tirohioidian","Membrana tirohioidiană","Osul hioid","M. sternotiroidian","M. sternohioidian","M. omohioidian","M. omohioidian","Epiglota","Vena jugulară internă","Artera carotidă comună","Nervul laringeu recurent stâng","Nervul vag stâng","Coloana vertebrală cervicală"]],["5238a9dfeee4455d84ffc03211aa8798","Tiroida și paratiroidele (Prof. G. Penna)",["Glanda tiroidă","Cartilajul cricoid","Ligamentul cricotiroidian","Cartilajul tiroid","Membrana tirohioidiană","Osul hioid","Epiglota","Traheea","Esofagul","Glanda paratiroidă"]]],"trahee":[["3b247ff11b104e24acbb1c453f5bad46","Laringele cu mușchi și ligamente",["Osul hioid","Cartilajul tiroid (lama dreaptă)","Cornul inferior al cartilajului tiroid","Cartilajul cricoid","Cartilajele traheale","Epiglota","Cartilajul aritenoid","M. cricotiroidian","Articulația cricotiroidiană","Cartilajul corniculat","Cartilajul cuneiform","M. aritenoid","M. cricoaritenoidian posterior","M. cricoaritenoidian lateral","M. tiroaritenoidian","Procesul vocal al cartilajului aritenoid","Ligamentul vocal","Membrana tirohioidiană","Membrana patrulateră","Orificiul pentru mănunchiul neurovascular laringian intern"]],["a00bc73a303c46248db6a13a88b23404","Laringele: cartilaje și ligamente",["Proeminența laringiană (mărul lui Adam)","Cartilajul tiroid","Osul hioid","Cartilajul cricoid","Epiglota","Cartilajul aritenoid stâng","Cartilajul aritenoid drept","Cartilajul corniculat stâng","Cartilajul corniculat drept","Ligamentul vestibular drept","Ligamentul vestibular stâng","Ligamentul vocal drept","Ligamentul vocal stâng","Traheea","Ligamentul hioepiglotic","Ligamentul tirohioidian","Membrana tirohioidiană","Ligamentul cricotiroidian median"]],["8cac26d1e9ee4332a227bc872486652e","Laringele, traheea, bronhiile și plămânul drept",["Plămânul drept","Lobul superior","Lobul mijlociu","Lobul inferior","Traheea","Bronhia principală dreaptă","Bronhia principală stângă","Osul hioid","Cartilajul tiroid","Cartilajul cricoid"]]],"biliara":[["8cd71eb1b53b47b78a41cfaaa34e6777","Vezica biliară și căile biliare",["Vezica biliară","Canalul hepatic comun","Canalul coledoc","Hilul hepatic","Calculii biliari","Artera cistică","Canalul cistic","Vena portă","Artera hepatică"]],["060f3b31e5b14749884dcdc678d08930","Vezica biliară, cu secțiune",["Vezica biliară","Calculii biliari","Canalul coledoc","Canalul cistic","Bila"]],["7e11b2296cc14ea28a6e877764c83a97","Vezica biliară și canalele ei",["Vezica biliară","Trunchiul celiac","Canalul coledoc","Vena portă","Artera hepatică"]]],"aorta":[["a160d9231f0f4ffdae07f296e0c27c51","Aorta abdominală și ramurile ei",["Aorta abdominală","Trunchiul celiac","Artera hepatică comună","Artera splenică","Artera mezenterică superioară","Artera renală dreaptă","Artera renală stângă","Vena renală dreaptă","Vena renală stângă","Artera mezenterică inferioară","Artera iliacă comună dreaptă","Artera iliacă comună stângă","Artera iliacă externă dreaptă","Artera iliacă externă stângă","Artera iliacă internă dreaptă","Artera iliacă internă stângă","Artera femurală dreaptă","Artera femurală stângă","Rinichiul drept","Rinichiul stâng"]],["d924ee35a72c4a4f87b4953a3a3f7dbb","Aorta abdominală: ramuri viscerale",["Aorta abdominală","Anevrism de aortă abdominală","Artera iliacă comună","Artera iliacă externă","Artera iliacă internă","Artera renală","Trunchiul celiac","Artera hepatică comună","Artera gastrică stângă","Artera mezenterică superioară"]],["4e7aad1805584d9780186017f220fa92","Anevrismul de aortă abdominală",["Aorta abdominală","Anevrism de aortă abdominală","Trunchiul celiac","Artera splenică","Artera hepatică comună","Artera mezenterică superioară","Artera mezenterică inferioară","Artera iliacă comună dreaptă","Artera iliacă comună stângă","Artera iliacă externă dreaptă","Artera iliacă externă stângă","Artera iliacă internă dreaptă","Artera iliacă internă stângă","Artera renală dreaptă","Artera renală stângă","Rinichiul drept","Rinichiul stâng"]]],"splina":[["621be4748b6b44fab11da23dc5d880c9","Splina: fețe și hil",["Fața gastrică","Fața renală","Fața bazală (diafragmatică)","Hilul","Unghiul bazal anterior"]],["f9a34dba04624c28a3131970fcac4b81","Ficatul, splina și pancreasul",["Ficatul","Splina","Stomacul","Pancreasul","Vezica biliară"]],["efa4560c3ea44892972d333eb2f1b363","Splina umană",["Splina","Trecerea prin splină","Lungimea"]]],"suprarenale":[["59f6b424a67e457e979fb1fcd4c5d191","Glanda suprarenală: dezvoltarea embriologică",["Tubul neural","Creasta neurală","Ganglionul simpatic","Ganglionul celiac","Celulele cromafine"]],["ed05d3b7b49b4014a09d7a9d62e4f421","Abdomenul: organele și vasele",["Fundul","Corpul gastric","Antrul piloric","Pilorul","Bulbul duodenal","Porțiunea descendentă a duodenului (D2)","Porțiunea orizontală a duodenului (D3)","Porțiunea ascendentă a duodenului (D4)","Coada pancreasului","Capul pancreasului","Cecul","Apendicele vermiform","Ureterele distale","Vezica biliară"]],["271e40e97ae048b3bea75e91a82bc84b","Glanda suprarenală: secțiune (corticală și medulară)",[]]],"maduva":[["d4af33ccf03b4fec8754180bcb480516","Măduva spinării și meningele (Univ. Dundee)",["Substanța albă","Substanța cenușie","Cornul posterior","Cornul anterior","Rădăcina posterioară","Rădăcina anterioară","Ganglionul spinal (al rădăcinii posterioare)","Ganglionul rădăcinii anterioare","Nervul spinal","Vertebra T11","Vertebra T12","Gaura intervertebrală","Măduva spinării"]],["0233935cb1ea4e00af879fadc1f1a329","Măduva spinării: secțiune, rădăcini și șanțuri",["Cornul posterior (dorsal)","Cornul lateral","Cornul anterior (ventral)","Canalul central (ependimar)","Fisura mediană anterioară","Șanțul anterolateral","Șanțul posterolateral","Șanțul intermediar posterior","Șanțul median posterior","Filetele radiculare ale rădăcinii posterioare","Rădăcina posterioară a nervului spinal","Ganglionul spinal (al rădăcinii posterioare)","Filetele radiculare anterioare","Rădăcina anterioară a nervului spinal","Ramura dorsală a nervului spinal","Ramura ventrală a nervului spinal","Artera și vena spinală anterioară","Vena spinală posterioară","Artera și vena spinală posterioară"]],["fa7a84d0a1294c8398660e6a507ebfdf","Puncția lombară și straturile coloanei",["Ligamentul supraspinos","Ligamentul interspinos","Ligamentul galben","Dura mater","Arahnoida","Lichidul cefalorahidian (LCR)","Coada de cal (cauda equina)","Ligamentul longitudinal posterior","Corpurile vertebrale și discurile intervertebrale","Ligamentul longitudinal anterior"]]],"muschi":[["7b2dc297c88a4d8e91be98250c66f2cb","Mușchii membrului superior (Univ. Dundee)",["M. pectoral mare","M. biceps brahial","M. deltoid","M. pătrat pronator","M. brahioradial","M. rotund pronator","M. supinator","M. brahial","M. anconeu","M. triceps brahial","M. latissimus dorsi (marele dorsal)","M. trapez","M. infraspinos","M. rotund mare","M. rotund mic","M. supraspinos","M. subscapular","M. dințat anterior","M. coracobrahial"]],["aa83f0f23a864eb5b18275602f0c38e4","Mușchii membrului superior, pe straturi",["Nervul median","Nervul ulnar","Artera subclavie","M. deltoid","M. pectoral mic","M. rotund mare","M. brahioradial","M. flexor radial al carpului","M. extensor al degetelor","M. lung abductor al policelui"]]],"vase":[["def1f7fcf5364946bbc1231e7cddbebb","Vasele și nervii membrului superior",["M. sternocleidomastoidian","M. omohioidian","M. scalen anterior","M. scalen posterior","Trunchiul superior al plexului brahial","Trunchiul mijlociu al plexului brahial","Trunchiul inferior al plexului brahial","Artera suprascapulară","Artera dorsală a scapulei","Artera cervicală transversă","Artera tiroidiană inferioară","Artera subclavie","Vena subclavie","Vena cefalică","Vena bazilică","M. deltoid (fasciculul mijlociu)","M. trapez (porțiunea transversă)","M. infraspinos","M. rotund mic","M. rotund mare","M. triceps brahial (capul lung)","Spațiul triunghiular (axilar medial)","Spațiul patrulater (axilar lateral)","M. triceps brahial (capul lateral)","M. biceps brahial (capul lung)","Nervul musculocutanat","Nervul median","M. rotund pronator","M. flexor radial al carpului","M. flexor superficial al degetelor","M. palmar lung","M. flexor ulnar al carpului","Nervul ulnar","Ramura dorsală a nervului spinal","Mușchii eminenței tenare","Mușchii eminenței hipotenare","M. adductor al policelui","M. extensor lung radial al carpului","M. extensor scurt radial al carpului","M. extensor al degetelor","M. lung abductor al policelui","M. extensor lung al policelui","M. latissimus dorsi (marele dorsal)","M. pectoral mare","M. dințat anterior","M. extensor lung al policelui","M. extensor ulnar al carpului","Artera vertebrală","M. extensor al indexului","M. anconeu"]],["35a61d7aefd24a1ea791ba743d381fae","Arterele membrului superior, cu etichete în model",[]]],"ganglioni":[["14800d739ecb46678d7584a401b0aa77","Sistemul limfatic: grupele ganglionare (Univ. Dundee)",["Ganglionii limfatici inghinali profunzi","Ganglionii limfatici superficiali","Ganglion limfatic iliac","Ganglionul limfatic cubital","Ganglionii limfatici poplitei","Ganglionii limfatici axilari anteriori (pectorali)","Ganglionii limfatici cervicali profunzi","Ganglionii limfatici parasternali","Canalul toracic","Canalul limfatic drept","Ganglionii limfatici mezenterici inferiori","Ganglionii limfatici mezenterici superiori","Ganglionii limfatici celiaci","Cisterna chyli (Pecquet)","Canalul toracic","Ganglionii limfatici lombari (cavi/aortici)","Ganglionii limfatici axilari centrali","Ganglionii limfatici paratraheali"]],["cc6896de8309441aabcefecb2d3f9b50","Ganglionul limfatic: structura internă",["Vas limfatic aferent","Valva vasului limfatic","Capsula ganglionului limfatic","Trabecula","Corticala foliculară","Corticala interfoliculară","Paracorticala","Medulara","Hilul","Sinusul subcapsular","Sinusul trabecular","Sinusul medular","Vas limfatic eferent","Venulele cu endoteliu înalt","Foliculul limfoid primar","Foliculul limfoid secundar","Zona întunecată a foliculului secundar","Zona clară a foliculului secundar","Zona de manta","Zona marginală"]],["28be358c57c54e8e9c3292f9a3040f3b","Sistemul limfatic: vase, canale și ganglioni",["Ganglionii limfatici inghinali superficiali","Ganglionii limfatici inghinali profunzi","Ganglionii limfatici iliaci","Ganglionii limfatici cubitali","Ganglionii limfatici poplitei","Ganglionii limfatici cervicali superficiali","Ganglionii limfatici axilari anteriori (pectorali)","Ganglionii limfatici cervicali profunzi","Ganglion limfatic parasternal","Canalul toracic","Canalul limfatic drept","Ganglionii limfatici mezenterici inferiori","Ganglionii limfatici mezenterici superiori","Ganglionii limfatici celiaci","Cisterna chyli (Pecquet)","Canalul toracic","Ganglionii limfatici lombari (cavi/aortici)","Ganglionii limfatici axilari centrali","Ganglionii limfatici paratraheali"]]]};
+const SYS3D = {"nervos":[["2e6be1399756494b9f185ce8c5900911","Sistemul nervos: encefal, măduvă și nervi spinali (Univ. Dundee)",["Emisferele cerebrale","Cerebelul","Puntea (pontul)","Bulbul rahidian","Atlasul (C1)","Axisul (C2)","Vertebrele cervicale (C1–C7)","Nervii cervicali (C1–C8)","Vertebrele toracale (T1–T12)","Nervii toracali (T1–T12)","Vertebrele lombare (L1–L5)","Nervii lombari (L1–L5)","Sacrul","Nervii sacrali (S1–S5)","Coccisul","Nervul coccigian (Co1)","Conul medular (capătul măduvei, L1–L2)"]],["0a9c32d586ba4493ae61f90af4fb102d","Sistemul nervos și cardiovascular, corp întreg",["Plămânul stâng","Plămânul drept","Inima","Sistemul cardiovascular (inima)","Sistemul nervos","Creierul","Bronhiile","Osul hioid"]],["680e7f1f4ffd46ca98a503b1aab73319","Cele 12 perechi de nervi cranieni (Univ. Dundee)",["I. Nervul olfactiv","II. Nervul optic","III. Nervul oculomotor","IV. Nervul trohlear","V. Nervul trigemen","VI. Nervul abducens","VII. Nervul facial","VII. Nervul facial","IX. Nervul glosofaringian","X. Nervul vag","XI. Nervul accesor","XII. Nervul hipoglos"]]],"cardio":[["b80352ff2ed54b9eb19475464b189640","Sistemul circulator: inima, arterele și venele mari",["Inima","Aorta","Artera femurală","Vena jugulară","Artera carotidă"]],["0a9c32d586ba4493ae61f90af4fb102d","Sistemul nervos și cardiovascular, corp întreg",["Plămânul stâng","Plămânul drept","Inima","Sistemul cardiovascular (inima)","Sistemul nervos","Creierul","Bronhiile","Osul hioid"]],["6a7a537a71444f6e8201e18a685a013d","Sistemul circulator al corpului întreg, animat",[]]],"respirator":[["250911151757489da1cf5501b791f363","Sistemul respirator: de la cavitatea nazală la diafragmă",["Cavitatea nazală","Laringele","Traheea","Plămânul","Diafragma"]],["0d3843f30b0f45d8a1341f86ea9b42ea","Sistemul respirator: laringe, trahee, bronhii, plămâni",["Traheea","Laringele","Glanda tiroidă","Plămânii","Bronhiile"]],["8cac26d1e9ee4332a227bc872486652e","Laringele, traheea, bronhiile și plămânul drept",["Plămânul drept","Lobul superior","Lobul mijlociu","Lobul inferior","Traheea","Bronhia principală dreaptă","Bronhia principală stângă","Osul hioid","Cartilajul tiroid","Cartilajul cricoid"]]],"digestiv":[["26d08389de354277be032be39af5aba4","Tubul digestiv complet, cu structuri denumite",["Esofagul","Stomacul","Pilorul","Duodenul","Colonul ascendent","Colonul transvers","Colonul descendent","Flexura colică stângă (splenică)","Flexura colică dreaptă (hepatică)","Cecul","Apendicele vermiform","Colonul sigmoid","Rectul","Valva ileocecală (Bauhin)","Vezica biliară","Corpul pancreasului","Capul pancreasului","Ficatul"]],["bfe2c671298947f8bcf0f69c06e74ed8","Sistemul digestiv al adultului",["Intestinul subțire","Intestinul gros","Stomacul","Pelvisul","Diafragma","Esofagul","Pancreasul"]],["053bab50888840afbbe24c361887c8f9","Sistemul digestiv, cu organe detașabile",["Cavitatea bucală","Esofagul","Stomacul","Intestinul subțire","Intestinul gros","Glandele salivare","Anusul","Pancreasul","Vezica biliară","Ficatul"]]],"urinar":[["822b2eeb033f42f6a8e0e141287bf34d","Tractul urinar complet",["Rinichiul stâng","Rinichiul drept","Glanda suprarenală stângă","Glanda suprarenală dreaptă","Ureterul stâng","Ureterul drept","Vezica urinară","Canalul deferent stâng","Canalul deferent drept","Vezicula seminală stângă","Vezicula seminală dreaptă","Prostata"]],["4258252eb7c04e748ab7501eb5f1abb1","Sistemul urinar: rinichi, uretere, vezică",["Rinichiul drept","Rinichiul stâng","Glanda suprarenală dreaptă","Glanda suprarenală stângă","Joncțiunea pielo-ureterală","Strâmtoarea superioară a pelvisului","Vărsarea ureterului în vezică","Ureterul stâng","Vezica urinară","Uretra"]]],"endocrin":[["a578e3a0a52b4b3688e996242f29ab07","Glandele endocrine (etichete în model)",[]]],"hemato":[["14800d739ecb46678d7584a401b0aa77","Sistemul limfatic: grupele ganglionare (Univ. Dundee)",["Ganglionii limfatici inghinali profunzi","Ganglionii limfatici superficiali","Ganglion limfatic iliac","Ganglionul limfatic cubital","Ganglionii limfatici poplitei","Ganglionii limfatici axilari anteriori (pectorali)","Ganglionii limfatici cervicali profunzi","Ganglionii limfatici parasternali","Canalul toracic","Canalul limfatic drept","Ganglionii limfatici mezenterici inferiori","Ganglionii limfatici mezenterici superiori","Ganglionii limfatici celiaci","Cisterna chyli (Pecquet)","Canalul toracic","Ganglionii limfatici lombari (cavi/aortici)","Ganglionii limfatici axilari centrali","Ganglionii limfatici paratraheali"]],["28be358c57c54e8e9c3292f9a3040f3b","Sistemul limfatic: vase, canale și ganglioni",["Ganglionii limfatici inghinali superficiali","Ganglionii limfatici inghinali profunzi","Ganglionii limfatici iliaci","Ganglionii limfatici cubitali","Ganglionii limfatici poplitei","Ganglionii limfatici cervicali superficiali","Ganglionii limfatici axilari anteriori (pectorali)","Ganglionii limfatici cervicali profunzi","Ganglion limfatic parasternal","Canalul toracic","Canalul limfatic drept","Ganglionii limfatici mezenterici inferiori","Ganglionii limfatici mezenterici superiori","Ganglionii limfatici celiaci","Cisterna chyli (Pecquet)","Canalul toracic","Ganglionii limfatici lombari (cavi/aortici)","Ganglionii limfatici axilari centrali","Ganglionii limfatici paratraheali"]],["8dab8ce7b3fc4582858ea35e1e94fae5","Sistemul limfatic: vedere de ansamblu",["Ganglionii limfatici iliaci","Ganglionii limfatici poplitei","Ganglionii limfatici cubitali","Ganglionii limfatici mezenterici inferiori","Ganglionii limfatici lombari (cavi/aortici)","Ganglionii limfatici mezenterici superiori","Ganglionii limfatici celiaci","Canalul toracic","Cisterna chyli (Pecquet)","Ganglion limfatic parasternal","Ganglion limfatic paratraheal","Ganglionii limfatici cervicali superficiali","Ganglionii limfatici cervicali profunzi","Canalul toracic","Canalul limfatic drept","Ganglionii limfatici axilari anteriori (pectorali)","Ganglionii limfatici axilari centrali","Ganglionii limfatici inghinali superficiali","Ganglionii limfatici inghinali profunzi"]]],"locomotor":[["802fa1ac1f824e73bed2d80c8f3bcc1e","Sistemul muscular al corpului întreg",["M. oblic extern al abdomenului","M. pectoral mare","M. biceps brahial","M. deltoid (fasciculul mijlociu)"]],["a35ef274b4e24693ad7f4a1033664abc","Scheletul uman complet",[]],["7b2dc297c88a4d8e91be98250c66f2cb","Mușchii membrului superior (Univ. Dundee)",["M. pectoral mare","M. biceps brahial","M. deltoid","M. pătrat pronator","M. brahioradial","M. rotund pronator","M. supinator","M. brahial","M. anconeu","M. triceps brahial","M. latissimus dorsi (marele dorsal)","M. trapez","M. infraspinos","M. rotund mare","M. rotund mic","M. supraspinos","M. subscapular","M. dințat anterior","M. coracobrahial"]]]};
+const CUR_IMG = {};
+const SYS_IMG = {};
+const VIEWER_JS = "https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js";
+let M3API = null;
+function m3Models(id){ return id.startsWith("sys:") ? (SYS3D[id.slice(4)] || []) : (M3D_FULL[id] || []); }
+model3dHtml = function(id){
+  const L = labState(), list = m3Models(id);
+  if (!list.length) return `<p class="hint">Pentru acest organ nu am încă un model 3D.</p>`;
+  const mine = L.m3 && L.m3.org === id, k = mine ? Math.min(L.m3.k || 0, list.length - 1) : 0;
+  const on = mine ? L.m3.on !== false : id !== "corp";
+  const [uid, title, names] = list[k];
+  return `<h4 class="m3-title">${esc(title)}</h4>
+    <div class="m3-box">${on
+      ? `<iframe data-uid="${uid}" title="${esc(title)}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`
+      : `<button type="button" class="m3-start" data-act="m3-on" data-org="${id}"><span class="m3-ic">3D</span><b>Pornește modelul 3D</b></button>`}</div>
+    ${list.length > 1 ? `<div class="m3-pick">${list.map(([u, n, hs], i) => `<button type="button" class="chip${i === k ? " on" : ""}" data-act="m3-pick" data-m="${id}" data-i="${i}">${esc(n)}${hs.length ? ` · ${hs.length} structuri` : ""}</button>`).join("")}</div>` : ""}
+    ${names.length ? `<div class="m3-labels"><div class="row"><b>Structuri denumite pe model (${names.length})</b><span class="hint">Apasă pe o denumire și modelul se rotește spre ea.</span></div>
+      <ol>${names.map((n, i) => `<li><button type="button" data-act="m3-ann" data-i="${i}">${esc(n)}</button></li>`).join("")}</ol></div>`
+      : `<p class="hint">La acest model, denumirile sunt scrise direct pe structuri.</p>`}
+    <p class="hint">Rotești cu mouse-ul sau cu un deget, mărești cu rotița sau cu două degete. Modele 3D de pe Sketchfab, ale autorilor lor.</p>`;
+};
+async function initM3(){
+  const f = document.querySelector(".m3-box iframe[data-uid]:not([data-init])"); if (!f) return;
+  f.dataset.init = "1"; M3API = null;
+  const uid = f.dataset.uid, plain = () => { f.src = `https://sketchfab.com/models/${uid}/embed?autostart=1&preload=1&ui_theme=dark&dnt=1`; };
+  try { await loadScript(VIEWER_JS); } catch {}
+  if (!window.Sketchfab || !f.isConnected){ if (f.isConnected) plain(); return; }
+  try {
+    new window.Sketchfab(f).init(uid, { autostart: 1, preload: 1, ui_theme: "dark", ui_hint: 0, dnt: 1,
+      success: api => { api.start(); api.addEventListener("viewerready", () => { if (f.isConnected) M3API = api; }); },
+      error: plain });
+  } catch { plain(); }
+}
+const _renderLab1 = renderLab;
+renderLab = function(){ _renderLab1(); initM3(); };
+
+/* ---- imagini alese (fără repetări, mai multe perspective) ---- */
+const IMG_CAT_LABEL = { anat: "anatomie", hist: "histologie", imag: "imagistică" };
+for (const [org, cats] of Object.entries(CUR_IMG)) for (const [cat, list] of Object.entries(cats)) GAL.set(org + ":" + cat, list);
+galHtml = function(o){
+  const cat = labState().galCat || "3d";
+  if (cat === "3d") return model3dHtml(o.id);
+  const st = GAL.get(o.id + ":" + cat);
+  if (!st || st === "loading"){ if (!st) loadGal(o); return `<p class="hint">Se caută imagini…</p>`; }
+  if (!st.length) return `<p class="hint">Nu am încă imagini potrivite pentru această categorie.</p>`;
+  return `<div class="gal-grid">${st.map((c, i) => `<button type="button" class="gal-it" data-act="gal-open" data-i="${i}" title="${esc(c.v || c.title)}"><img src="${esc(c.thumb)}" alt="${esc(c.v || c.title)}" loading="lazy">${c.v ? `<span class="gal-cap">${esc(c.v)}</span>` : ""}</button>`).join("")}</div>
+    <p class="hint">Apasă pe o imagine ca s-o vezi mare și s-o explice ghidul.</p>`;
+};
+/* fereastra cu imaginea mare: listă generică (organ sau sistem) */
+let IVL = null;
+function ivOpen(list, i, label){
+  if (!list || !list[i]) return;
+  IVL = { list, label }; labState().galSel = i;
+  const c = list[i], exp = imgExpCache.get(c.thumb), big = String(c.thumb).replace(/\/(\d+)px-/, "/1280px-");
+  imgOv.innerHTML = `<div class="acct-box img-box-lg" role="dialog" aria-modal="true" aria-label="${esc(c.v || c.title)}">
+    <button class="icon-btn ac-x" type="button" data-iv="close" aria-label="Închide"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    <div class="iv-img"><img src="${esc(big)}" alt="${esc(c.v || c.title)}" onerror="this.onerror=null;this.src='${esc(c.thumb)}'"></div>
+    <p class="iv-cap"><b>${esc(c.v || c.title)}</b><span>${esc(c.title)}${c.author ? " · " + esc(c.author) : ""}${c.lic ? " · " + esc(c.lic) : ""} · <a href="${esc(c.page)}" target="_blank" rel="noopener">Wikimedia Commons</a></span></p>
+    <div class="row"><button class="btn" type="button" data-iv="prev" ${i ? "" : "disabled"}>← Anterioara</button><span class="hint">${i + 1} / ${list.length}</span><button class="btn" type="button" data-iv="next" ${i < list.length - 1 ? "" : "disabled"}>Următoarea →</button><span class="grow"></span><button class="btn primary" type="button" data-iv="explain">Explică imaginea</button></div>
+    <div class="iv-exp prose" id="ivExp"${exp ? "" : " hidden"}>${exp ? md(exp) : ""}</div></div>`;
+  imgOv.hidden = false;
+}
+openGalImg = function(i){
+  if (IVL && !imgOv.hidden) return ivOpen(IVL.list, i, IVL.label);
+  const L = labState(), o = ORGANS.find(x => x.id === L.organ), cat = L.galCat || "anat", list = o && GAL.get(o.id + ":" + cat);
+  if (Array.isArray(list)) ivOpen(list, i, `${o.nume}, ${IMG_CAT_LABEL[cat] || ""}`);
+};
+explainOrganImg = async function(btn){
+  const L = labState(), c = IVL && IVL.list[L.galSel]; if (!c) return;
+  const out = $("#ivExp"); out.hidden = false;
+  if (imgExpCache.has(c.thumb)){ out.innerHTML = md(imgExpCache.get(c.thumb)); return; }
+  btn.disabled = true; out.innerHTML = `<p class="hint">Se analizează imaginea…</p>`;
+  try {
+    const blob = await (await fetch(c.thumb)).blob();
+    const s = await sampleP;
+    const { text } = await s(`Ești tutore de medicină pentru studenți. Imaginea atașată („${c.title}”, Wikimedia Commons) arată: ${c.v || ""} — ${IVL.label}.
+Explică în limba română, detaliat: tipul imaginii (planșă anatomică, preparat histologic și colorația, imagistică și planul de secțiune), perspectiva, apoi structurile vizibile și etichetele, traduse în română (listă). Încheie cu ce e important pentru examen și o greșeală frecventă de interpretare. 150–250 de cuvinte, markdown simplu.`, { modelTier: "default", images: [blob], onText: ({ text }) => { out.innerHTML = md(text); } });
+    imgExpCache.set(c.thumb, text); out.innerHTML = md(text);
+  } catch (e){ out.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Imaginea nu a putut fi pregătită pentru analiză. Încearcă alta.")}</p>`; }
+  finally { btn.disabled = false; }
+};
+
+/* ---- vizualizare pe sisteme ---- */
+function sysPanelHtml(s){
+  const L = labState(), imgs = SYS_IMG[s] || [], views = imgs.map((im, i) => [String(i), im.v]).concat(SYS3D[s] && SYS3D[s].length ? [["3d", "3D"]] : []);
+  let v = L.sysView == null ? (views[0] ? views[0][0] : "3d") : String(L.sysView);
+  if (!views.some(x => x[0] === v)) v = views[0] ? views[0][0] : "3d";
+  const organs = ORGANS.filter(o => o.sis === s);
+  const body = v === "3d" ? model3dHtml("sys:" + s) : (() => { const im = imgs[+v]; const big = String(im.thumb).replace(/\/(\d+)px-/, "/1024px-");
+    return `<button type="button" class="sys-img" data-act="sys-open" data-i="${v}" title="Mărește"><img src="${esc(big)}" alt="${esc(im.v)}" onerror="this.onerror=null;this.src='${esc(im.thumb)}'"></button>
+      <p class="iv-cap"><b>${esc(im.v)}</b><span>${esc(im.title)}${im.author ? " · " + esc(im.author) : ""}${im.lic ? " · " + esc(im.lic) : ""} · <a href="${esc(im.page)}" target="_blank" rel="noopener">Wikimedia Commons</a></span></p>`; })();
+  return `<div class="org-info sys-panel" style="--oc:var(--${SYS[s].c})">
+    <span class="org-sys"><i class="dot"></i>Sistem</span><h3>Sistemul ${esc(SYS[s].nume.toLowerCase())}</h3>
+    <p class="hint">În desen rămân doar organele acestui sistem. Mai jos îl vezi pe corpul întreg, cu fiecare parte denumită, din mai multe perspective.</p>
+    ${views.length ? `<div class="seg gal-tabs">${views.map(([k, t]) => `<button type="button" data-act="sys-view" data-v="${k}" aria-pressed="${k === v}">${esc(t)}</button>`).join("")}</div>` : ""}
+    ${body}
+    <h4 class="org-h4">Organele sistemului</h4>
+    <div class="sys-orgs">${organs.map(o => `<button type="button" class="chip" data-org="${o.id}"><i class="dot"></i>${esc(o.nume)}</button>`).join("") || `<span class="hint">Organele acestui sistem nu sunt marcate în desen.</span>`}</div>
+  </div>`;
+}
+
+/* ---- insight-uri la temele de studiu ---- */
+const INS_KEY = "ghid.insights.v1";
+function insRead(){ try { return JSON.parse(localStorage.getItem(INS_KEY) || "{}") || {}; } catch { return {}; } }
+function insWrite(t, v){ try { const o = insRead(); o[t] = v; const ks = Object.keys(o); while (ks.length > 150) delete o[ks.shift()]; localStorage.setItem(INS_KEY, JSON.stringify(o)); } catch {} }
+const ICON_BULB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V16h5v-.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z"/></svg>';
+function insBody(topic, text, loading){
+  return `${loading && !text ? `<p class="hint">Se pregătește insight-ul…</p>` : `<div class="prose">${md(text)}</div>`}
+    <div class="row ins-act"><button type="button" class="btn sm primary" data-act="explain-deep" data-q="${esc(topic)}">Explicație completă, detaliată →</button>${loading ? "" : `<button type="button" class="btn sm" data-act="ins-new" data-q="${esc(topic)}">Alt insight</button>`}</div>`;
+}
+async function showInsight(topic, box, fresh){
+  if (!box) return;
+  const o = ORGANS.find(x => x.id === labState().organ), cached = !fresh && insRead()[topic];
+  box.hidden = false;
+  if (cached){ box.innerHTML = insBody(topic, cached); return; }
+  box.innerHTML = insBody(topic, "", true);
+  try {
+    const s = await sampleP;
+    const { text } = await s(`Ești tutore de medicină pentru studenți la USMF. Dă UN SINGUR insight despre tema „${topic}”${o ? ` (organul: ${o.nume})` : ""}: ideea-cheie care face tema să aibă sens sau legătura pe care studenții o ratează (de la mecanism la consecința clinică).
+Reguli: 2–3 propoziții, maximum 55 de cuvinte, în română. Fără introducere, fără titlu, fără liste, fără să explici toată tema. Îngroașă cu ** un singur termen-cheie.${fresh ? " Alege alt unghi decât cel mai evident." : ""}`, { modelTier: "quick", onText: ({ text }) => { if (box.isConnected) box.innerHTML = insBody(topic, text, true); } });
+    insWrite(topic, text);
+    if (box.isConnected) box.innerHTML = insBody(topic, text);
+  } catch (e){ if (box.isConnected) box.innerHTML = `<p class="hint">${esc(e && e.code ? errCopy(e) : "Insight-ul nu a putut fi generat. Încearcă din nou.")}</p>`; }
+}
+onLab("click", ev => {
+  const b = ev.target.closest("[data-act]"); if (!b) return;
+  const L = labState(), a = b.dataset.act;
+  if (a === "insight"){
+    const box = b.parentElement.querySelector(".ins"), open = !box.hidden;
+    $$(".org-ti .ins").forEach(x => { if (x !== box) x.hidden = true; });
+    $$(".org-ti .org-t").forEach(x => x.setAttribute("aria-expanded", "false"));
+    if (open){ box.hidden = true; return; }
+    b.setAttribute("aria-expanded", "true"); showInsight(b.dataset.q, box);
+  }
+  else if (a === "ins-new") showInsight(b.dataset.q, b.closest(".ins"), true);
+  else if (a === "explain-deep") labExplain(b.dataset.q, b.dataset.disc, true);
+  else if (a === "org-ins"){ const v = ($("#orgQ").value || "").trim(); if (!v){ toast("Scrie o temă"); return; } showInsight(v, $("#orgOwnIns")); }
+  else if (a === "m3-ann"){
+    if (!M3API){ toast("Modelul 3D încă se încarcă"); return; }
+    try { M3API.gotoAnnotation(+b.dataset.i, { preventCameraAnimation: false, preventCameraMove: false }); } catch {}
+    $$(".m3-labels button.on").forEach(x => x.classList.remove("on")); b.classList.add("on");
+  }
+  else if (a === "sys-view"){ L.sysView = b.dataset.v; renderLab(); }
+  else if (a === "sys-open"){ const s = L.sys, imgs = SYS_IMG[s] || []; ivOpen(imgs, +b.dataset.i, `Sistemul ${SYS[s].nume.toLowerCase()}`); }
+});
+$("#p-lab").addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "orgQ"){ ev.preventDefault(); const b = $('[data-act="org-ins"]'); if (b) b.click(); } });
+
+/* ---------------- v11: Anatomy & Clinical Lab (identificare, cazuri, semiologie), galerie 3 + „Mai multe”, AI Tutor ---------------- */
+ANAT_CAT.imag = "Radiologie și imagistică";
+/* galerie: cele mai bune 3, restul la „Mai multe” */
+const _galHtml10 = galHtml;
+galHtml = function(o){
+  const L = labState(), cat = L.galCat || "3d";
+  if (cat === "3d") return _galHtml10(o);
+  const st = GAL.get(o.id + ":" + cat);
+  if (!Array.isArray(st) || st.length <= 3) return _galHtml10(o);
+  const more = !!(L.galMore && L.galMore[o.id + ":" + cat]);
+  const shown = more ? st : st.slice(0, 3);
+  return `<div class="gal-grid">${shown.map((c, i) => `<button type="button" class="gal-it" data-act="gal-open" data-i="${i}" title="${esc(c.v || c.title)}"><img src="${esc(c.thumb)}" alt="${esc(c.v || c.title)}" loading="lazy">${c.v ? `<span class="gal-cap">${esc(c.v)}</span>` : ""}</button>`).join("")}</div>
+    <div class="row"><button type="button" class="btn sm" data-act="gal-more" data-k="${o.id}:${cat}">${more ? "Arată doar cele mai bune 3" : `Mai multe (${st.length - 3})`}</button><span class="hint">Apasă pe o imagine ca s-o vezi mare și s-o explice ghidul.</span></div>`;
+};
+
+/* ---- structura laboratorului ---- */
+const LAB_VIEWS = [["anat", "Anatomie 3D"], ["ident", "Identificarea structurilor"], ["caz", "Cazuri clinice"], ["semio", "Semiologie"]];
+const _renderLab10 = renderLab;
+renderLab = function(){
+  const L = labState(), p = $("#p-lab"), ov = $("#progOv");
+  if (!L.lab) L.lab = "anat";
+  if (p && (!ov || ov.hidden)){
+    const body = L.lab === "ident" ? identHtml() : L.lab === "caz" ? cazLabHtml() : L.lab === "semio" ? semioHtml() : anatHtml();
+    p.innerHTML = `<div class="lab-h"><div><h2 class="lab-title">Anatomy &amp; Clinical Lab</h2><p class="hint">Anatomie 3D, histologie, radiologie, identificarea structurilor, cazuri clinice și semiologie.</p></div>
+      <div class="seg lab-nav">${LAB_VIEWS.map(([k, t]) => `<button type="button" data-lab="${k}" aria-pressed="${L.lab === k}">${t}</button>`).join("")}</div></div>
+      <div class="lab-body">${body}</div>`;
+  }
+  try { renderProg(); paintCalW(); paintProgBtn(); } catch {}
+  initM3();
+};
+
+/* ---- identificarea structurilor pe modele 3D ---- */
+function identPool(){ return Object.entries(M3D_FULL).flatMap(([org, list]) => list.filter(m => m[2].length >= 4).map(m => ({ org, uid: m[0], title: m[1], names: m[2] }))); }
+function identNew(){
+  const L = labState(), pool = identPool().filter(m => !L.identOrg || L.identOrg === "toate" || m.org === L.identOrg);
+  if (!pool.length) return;
+  const m = pool[Math.floor(Math.random() * pool.length)], uniq = [...new Set(m.names)];
+  const ans = Math.floor(Math.random() * m.names.length), right = m.names[ans];
+  const wrong = shuffle(uniq.filter(n => n !== right)).slice(0, 3);
+  L.ident = { m, ans, opts: shuffle([right, ...wrong]), right, picked: null, score: (L.ident && L.ident.score) || 0, n: (L.ident && L.ident.n) || 0 };
+}
+function identHtml(){
+  const L = labState();
+  if (!L.ident) identNew();
+  const I = L.ident; if (!I) return `<p class="hint">Nu sunt modele potrivite.</p>`;
+  const orgs = [...new Set(identPool().map(m => m.org))];
+  const done = I.picked != null;
+  return `<div class="ident">
+    <div class="row"><label class="field"><span class="label">Organ</span><select data-act="ident-org"><option value="toate">Toate organele, la întâmplare</option>${orgs.map(o => `<option value="${o}"${L.identOrg === o ? " selected" : ""}>${esc((ORGANS.find(x => x.id === o) || {}).nume || o)}</option>`).join("")}</select></label>
+      <span class="grow"></span><span class="pill">Scor: ${I.score}/${I.n}</span></div>
+    <h4 class="m3-title">${esc(I.m.title)}</h4>
+    <div class="m3-box"><iframe data-uid="${I.m.uid}" data-quiz="${I.ans}" title="Model pentru identificare" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe></div>
+    <p class="ident-q"><b>Ce structură e marcată cu punctul nr. ${I.ans + 1}?</b> <span class="hint">Modelul se rotește singur spre ea. Dacă nu se vede, apasă pe „Arată din nou punctul”.</span></p>
+    <div class="ident-opts">${I.opts.map(o => `<button type="button" class="opt${done ? (o === I.right ? " right" : o === I.picked ? " wrong" : "") : ""}" data-act="ident-pick" data-v="${esc(o)}" ${done ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>
+    <div class="row">${done ? `<span class="verdict ${I.picked === I.right ? "ok" : "no"}">${I.picked === I.right ? "Corect" : `Greșit: răspunsul era „${esc(I.right)}”`}</span>` : ""}<span class="grow"></span>
+      <button type="button" class="btn sm" data-act="ident-show">Arată din nou punctul</button><button type="button" class="btn sm primary" data-act="ident-next">${done ? "Următoarea structură" : "Sari peste"}</button></div>
+  </div>`;
+}
+/* inițializarea modelului de identificare: etichetele ascunse, mergem la punctul cerut */
+const _initM3_10 = initM3;
+initM3 = async function(){
+  const f = document.querySelector(".m3-box iframe[data-quiz]:not([data-init])");
+  if (!f) return _initM3_10();
+  f.dataset.init = "1"; M3API = null;
+  const uid = f.dataset.uid, idx = +f.dataset.quiz;
+  try { await loadScript(VIEWER_JS); } catch {}
+  if (!window.Sketchfab || !f.isConnected){ if (f.isConnected) f.src = `https://sketchfab.com/models/${uid}/embed?autostart=1&annotation_tooltip_visible=0&ui_theme=dark&dnt=1`; return; }
+  new window.Sketchfab(f).init(uid, { autostart: 1, preload: 1, ui_theme: "dark", ui_hint: 0, dnt: 1, annotation_tooltip_visible: 0, annotation_cycle: 0,
+    success: api => { api.start(); api.addEventListener("viewerready", () => { if (!f.isConnected) return; M3API = api; setTimeout(() => { try { api.gotoAnnotation(idx, { preventCameraAnimation: false, preventCameraMove: false }); } catch {} }, 600); }); },
+    error: () => {} });
+};
+
+/* ---- cazuri clinice interactive ---- */
+const CAZ_SYS = ["Cardiovascular", "Respirator", "Digestiv", "Renal și urinar", "Nervos", "Endocrin și metabolic", "Hematologic", "Infecțios", "Locomotor", "Pediatrie", "Urgență"];
+function cazLabHtml(){
+  const L = labState(), C = L.cl;
+  const head = `<div class="row"><label class="field"><span class="label">Sistem</span><select id="clSys">${CAZ_SYS.map(s => `<option${L.clSys === s ? " selected" : ""}>${s}</option>`).join("")}</select></label>
+    <label class="field"><span class="label">Nivel</span><select id="clLvl"><option value="anul III–IV">Anii III–IV</option><option value="anul V–VI"${L.clLvl === "anul V–VI" ? " selected" : ""}>Anii V–VI</option><option value="rezidențiat"${L.clLvl === "rezidențiat" ? " selected" : ""}>Rezidențiat</option></select></label>
+    <span class="grow"></span><button type="button" class="btn primary" data-act="cl-new" data-busy>${C ? "Alt pacient" : "Pacient nou"}</button></div>`;
+  if (!C) return head + `<div class="placeholder"><h3>Un pacient fictiv, pas cu pas</h3><p>Primești prezentarea, apoi decizi la fiecare etapă: anamneză, examen obiectiv, investigații, diagnostic și tratament. După fiecare alegere afli rezultatul și de ce. Pacienții sunt inventați, pentru exersare.</p></div>`;
+  const shown = C.pasi.slice(0, C.i + 1);
+  return head + `<div class="cl-case">
+    <div class="cl-pt"><b>${esc(C.titlu || "Caz clinic")}</b><p>${md(C.prezentare)}</p></div>
+    ${shown.map((p, k) => { const ans = C.ans[k], done = ans != null;
+      return `<section class="cl-step"><span class="cl-et">${k + 1}. ${esc(p.etapa)}</span><p class="qq-t">${mdi(p.intrebare)}</p>
+        <div class="ident-opts">${arr(p.variante).map((v, j) => `<button type="button" class="opt${done ? (j === p.corect ? " right" : j === ans ? " wrong" : "") : ""}" data-act="cl-pick" data-k="${k}" data-j="${j}" ${done ? "disabled" : ""}>${mdi(v)}</button>`).join("")}</div>
+        ${done ? `<div class="qx">${mdi(p.explicatie)}${p.rezultat ? `<p class="cl-res"><b>Rezultat:</b> ${mdi(p.rezultat)}</p>` : ""}</div>` : ""}</section>`; }).join("")}
+    ${C.ans.length === C.pasi.length && C.ans[C.pasi.length - 1] != null ? `<section class="cl-end"><h3>Diagnostic: ${mdi(C.diagnostic)}</h3><p>${md(C.rezumat)}</p><p><b>${C.ans.filter((a, k) => a === C.pasi[k].corect).length}/${C.pasi.length}</b> decizii corecte.</p></section>` : ""}
+  </div>`;
+}
+async function cazNew(){
+  if (state.busy) return;
+  const L = labState(); L.clSys = $("#clSys").value; L.clLvl = $("#clLvl").value;
+  setBusy(true, "Se pregătește pacientul…");
+  try {
+    const r = await callClaude(`Creează un caz clinic FICTIV, interactiv, pentru studenți la medicină (${L.clLvl}), sistemul: ${L.clSys}. În română, conform ghidurilor actuale și practicii din Republica Moldova/UE.
+Răspunde doar cu JSON:
+{"titlu":"scurt, fără diagnostic","prezentare":"vârstă, sex, motivele prezentării, 2–4 propoziții","pasi":[{"etapa":"Anamneză|Examen obiectiv|Investigații|Diagnostic|Tratament","intrebare":"ce face/alege studentul","variante":["4 opțiuni plauzibile"],"corect":0,"explicatie":"de ce e corect și de ce celelalte nu (2–3 propoziții)","rezultat":"ce se află după acest pas (date noi despre pacient, valori, imagini descrise)"}],"diagnostic":"diagnosticul final","rezumat":"3–4 propoziții cu raționamentul și perlele de examen"}
+Exact 5 pași, în ordinea etapelor. Indicele „corect” variază între pași.`, { tier: "default", noCache: true });
+    const pasi = arr(r && r.pasi).filter(p => p && p.intrebare && arr(p.variante).length >= 3).map(p => Object.assign({}, p, { corect: Math.max(0, Math.min(arr(p.variante).length - 1, Number(p.corect) || 0)) }));
+    if (!pasi.length) throw { code: "invalid_json" };
+    L.cl = { titlu: r.titlu, prezentare: r.prezentare, pasi, diagnostic: r.diagnostic, rezumat: r.rezumat, i: 0, ans: [] };
+    renderLab();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+
+/* ---- exerciții de semiologie ---- */
+const SEMIO_SYS = ["Aparatul respirator", "Aparatul cardiovascular", "Aparatul digestiv", "Aparatul renal", "Sistemul nervos", "Aparatul locomotor", "Examenul general"];
+function semioHtml(){
+  const L = labState(), S = L.sm;
+  const head = `<div class="row"><label class="field"><span class="label">Aparat</span><select id="smSys">${SEMIO_SYS.map(s => `<option${L.smSys === s ? " selected" : ""}>${s}</option>`).join("")}</select></label>
+    <span class="grow"></span><button type="button" class="btn primary" data-act="sm-new" data-busy>${S ? "Alte exerciții" : "Generează exerciții"}</button></div>`;
+  if (!S) return head + `<div class="placeholder"><h3>Semne, manevre și interpretare</h3><p>Exerciții de semiologie: recunoști semnul descris, alegi manevra corectă de examinare sau interpretezi ce înseamnă. Fiecare răspuns vine cu explicația fiziopatologică.</p></div>`;
+  return head + `<ol class="sm-list">${S.list.map((x, k) => { const a = S.ans[k], done = a != null;
+    return `<li class="cl-step"><span class="cl-et">${esc(x.tip || "Exercițiu")}</span><p>${mdi(x.enunt)}</p><p class="qq-t">${mdi(x.intrebare)}</p>
+      <div class="ident-opts">${arr(x.variante).map((v, j) => `<button type="button" class="opt${done ? (j === x.corect ? " right" : j === a ? " wrong" : "") : ""}" data-act="sm-pick" data-k="${k}" data-j="${j}" ${done ? "disabled" : ""}>${mdi(v)}</button>`).join("")}</div>
+      ${done ? `<div class="qx">${mdi(x.explicatie)}</div>` : ""}</li>`; }).join("")}</ol>
+    ${S.ans.filter(a => a != null).length === S.list.length ? `<p class="cl-end"><b>${S.ans.filter((a, k) => a === S.list[k].corect).length}/${S.list.length}</b> corecte.</p>` : ""}`;
+}
+async function semioNew(){
+  if (state.busy) return;
+  const L = labState(); L.smSys = $("#smSys").value;
+  setBusy(true, "Se pregătesc exercițiile…");
+  try {
+    const r = await callClaude(`Creează 6 exerciții de SEMIOLOGIE MEDICALĂ pentru studenți la USMF, tema: ${L.smSys}. În română, termeni consacrați (de ex. matitate, raluri crepitante, semnul Blumberg, freamăt vocal).
+Amestecă tipurile: „Recunoaște semnul” (descrii ce constată examinatorul), „Manevra de examinare” (cum se caută un semn), „Interpretare” (ce sugerează asocierea de semne), „Diferențiere” (două semne asemănătoare).
+Răspunde doar cu JSON: {"exercitii":[{"tip":"...","enunt":"descrierea situației, 1–3 propoziții","intrebare":"...","variante":["4 opțiuni"],"corect":0,"explicatie":"mecanismul fiziopatologic și de ce celelalte variante nu se potrivesc (2–3 propoziții)"}]}
+Indicele „corect” variază.`, { tier: "default", noCache: true });
+    const list = arr(r && r.exercitii).filter(x => x && x.intrebare && arr(x.variante).length >= 3).map(x => Object.assign({}, x, { corect: Math.max(0, Math.min(arr(x.variante).length - 1, Number(x.corect) || 0)) }));
+    if (!list.length) throw { code: "invalid_json" };
+    L.sm = { list, ans: [] }; renderLab();
+  } catch (e){ if (!e || e.code !== "cancelled") showNotice(errCopy(e), "err"); }
+  finally { setBusy(false); }
+}
+function asQ(enunt, variante, corect){ const v = {}; arr(variante).forEach((x, k) => { v[LETTERS[k]] = String(x); }); return { enunt, tip: "CS", variante: v, corecte: [LETTERS[corect]] }; }
+
+/* ---- evenimente ---- */
+$("#p-lab").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-lab],[data-act]"); if (!b) return;
+  const L = labState();
+  if (b.dataset.lab){ L.lab = b.dataset.lab; renderLab(); return; }
+  const a = b.dataset.act;
+  if (a === "gal-more"){ L.galMore = L.galMore || {}; L.galMore[b.dataset.k] = !L.galMore[b.dataset.k]; renderLab(); }
+  else if (a === "ident-pick"){
+    const I = L.ident; if (!I || I.picked != null) return;
+    I.picked = b.dataset.v; I.n++; if (I.picked === I.right) I.score++;
+    progRecord(asQ(`Identifică structura nr. ${I.ans + 1} pe modelul „${I.m.title}”: ${I.right}`, I.opts, I.opts.indexOf(I.right)), [LETTERS[I.opts.indexOf(I.picked)]], "identificare", { topic: (ORGANS.find(o => o.id === I.m.org) || {}).nume || "Anatomie", disc: "Anatomie" });
+    renderLab();
+  }
+  else if (a === "ident-next"){ identNew(); renderLab(); }
+  else if (a === "ident-show"){ if (M3API) try { M3API.gotoAnnotation(L.ident.ans, { preventCameraAnimation: false, preventCameraMove: false }); } catch {} else toast("Modelul încă se încarcă"); }
+  else if (a === "cl-new") cazNew();
+  else if (a === "cl-pick"){
+    const C = L.cl, k = +b.dataset.k, j = +b.dataset.j; if (!C || C.ans[k] != null) return;
+    C.ans[k] = j; const p = C.pasi[k];
+    progRecord(asQ(`${C.titlu}: ${p.intrebare}`, p.variante, p.corect), [LETTERS[j]], "caz", { topic: `Caz clinic: ${L.clSys || ""}`, disc: "" });
+    if (k === C.i && C.i < C.pasi.length - 1) C.i++;
+    renderLab();
+  }
+  else if (a === "sm-new") semioNew();
+  else if (a === "sm-pick"){
+    const S = L.sm, k = +b.dataset.k, j = +b.dataset.j; if (!S || S.ans[k] != null) return;
+    S.ans[k] = j; const x = S.list[k];
+    progRecord(asQ(`${x.enunt} ${x.intrebare}`, x.variante, x.corect), [LETTERS[j]], "semiologie", { topic: `Semiologie: ${L.smSys || ""}`, disc: "Semiologie medicală" });
+    renderLab();
+  }
+});
+$("#p-lab").addEventListener("change", ev => { if (ev.target.dataset && ev.target.dataset.act === "ident-org"){ labState().identOrg = ev.target.value; labState().ident = null; renderLab(); } });
+Object.assign(SRC_LABEL, { identificare: "Identificarea structurilor", caz: "Cazuri clinice", semiologie: "Semiologie" });
+
+/* ---------------- AI Tutor ---------------- */
+const TKEY = "ghid.tutor.v1";
+const TUT = { msgs: (() => { try { return JSON.parse(localStorage.getItem(TKEY) || "[]") || []; } catch { return []; } })(), busy: false, img: null, mode: "explica", ctl: null };
+function tutSave(){ try { localStorage.setItem(TKEY, JSON.stringify(TUT.msgs.slice(-40))); } catch {} }
+const TUT_MODES = { explica: "Explică-mi", socratic: "Ascultă-mă (întrebări pe rând)", caz: "Discută un caz cu mine" };
+const TUT_STARTERS = ["Explică-mi diferența dintre sindromul nefrotic și cel nefritic", "Ascultă-mă la ciclul cardiac", "Cum interpretez o gazometrie arterială?", "Dă-mi un truc să rețin nervii cranieni"];
+function renderTutor(){
+  const p = $("#p-tutor"); if (!p) return;
+  const topic = state.result && !(state.meta && state.meta.sample) ? stripMarks(state.result.titlu) : "";
+  p.innerHTML = `<div class="tut">
+    <div class="tut-h"><div><h2 class="lab-title">AI Tutor</h2><p class="hint">Vorbești cu tutorul tău de medicină. Întreabă orice, cere să te asculte sau trimite o imagine (radiografie, preparat, schemă).</p></div>
+      <div class="row"><select id="tutMode" aria-label="Mod">${Object.entries(TUT_MODES).map(([k, t]) => `<option value="${k}"${TUT.mode === k ? " selected" : ""}>${t}</option>`).join("")}</select><button type="button" class="btn sm" id="tutNew">Conversație nouă</button></div></div>
+    <div class="tut-log" id="tutLog">${TUT.msgs.length ? TUT.msgs.map(tutMsgHtml).join("") : `<div class="tut-empty"><p class="hint">Începe cu o întrebare sau alege una:</p><div class="tut-st">${TUT_STARTERS.map(s => `<button type="button" class="chip" data-st="${esc(s)}">${esc(s)}</button>`).join("")}</div></div>`}</div>
+    <form class="tut-in" id="tutForm">
+      ${topic ? `<label class="tut-ctx"><input type="checkbox" id="tutCtx" checked> Ține cont de tema deschisă: „${esc(topic)}”</label>` : ""}
+      ${TUT.img ? `<div class="tut-att"><img src="${TUT.img.url}" alt=""><button type="button" class="icon-btn" id="tutImgX" aria-label="Scoate imaginea">×</button></div>` : ""}
+      <div class="tut-row"><label class="icon-btn tut-clip" title="Atașează o imagine" aria-label="Atașează o imagine"><input type="file" id="tutFile" accept="image/*" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l9.2-9.2a3.7 3.7 0 0 1 5.2 5.2l-9.2 9.2a1.8 1.8 0 0 1-2.6-2.6l8.5-8.5"/></svg></label>
+        <textarea id="tutQ" rows="2" placeholder="Scrie întrebarea ta… (Enter trimite, Shift+Enter rând nou)"></textarea>
+        ${TUT.busy ? `<button type="button" class="btn" id="tutStop">Oprește</button>` : `<button type="submit" class="btn primary">Trimite</button>`}</div>
+    </form></div>`;
+  const log = $("#tutLog"); log.scrollTop = log.scrollHeight;
+  $("#tutMode").onchange = e => { TUT.mode = e.target.value; };
+  $("#tutNew").onclick = () => { if (TUT.busy) return; TUT.msgs = []; tutSave(); renderTutor(); };
+  $("#tutForm").onsubmit = e => { e.preventDefault(); tutSend(); };
+  $("#tutQ").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); tutSend(); } });
+  $("#tutFile").onchange = e => { const f = e.target.files[0]; if (!f) return; if (f.size > 8e6){ toast("Imaginea e prea mare (maxim 8 MB)"); return; } TUT.img = { blob: f, url: URL.createObjectURL(f) }; renderTutor(); $("#tutQ").focus(); };
+  $("#tutImgX") && ($("#tutImgX").onclick = () => { TUT.img = null; renderTutor(); });
+  $("#tutStop") && ($("#tutStop").onclick = () => { if (TUT.ctl) TUT.ctl.abort(); });
+  $$(".tut-st .chip", p).forEach(c => c.onclick = () => { $("#tutQ").value = c.dataset.st; tutSend(); });
+}
+function tutMsgHtml(m){ return `<div class="tut-m ${m.r === "u" ? "u" : "a"}">${m.img ? `<span class="tut-imgnote">[imagine atașată]</span>` : ""}<div class="prose">${m.r === "u" ? esc(m.t).replace(/\n/g, "<br>") : md(m.t || "…")}</div></div>`; }
+async function tutSend(){
+  if (TUT.busy) return;
+  const q = ($("#tutQ").value || "").trim(); if (!q && !TUT.img) return;
+  const ctxOn = $("#tutCtx") && $("#tutCtx").checked, r = state.result;
+  const img = TUT.img; TUT.img = null;
+  TUT.msgs.push({ r: "u", t: q || "Ce se vede în imagine?", img: !!img });
+  const a = { r: "a", t: "" }; TUT.msgs.push(a); TUT.busy = true; renderTutor();
+  const hist = TUT.msgs.slice(-14, -1).map(m => `${m.r === "u" ? "STUDENT" : "TUTORE"}: ${m.t}`).join("\n\n");
+  const modeTxt = { explica: "Explică clar, întâi simplu, apoi la nivel de examen; folosește exemple clinice.", socratic: "Nu da răspunsul direct: pune o singură întrebare pe rând, așteaptă răspunsul, corectează blând și urcă treptat dificultatea.", caz: "Condu un caz clinic fictiv pas cu pas: dă câte o informație, întreabă ce ar face studentul, apoi comentează." }[TUT.mode];
+  const prompt = `Ești „AI Tutor”, tutorele de medicină al Ghidului studentului USMF. Vorbești în română, cald și concis, ca un asistent universitar bun. ${modeTxt}
+Folosește markdown (liste scurte, **termeni-cheie**). Dacă nu ești sigur de ceva, spune. Pentru întrebări despre pacienți reali, amintește că nu înlocuiești medicul. Răspunde doar la ce ține de medicină și studiu.
+${ctxOn && r ? `Tema deschisă de student: „${stripMarks(r.titlu)}”. Rezumat: ${stripMarks(r.rezumat || "").slice(0, 600)}\n` : ""}
+Conversația de până acum:
+${hist}
+
+Răspunde la ultimul mesaj al studentului.`;
+  TUT.ctl = new AbortController();
+  try {
+    const s = await sampleP;
+    const opts = { modelTier: "default", signal: TUT.ctl.signal, onText: ({ text }) => { a.t = text; const ms = $$("#tutLog .tut-m.a"); const last = ms[ms.length - 1]; if (last){ $(".prose", last).innerHTML = md(text); const log = $("#tutLog"); log.scrollTop = log.scrollHeight; } } };
+    if (img) opts.images = [img.blob];
+    const { text } = await s(prompt, opts);
+    a.t = text;
+  } catch (e){ a.t = a.t || (e && e.code === "cancelled" ? "_(oprit)_" : `_${errCopy(e)}_`); }
+  finally { TUT.busy = false; TUT.ctl = null; tutSave(); renderTutor(); $("#tutQ") && $("#tutQ").focus(); }
+}
 
 /* ---------------- boot ---------------- */
 updateModeUI(); renderSources(); renderHist(); renderAll(); selectTab("explicatie");
