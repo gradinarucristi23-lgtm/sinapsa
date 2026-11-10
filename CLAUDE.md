@@ -12,7 +12,7 @@ Proprietarul (Cristi) scrie în română; răspunde-i în română, scurt și co
 - Mesajele de commit în română. Nu încărca chei/parole în cod (cheia Gemini și `DATABASE_URL` stau doar în Render, grupul `sinapsa-env`).
 
 ## Arhitectură
-- `server.py` — server Python fără framework (ThreadingHTTPServer). Proxy către **Google Gemini** (nivel gratuit), streaming NDJSON pe `/api/generate`. Lipește `public/js/*.js` în ordinea numelor și le servește ca **`/app.js`** (un singur script, ordinea contează pentru hoisting). Se ține singur treaz (ping la 10 min). Rute: `/api/health`, `/api/generate`, `/api/kb/*` (biblioteca comună), `/api/auth/*`, `/api/sync/<hist|banks|prog>`.
+- `server.py` — server Python fără framework (ThreadingHTTPServer). Proxy către **Google Gemini** (nivel gratuit), streaming NDJSON pe `/api/generate`. Lipește `public/js/*.js` în ordinea numelor și le servește ca **`/app.js`** (un singur script, ordinea contează pentru hoisting). Se ține singur treaz (ping la 10 min). Rute: `/api/health`, `/api/generate`, `/api/kb/*` (biblioteca comună), `/api/auth/*`, `/api/sync/<hist|banks|prog>`, `/api/admin/stats` (doar pentru utilizatorii din `ADMIN_USERS`; contorul AI `GEN` e în memorie).
 - `kb.py` — biblioteca comună de explicații (Postgres Neon prin `DATABASE_URL`, altfel SQLite temporar).
 - `accounts.py` — conturi (utilizator + parolă PBKDF2, cod de recuperare), sincronizare documente `hist`, `banks`, `prog`.
 - `public/index.html` — doar markup-ul (antet, panouri, file). `public/css/app.css` — tot stilul (variabile de culoare în `:root`, mod întunecat cu `data-theme`).

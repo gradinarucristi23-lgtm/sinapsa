@@ -76,6 +76,8 @@ Când schimbi un fișier pe GitHub (de exemplu `public/index.html`), Render publ
 | Variabilă | Implicit | Rol |
 |---|---|---|
 | `RATE_PER_HOUR` | `40` | Cereri permise pe oră pentru fiecare vizitator |
+| `ADMIN_USERS` | (lipsă) | Numele tale de utilizator (separate prin virgulă). Cine e aici vede în fereastra contului butonul **Statisticile site-ului**: conturi, activitate, spațiul din baza de date, folosirea AI-ului |
+| `DB_LIMIT_MB` | `1024` | Spațiul bazei de date folosit la calculul procentului din statistici (planul gratuit Neon: 1 GB) |
 | `MODELS_DEFAULT` | `gemini-flash-lite-latest,…` | Modelele încercate, în ordine, la profunzimea *Standard (rapid)* |
 | `MODELS_QUICK` | `gemini-flash-lite-latest,…` | Modelele pentru sarcini scurte |
 | `MODELS_COMPLEX` | `gemini-flash-latest,gemini-2.5-pro,…` | Modelele pentru *Aprofundat* |

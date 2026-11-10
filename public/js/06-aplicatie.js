@@ -333,7 +333,41 @@ function paintAcct(){
   if (!acctOv.hidden) renderAcct();
 }
 function openAcct(){ SYNC.error = ""; acctOv.hidden = false; renderAcct(); setTimeout(() => { const f = acctOv.querySelector("input"); if (f) f.focus(); }, 30); }
-function closeAcct(){ acctOv.hidden = true; SYNC.recovery = ""; }
+function closeAcct(){ acctOv.hidden = true; SYNC.recovery = ""; SYNC.showStats = false; }
+/* ---- statisticile site-ului (doar pentru administrator: ADMIN_USERS în Render) ---- */
+function fmtBytes(n){ n = +n || 0; return n >= 1073741824 ? +(n / 1073741824).toFixed(2) + " GB" : n >= 1048576 ? (n / 1048576).toFixed(n >= 104857600 ? 0 : 1) + " MB" : n >= 1024 ? Math.round(n / 1024) + " KB" : n + " B"; }
+async function loadAdminStats(){
+  SYNC.stats = "loading"; renderAcct();
+  try { SYNC.stats = await api("/api/admin/stats"); } catch (e){ SYNC.stats = { error: e.message || "Statisticile nu au putut fi citite." }; }
+  if (!acctOv.hidden) renderAcct();
+}
+function adminStatsHtml(){
+  const S = SYNC.stats;
+  const head = `<h2>Statisticile site-ului</h2>`;
+  const foot = `<div class="row"><button class="btn sm" type="button" id="stBack">← Înapoi la cont</button><span class="grow"></span><button class="btn sm" type="button" id="stReload">Reîmprospătează</button></div>`;
+  if (!S || S === "loading") return head + `<p class="hint">Se citesc datele…</p>` + foot;
+  if (S.error) return head + `<p class="ac-err" role="alert">${esc(S.error)}</p>` + foot;
+  const limit = S.limit_mb * 1048576, used = S.db_bytes || 0, p = Math.min(100, used / limit * 100);
+  const free = Math.max(0, limit - used), avg = S.data.avg || 0;
+  const fit = avg ? Math.floor(free / (avg * 1.6)) : 0; // 1,6: indexuri și spațiu suplimentar în Postgres
+  const lvl = p >= 85 ? "bad" : p >= 60 ? "warn" : "ok";
+  const kpi = (n, t) => `<div class="kpi"><b>${n}</b><span>${t}</span></div>`;
+  const G = S.gen || {}, tiers = Object.entries(G.tiers || {}).map(([k, n]) => `${{ quick: "rapid", default: "normal", complex: "aprofundat" }[k] || k}: ${n}`).join(" · ");
+  const keyName = { hist: "istoric", banks: "bănci de grile", prog: "progres și cartonașe" };
+  return head + `
+    <h3 class="st-h">Conturi</h3>
+    <div class="lab-kpis">${kpi(S.users, "conturi în total")}${kpi(S.active[7], "active în ultimele 7 zile")}${kpi(S.active[1], "active azi")}${kpi(S.new[7], "conturi noi în 7 zile")}</div>
+    <p class="hint">Active în 30 de zile: <b>${S.active[30]}</b> · noi azi: <b>${S.new[1]}</b>, în 30 de zile: <b>${S.new[30]}</b> · au intrat în cont în 7 zile: <b>${S.logins7}</b>. „Activ” înseamnă că a salvat ceva în cont în perioada respectivă.</p>
+    <h3 class="st-h">Spațiul din baza de date</h3>
+    <div class="st-bar ${lvl}" role="img" aria-label="${p.toFixed(0)}% folosit"><i style="width:${Math.max(p, 1.5)}%"></i></div>
+    <p><b>${fmtBytes(used)}</b> din ${fmtBytes(limit)} (${p.toFixed(1)}%). ${!avg ? "Încă nu sunt date salvate în conturi." : S.data.users < 5 ? `Un cont ocupă în medie <b>${fmtBytes(avg)}</b>. Estimarea câte conturi mai încap apare după ce cel puțin 5 conturi au date.` : `Un cont ocupă în medie <b>${fmtBytes(avg)}</b>, deci mai încap aproximativ <b>${fit.toLocaleString("ro-RO")}</b> de conturi ca acestea.`}</p>
+    <p class="hint">Datele conturilor: ${fmtBytes(S.data.bytes)} (${Object.entries(S.data.by_key || {}).map(([k, n]) => `${keyName[k] || k} ${fmtBytes(n)}`).join(", ") || "nimic"}). Biblioteca comună: ${S.kb} ${S.kb === 1 ? "temă" : "teme"}. Neon socotește spațiul puțin diferit, așa că cifra exactă o vezi în panoul Neon.</p>
+    ${S.top && S.top.length ? `<details class="ac-more"><summary>Conturile care ocupă cel mai mult</summary><ol class="st-top">${S.top.map(t => `<li><span>${esc(t.username)}</span><b>${fmtBytes(t.bytes)}</b></li>`).join("")}</ol></details>` : ""}
+    <h3 class="st-h">AI-ul (Gemini) azi</h3>
+    <div class="lab-kpis">${kpi(G.ok || 0, "răspunsuri date")}${kpi(G.gemini_limit || 0, "ori s-a atins limita Gemini")}${kpi(G.ip_limit || 0, `ori a atins cineva limita de ${S.rate_per_hour}/oră`)}</div>
+    <p class="hint">${tiers ? `Pe niveluri: ${tiers}. ` : ""}${G.errors ? `Alte erori: ${G.errors}. ` : ""}Se numără de la ultima pornire a serverului (${new Date(S.started).toLocaleString("ro-RO", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}) și se golesc la miezul nopții.</p>
+    ${foot}`;
+}
 function renderAcct(){
   let body;
   if (!SYNC.enabled){
@@ -343,11 +377,14 @@ function renderAcct(){
       <p>E singura cale de a-ți schimba parola dacă o uiți (contul nu folosește email). Notează-l sau fă-i o captură de ecran.</p>
       <div class="rec-code">${esc(SYNC.recovery)}</div>
       <div class="row"><button class="btn sm" type="button" id="recCopy">Copiază codul</button><span class="grow"></span><button class="btn primary" type="button" id="recDone">L-am salvat</button></div>`;
+  } else if (SYNC.user && SYNC.showStats && SYNC.user.admin){
+    body = adminStatsHtml();
   } else if (SYNC.user){
     body = `<h2>Contul tău</h2>
       <p>Ești conectat ca <b>${esc(SYNC.user.username)}</b>. Istoricul, băncile de grile și greșelile tale se sincronizează pe toate dispozitivele unde intri în cont.</p>
       <p class="hint">${SYNC.msg ? esc(SYNC.msg) : SYNC.last ? "Sincronizat " + ago(SYNC.last) + "." : "Încă nesincronizat."}</p>
       <div class="row"><button class="btn sm" type="button" id="acSync">Sincronizează acum</button><button class="btn sm" type="button" id="acOut">Ieși din cont</button></div>
+      ${SYNC.user.admin ? `<div class="row ac-admin"><button class="btn sm primary" type="button" id="acStats">Statisticile site-ului</button><span class="hint">vizibil doar pentru tine</span></div>` : ""}
       <details class="ac-more"><summary>Mai multe opțiuni</summary>
         <div class="row"><button class="btn sm" type="button" id="acOutClear">Ieși și șterge datele de pe acest dispozitiv</button><button class="btn sm danger" type="button" id="acDel">Șterge contul</button></div>
         <p class="hint">„Șterge contul” elimină definitiv contul și datele sincronizate de pe server. Datele din acest browser rămân.</p>
@@ -390,6 +427,9 @@ function renderAcct(){
   $("#recCopy") && ($("#recCopy").onclick = () => copyText(SYNC.recovery));
   $("#recDone") && ($("#recDone").onclick = () => { SYNC.recovery = ""; closeAcct(); });
   $("#acSync") && ($("#acSync").onclick = () => syncPull());
+  $("#acStats") && ($("#acStats").onclick = () => { SYNC.showStats = true; loadAdminStats(); });
+  $("#stBack") && ($("#stBack").onclick = () => { SYNC.showStats = false; renderAcct(); });
+  $("#stReload") && ($("#stReload").onclick = () => loadAdminStats());
   const logout = async clear => {
     try { await postJSON("/api/auth/logout"); } catch {}
     SYNC.user = null; SYNC.last = 0; SYNC.msg = "";

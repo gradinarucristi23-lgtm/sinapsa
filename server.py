@@ -50,6 +50,19 @@ SAFETY = [
 
 KBASE = KB()  # biblioteca comună (Postgres cu DATABASE_URL, altfel SQLite temporar)
 ACC = Accounts(KBASE)  # conturi și sincronizare (doar pe bază permanentă)
+STARTED = int(time.time() * 1000)
+GEN_LOCK = threading.Lock()
+GEN = {"day": "", "ok": 0, "gemini_limit": 0, "ip_limit": 0, "errors": 0, "tiers": {}}
+
+
+def gen_count(field, tier=None):
+    day = time.strftime("%Y-%m-%d")
+    with GEN_LOCK:
+        if GEN["day"] != day:
+            GEN.update(day=day, ok=0, gemini_limit=0, ip_limit=0, errors=0, tiers={})
+        GEN[field] += 1
+        if tier:
+            GEN["tiers"][tier] = GEN["tiers"].get(tier, 0) + 1
 
 _hits = {}
 _hits_lock = threading.Lock()
@@ -142,7 +155,22 @@ class Handler(BaseHTTPRequestHandler):
             return
         if self.path.startswith("/api/auth/me"):
             user = ACC.session_user(self.cookie("sid")) if ACC.enabled else None
-            self.send_json(200, {**ACC.status(), "user": user})
+            self.send_json(200, {**ACC.status(), "user": self.user_out(user)})
+            return
+        if self.path.startswith("/api/admin/stats"):
+            user = self.require_user()
+            if not user:
+                return
+            if not ACC.is_admin(user):
+                self.send_json(403, {"code": "forbidden", "message": "Doar pentru administrator."})
+                return
+            try:
+                with GEN_LOCK:
+                    gen = json.loads(json.dumps(GEN))
+                self.send_json(200, {**ACC.stats(), "gen": gen, "started": STARTED, "rate_per_hour": RATE_PER_HOUR})
+            except Exception as e:
+                print("Admin:", str(e).encode("ascii", "replace").decode(), flush=True)
+                self.send_json(500, {"code": "stats_error", "message": "Statisticile nu au putut fi citite."})
             return
         if self.path.startswith("/api/sync"):
             user = self.require_user()
@@ -164,6 +192,12 @@ class Handler(BaseHTTPRequestHandler):
         if token:
             return f"sid={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age={180 * 86400}{secure}"
         return f"sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0{secure}"
+
+    @staticmethod
+    def user_out(user):
+        if not user:
+            return None
+        return {"id": user["id"], "username": user["username"], "admin": ACC.is_admin(user)}
 
     def require_user(self):
         if not ACC.enabled:
@@ -205,13 +239,13 @@ class Handler(BaseHTTPRequestHandler):
             body = self.read_json(20_000)
             if route == "/api/auth/register":
                 uid, name, code = ACC.register(body.get("username"), body.get("password"))
-                self.send_json(200, {"user": {"id": uid, "username": name}, "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
+                self.send_json(200, {"user": self.user_out({"id": uid, "username": name}), "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
             elif route == "/api/auth/login":
                 uid, name = ACC.login(body.get("username"), body.get("password"))
-                self.send_json(200, {"user": {"id": uid, "username": name}}, cookie=self.session_cookie(ACC.new_session(uid)))
+                self.send_json(200, {"user": self.user_out({"id": uid, "username": name})}, cookie=self.session_cookie(ACC.new_session(uid)))
             elif route == "/api/auth/recover":
                 uid, name, code = ACC.recover(body.get("username"), body.get("code"), body.get("password"))
-                self.send_json(200, {"user": {"id": uid, "username": name}, "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
+                self.send_json(200, {"user": self.user_out({"id": uid, "username": name}), "recovery": code}, cookie=self.session_cookie(ACC.new_session(uid)))
             else:
                 self.send_json(404, {"error": "not_found"})
         except ValueError as e:
@@ -307,6 +341,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(500, {"code": "server_key", "message": "GEMINI_API_KEY lipseste pe server."})
             return
         if not rate_ok(self.client_ip()):
+            gen_count("ip_limit")
             self.send_json(429, {"code": "ip_limited", "message": "Prea multe cereri in ultima ora."})
             return
         try:
@@ -375,12 +410,14 @@ class Handler(BaseHTTPRequestHandler):
                 continue
 
         if resp is None:
+            gen_count("gemini_limit" if last_status == 429 else "errors")
             if last_status == 429:
                 self.send_json(429, {"code": "rate_limited", "message": "Limita gratuita Gemini a fost atinsa."})
             else:
                 self.send_json(502, {"code": "upstream_error", "message": f"Gemini a raspuns {last_status}."})
             return
 
+        gen_count("ok", tier)
         self.send_response(200)
         self.send_header("Content-Type", "application/x-ndjson; charset=utf-8")
         self.send_header("Cache-Control", "no-cache")

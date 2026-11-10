@@ -908,3 +908,13 @@ body.no-scroll{overflow:hidden}
 .fl-due{margin-top:12px}
 .btn.ghost{background:none;box-shadow:none;color:var(--ink-3)}
 .btn.ghost:hover{color:var(--bad)}
+
+/* ---- statisticile site-ului (administrator) ---- */
+.st-h{margin:16px 0 8px;font-size:15px}
+.st-bar{height:12px;border-radius:999px;background:var(--line);box-shadow:inset 0 0 0 1px var(--line-2);overflow:hidden;margin:4px 0 8px}
+.st-bar i{display:block;height:100%;border-radius:999px;background:var(--ok)}
+.st-bar.warn i{background:var(--warn)}
+.st-bar.bad i{background:var(--bad)}
+.st-top{margin:8px 0 0;padding-left:20px;font-size:13.5px}
+.st-top li span{display:inline-block;min-width:160px}
+.ac-admin{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);align-items:center}

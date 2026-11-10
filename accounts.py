@@ -17,6 +17,9 @@ SESSION_DAYS = 180
 MAX_DOC = 6_000_000          # octeți per document sincronizat
 MAX_USER = 14_000_000        # octeți în total per cont
 SYNC_KEYS = ("hist", "banks", "prog")
+# administratorii (văd statisticile site-ului): nume de utilizator separate prin virgulă, în Render
+ADMIN_USERS = {u.strip().lower() for u in os.environ.get("ADMIN_USERS", "").split(",") if u.strip()}
+DB_LIMIT_MB = float(os.environ.get("DB_LIMIT_MB", "1024"))  # spațiul planului gratuit Neon
 USER_RE = re.compile(r"^[a-z0-9._-]{3,32}$")
 
 
@@ -122,6 +125,38 @@ class Accounts:
     def end_session(self, token):
         if token:
             self.kb._exec("DELETE FROM sessions WHERE token_hash = ?", (hashlib.sha256(token.encode()).hexdigest(),))
+
+    # ---- administrare ----
+    @staticmethod
+    def is_admin(user):
+        return bool(user) and str(user.get("username", "")).lower() in ADMIN_USERS
+
+    def stats(self):
+        q = lambda sql, p=(): self.kb._exec(sql, p, fetch=True)
+        one = lambda sql, p=(): (q(sql, p) or [[0]])[0][0] or 0
+        now = int(time.time() * 1000)
+        ago = lambda days: now - days * 86400_000
+        out = {"now": now, "limit_mb": DB_LIMIT_MB, "kind": self.kb.kind}
+        out["users"] = one("SELECT COUNT(*) FROM users")
+        out["new"] = {d: one("SELECT COUNT(*) FROM users WHERE created >= ?", (ago(d),)) for d in (1, 7, 30)}
+        # activ = a sincronizat ceva (a învățat cu contul deschis) în perioada respectivă
+        out["active"] = {d: one("SELECT COUNT(DISTINCT user_id) FROM userdata WHERE updated >= ?", (ago(d),)) for d in (1, 7, 30)}
+        out["logins7"] = one("SELECT COUNT(DISTINCT user_id) FROM sessions WHERE created >= ?", (ago(7),))
+        with_data = one("SELECT COUNT(DISTINCT user_id) FROM userdata")
+        total = one("SELECT SUM(LENGTH(data)) FROM userdata")
+        out["data"] = {"users": with_data, "bytes": total, "avg": int(total / with_data) if with_data else 0,
+                       "by_key": {k: n or 0 for k, n in q("SELECT k, SUM(LENGTH(data)) FROM userdata GROUP BY k")}}
+        out["top"] = [{"username": u, "bytes": n or 0} for u, n in q(
+            "SELECT u.username, SUM(LENGTH(d.data)) AS s FROM userdata d JOIN users u ON u.id = d.user_id GROUP BY u.username ORDER BY s DESC LIMIT 5")]
+        out["kb"] = one("SELECT COUNT(*) FROM explicatii")
+        if self.kb.kind == "postgres":
+            out["db_bytes"] = one("SELECT pg_database_size(current_database())")
+            out["tables"] = {t: n for t, n in q(
+                "SELECT relname, pg_total_relation_size(relid) FROM pg_catalog.pg_statio_user_tables ORDER BY 2 DESC")}
+        else:
+            out["db_bytes"] = one("PRAGMA page_count") * one("PRAGMA page_size")
+            out["tables"] = {}
+        return out
 
     # ---- date sincronizate ----
     def get_docs(self, uid):
